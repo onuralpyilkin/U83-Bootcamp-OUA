@@ -12,7 +12,7 @@ public class PlayerInputManager : MonoBehaviour
     public float movementThreshold = 0.1f;
     void Start()
     {
-        controller = GetComponent<PlayerController>();
+        controller = PlayerController.Instance;
         input = new PlayerInput();
         input.Player.Movement.performed += ctx => Movement(ctx.ReadValue<Vector2>());
         input.Player.Movement.canceled += ctx => Movement(Vector2.zero);
@@ -20,6 +20,7 @@ public class PlayerInputManager : MonoBehaviour
         input.Player.Run.canceled += ctx => controller.SetRunState(false);
         input.Player.Camera.performed += ctx => Camera(ctx.ReadValue<Vector2>());
         input.Player.Camera.canceled += ctx => Camera(Vector2.zero);
+        input.Player.Attack.performed += ctx => controller.Attack();
         input.Enable();
     }
 
@@ -28,8 +29,8 @@ public class PlayerInputManager : MonoBehaviour
         if(direction.magnitude < movementThreshold)
             direction = Vector2.zero;
         controller.SetTargetVelocity(direction.magnitude);
-        if(direction == Vector2.zero)
-            return;
+        /*if(direction == Vector2.zero)
+            return;*/
         controller.SetMoveDirection(direction);
     }
 
