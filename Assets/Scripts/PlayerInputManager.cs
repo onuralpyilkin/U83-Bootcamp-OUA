@@ -10,6 +10,7 @@ public class PlayerInputManager : MonoBehaviour
     public bool inverseCameraY = false;
     public float cameraRotationThreshold = 0.1f;
     public float movementThreshold = 0.1f;
+    private Vector2 lastMovementDirection = Vector2.zero;
     void Start()
     {
         controller = PlayerController.Instance;
@@ -21,11 +22,13 @@ public class PlayerInputManager : MonoBehaviour
         input.Player.Camera.performed += ctx => Camera(ctx.ReadValue<Vector2>());
         input.Player.Camera.canceled += ctx => Camera(Vector2.zero);
         input.Player.Attack.performed += ctx => controller.Attack();
+        input.Player.Dash.performed += ctx => controller.Dash(lastMovementDirection);
         input.Enable();
     }
 
     void Movement(Vector2 direction)
     {
+        lastMovementDirection = direction;
         if(direction.magnitude < movementThreshold)
             direction = Vector2.zero;
         controller.SetTargetVelocity(direction.magnitude);

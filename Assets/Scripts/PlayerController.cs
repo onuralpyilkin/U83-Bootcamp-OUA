@@ -53,6 +53,18 @@ public class PlayerController : MonoBehaviour
     private Coroutine moveToEnemyCoroutine;
     public float moveToEnemyTime = 1f;
 
+    [Header("Dash")]
+    public float dashDistance = 5;
+    public float dashCooldown = 1;
+    public bool dashAvailable = true;
+
+    [Header("VFX")]
+    public VFXPoolController VFXPool;
+    public float lifeTime = 1;
+    public float particleCount = 100;
+    [ColorUsageAttribute(true, true)]
+    public Color particleColor = Color.white;
+
     [Header("Debug")]
     public bool isNextAttackAvailable = false;
 
@@ -72,6 +84,15 @@ public class PlayerController : MonoBehaviour
         for (int i = 0; i < attacks.Length; i++)
         {
             attacks[i].Initialize();
+        }
+        int count = VFXPool.GetCount();
+        for (int i = 0; i < count; i++)
+        {
+            VFX vfx = VFXPool.Get();
+            vfx.SetFloat("Lifetime", lifeTime);
+            vfx.SetFloat("ParticleCount", particleCount);
+            vfx.SetVector4("Color", particleColor);
+            VFXPool.Release(vfx);
         }
     }
 
@@ -178,7 +199,7 @@ public class PlayerController : MonoBehaviour
             StopCoroutine(moveToEnemyCoroutine);
         }
         closestEnemy = GetClosestEnemy();
-        if(closestEnemy != null)
+        if (closestEnemy != null)
             moveToEnemyCoroutine = StartCoroutine(MoveToEnemy(closestEnemy));
     }
 
@@ -228,5 +249,41 @@ public class PlayerController : MonoBehaviour
             }
         }
         return closestEnemy;
+    }
+
+    public void Dash(Vector2 dir)
+    {
+        if (!dashAvailable || VFXPool.GetCount() == 0)
+            return;
+        StartCoroutine(DashCooldown());
+        Vector3 dashDirection = transform.forward;
+        dashDirection.y = 0;
+        PlayVFX();
+        transform.position += dashDirection * dashDistance;
+        PlayVFX();
+    }
+
+    IEnumerator DashCooldown()
+    {
+        dashAvailable = false;
+        yield return new WaitForSeconds(dashCooldown);
+        dashAvailable = true;
+        yield break;
+    }
+
+    void PlayVFX()
+    {
+        VFX vfx = VFXPool.Get();
+        vfx.SetPosition(transform.position);
+        vfx.SetRotation(transform.rotation);
+        vfx.Play();
+        StartCoroutine(ReleaseVFX(vfx, lifeTime));
+    }
+
+    IEnumerator ReleaseVFX(VFX vfx, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        VFXPool.Release(vfx);
+        yield break;
     }
 }
