@@ -24,13 +24,6 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private int velocityHash;
 
-    [Header("Camera Values")]
-    public Transform cameraTargetParent;
-    public Transform cameraTarget;
-    public float cameraRotationSpeed = 10;
-    public float cameraDownLimit = 15, cameraUpLimit = 15;
-    private Vector2 cameraRotationInput;
-
     [Header("Attacks")]
     public string combatIdleAnimName = "Combat Idle";
     public Attack[] attacks;
@@ -68,6 +61,9 @@ public class PlayerController : MonoBehaviour
     [Header("Debug")]
     public bool isNextAttackAvailable = false;
 
+    //Other Components
+    private CameraController cameraController;
+
     void Awake()
     {
         Instance = Instance != null ? Instance : this;
@@ -77,6 +73,7 @@ public class PlayerController : MonoBehaviour
     {
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
+        cameraController = CameraController.Instance;
         animator = GetComponent<Animator>();
         velocityHash = Animator.StringToHash("Velocity");
         animationSpeedHash = Animator.StringToHash("AnimationSpeed");
@@ -104,24 +101,9 @@ public class PlayerController : MonoBehaviour
 
         //Set Y Angle
         if (velocity != 0 && moveDirection != Vector2.zero)
-            targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.y) * Mathf.Rad2Deg + cameraTargetParent.eulerAngles.y;
+            targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.y) * Mathf.Rad2Deg + cameraController.angleOnYAxis;
         angle = Mathf.LerpAngle(angle, targetAngle, turnSpeed * Time.deltaTime);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
-
-        //Set Camera Target Position and Rotation
-        cameraTargetParent.position = new Vector3(transform.position.x, cameraTarget.position.y, transform.position.z);
-        cameraTargetParent.rotation *= Quaternion.AngleAxis(cameraRotationInput.x * cameraRotationSpeed * Time.deltaTime, Vector3.up);
-        cameraTarget.rotation *= Quaternion.AngleAxis(cameraRotationInput.y * cameraRotationSpeed * Time.deltaTime, Vector3.right);
-        float clampedAngle = cameraTarget.localEulerAngles.x;
-        if (clampedAngle > 180 && clampedAngle < (360 - cameraUpLimit))
-        {
-            clampedAngle = 360 - cameraUpLimit;
-        }
-        else if (clampedAngle < 180 && clampedAngle > (cameraDownLimit))
-        {
-            clampedAngle = cameraDownLimit;
-        }
-        cameraTarget.localEulerAngles = new Vector3(clampedAngle, 0, 0);
 
         //Debug
         float currentAnimLength = animator.GetCurrentAnimatorClipInfo(1).Length;
@@ -151,11 +133,6 @@ public class PlayerController : MonoBehaviour
     public void SetRunState(bool state)
     {
         isRunning = state;
-    }
-
-    public void RotateCamera(Vector2 rotation)
-    {
-        cameraRotationInput = rotation;
     }
 
     public T[] ShuffleArray<T>(T[] array)
@@ -219,7 +196,6 @@ public class PlayerController : MonoBehaviour
     {
         float distance = Vector3.Distance(transform.position, enemy.transform.position);
         float speed = distance / moveToEnemyTime;
-        //targetAngle = Mathf.Atan2((enemy.transform.position - transform.position).x, (enemy.transform.position - transform.position).z) * Mathf.Rad2Deg + cameraTargetParent.eulerAngles.y;
         while (distance > enemy.playerFightDistance)
         {
             Vector3 targetPos = enemy.transform.position;
