@@ -6436,7 +6436,7 @@ MonoBehaviour:
   inverseCameraY: 1
   cameraRotationThreshold: 0.1
   movementThreshold: 0.1
-  useMouse: 1
+  useMouse: 0
   mouseSensitivity: 0.05
 --- !u!114 &8255956745663655486
 MonoBehaviour:
@@ -6452,7 +6452,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   walkThreshold: 1.650916
   runThreshold: 4.884502
-  combatWalkThreshold: 0.4896429
+  combatWalkThreshold: 3.303864
   acceleration: 10
   deceleration: 3
   turnSpeed: 10
@@ -6477,7 +6477,7 @@ MonoBehaviour:
   comboExpireTime: 5
   comboValidTime: 0.5
   comboLayerWeightChangeSpeed: 2
-  animationSpeed: 2
+  animationSpeed: 1
   enemies: []
   moveToEnemyTime: 0.3
   dashDistance: 10

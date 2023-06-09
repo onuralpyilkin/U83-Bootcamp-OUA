@@ -232,8 +232,9 @@ public class PlayerController : MonoBehaviour
         if (!dashAvailable || VFXPool.GetCount() == 0)
             return;
         StartCoroutine(DashCooldown());
-        Vector3 dashDirection = transform.forward;
-        dashDirection.y = 0;
+        /*Vector3 dashDirection = transform.forward;
+        dashDirection.y = 0;*/
+        Vector3 dashDirection = new Vector3(dir.x, 0, dir.y);
         PlayVFX();
         transform.position += dashDirection * dashDistance;
         PlayVFX();
