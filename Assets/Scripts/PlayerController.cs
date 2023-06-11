@@ -24,16 +24,12 @@ public class PlayerController : MonoBehaviour
     private Animator animator;
     private int velocityHash;
 
-    [Header("Attacks")]
-    public string combatIdleAnimName = "Combat Idle";
-    public Attack[] attacks;
-    public int maxCombo = 3;
-    public int comboIndex = 0;
+    [Header("Combos")]
+    public Combo[] combos;
+    private int currentComboIndex = 0;
+    private int currentAttackIndex = 0;
     public float comboExpireTime = 0.5f;
-    //private float comboExpireTimer = 0f;
     private float comboStartTime = 0f;
-    public float comboValidTime = 0.5f; /*the time between new attack becomes available and last attack finished then waiting for next attack.
-                                            so comboValidTime*2 is the available time for the player to press the next attack button.*/
     private Coroutine comboTimer;
     private bool isComboLayerActive = false;
     public float comboLayerWeightChangeSpeed = 5f;
@@ -58,11 +54,9 @@ public class PlayerController : MonoBehaviour
     [ColorUsageAttribute(true, true)]
     public Color particleColor = Color.white;
 
-    [Header("Debug")]
-    public bool isNextAttackAvailable = false;
-
     //Other Components
     private CameraController cameraController;
+    private PlayerInputManager inputManager;
 
     void Awake()
     {
@@ -74,13 +68,14 @@ public class PlayerController : MonoBehaviour
         QualitySettings.vSyncCount = 0;
         Application.targetFrameRate = 60;
         cameraController = CameraController.Instance;
+        inputManager = PlayerInputManager.Instance;
         animator = GetComponent<Animator>();
         velocityHash = Animator.StringToHash("Velocity");
         animationSpeedHash = Animator.StringToHash("AnimationSpeed");
         animator.SetFloat(animationSpeedHash, animationSpeed);
-        for (int i = 0; i < attacks.Length; i++)
+        for (int i = 0; i < combos.Length; i++)
         {
-            attacks[i].Initialize();
+            combos[i].Initialize();
         }
         int count = VFXPool.GetCount();
         for (int i = 0; i < count; i++)
@@ -108,14 +103,6 @@ public class PlayerController : MonoBehaviour
         //Debug
         float currentAnimLength = animator.GetCurrentAnimatorClipInfo(1).Length;
         float currentAnimTime = animator.GetCurrentAnimatorStateInfo(1).normalizedTime * currentAnimLength;
-        if (currentAnimTime < currentAnimLength - comboValidTime || currentAnimTime > currentAnimLength + comboValidTime)
-        {
-            isNextAttackAvailable = false;
-        }
-        else
-        {
-            isNextAttackAvailable = true;
-        }
 
         animator.SetLayerWeight(1, Mathf.MoveTowards(animator.GetLayerWeight(1), isComboLayerActive ? 1 : 0, Time.deltaTime * comboLayerWeightChangeSpeed));
     }
@@ -150,27 +137,19 @@ public class PlayerController : MonoBehaviour
 
     public void Attack()
     {
-        string currentAnimName = animator.GetCurrentAnimatorClipInfo(1)[0].clip.name;
-        float currentAnimLength = animator.GetCurrentAnimatorClipInfo(1).Length;
-        float currentAnimTime = animator.GetCurrentAnimatorStateInfo(1).normalizedTime * currentAnimLength;
-        if (currentAnimName != combatIdleAnimName && currentAnimTime < currentAnimLength - comboValidTime)
+        if (currentAttackIndex + 1 > combos[currentComboIndex].GetComboLength() || Time.time - comboStartTime >= comboExpireTime)
         {
-            return;
-        }
-
-        if (comboIndex + 1 >= maxCombo || Time.time - comboStartTime >= comboExpireTime)
-        {
-            comboIndex = 0;
+            currentAttackIndex = 0;
         }
 
         comboStartTime = Time.time;
-        if (comboIndex == 0)
+        if (currentAttackIndex == 0)
         {
-            attacks = ShuffleArray(attacks);
+            currentComboIndex = Random.Range(0, combos.Length);
             comboTimer = StartCoroutine(ComboTimer());
         }
-        animator.SetTrigger(attacks[comboIndex].triggerHash);
-        comboIndex++;
+        animator.SetTrigger(combos[currentComboIndex].attacks[currentAttackIndex].triggerHash);
+        currentAttackIndex++;
         if (moveToEnemyCoroutine != null)
         {
             StopCoroutine(moveToEnemyCoroutine);
@@ -188,7 +167,7 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("Combo Timer: " + (Time.time - comboStartTime));
             yield return null;
         }
-        comboIndex = 0;
+        currentAttackIndex = 0;
         isComboLayerActive = false;
     }
 
@@ -232,8 +211,6 @@ public class PlayerController : MonoBehaviour
         if (!dashAvailable || VFXPool.GetCount() == 0)
             return;
         StartCoroutine(DashCooldown());
-        /*Vector3 dashDirection = transform.forward;
-        dashDirection.y = 0;*/
         Vector3 dashDirection = new Vector3(dir.x, 0, dir.y);
         PlayVFX();
         transform.position += dashDirection * dashDistance;
