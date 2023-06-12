@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 public class PlayerInputManager : MonoBehaviour
 {
-    public struct AttackBufferItem
+    public class AttackBufferItem
     {
         private float pressedTime;
         public void SetPressedTime(float time)
@@ -103,6 +103,5 @@ public class PlayerInputManager : MonoBehaviour
     {
         attackBuffer.Add(new AttackBufferItem());
         attackBuffer[attackBuffer.Count - 1].SetPressedTime(Time.time);
-        Debug.Log("Attack Buffer Count: " + attackBuffer.Count);
     }
 }

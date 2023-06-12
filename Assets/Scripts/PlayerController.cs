@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.VFX;
 
 public class PlayerController : MonoBehaviour
 {
@@ -29,12 +30,17 @@ public class PlayerController : MonoBehaviour
     private int currentComboIndex = 0;
     private int currentAttackIndex = 0;
     public float comboExpireTime = 0.5f;
-    private float comboStartTime = 0f;
-    private Coroutine comboTimer;
+    [HideInInspector]
+    public Coroutine comboExpireTimer;
     private bool isComboLayerActive = false;
     public float comboLayerWeightChangeSpeed = 5f;
     public float animationSpeed = 1f;
     private int animationSpeedHash;
+    [HideInInspector]
+    public bool isAttacking = false;
+    [HideInInspector]
+    public float comboExpireStartTime = 0f;
+    private bool isComboActive = false;
 
     [HideInInspector]
     public List<EnemyCapsule> enemies = new List<EnemyCapsule>();
@@ -47,12 +53,12 @@ public class PlayerController : MonoBehaviour
     public float dashCooldown = 1;
     public bool dashAvailable = true;
 
-    [Header("VFX")]
-    public VFXPoolController VFXPool;
-    public float lifeTime = 1;
-    public float particleCount = 100;
+    [Header("Dash VFX")]
+    public VFXPoolController dashVFXPool;
+    public float dashVFXLifeTime = 1;
+    public float dashVFXParticleCount = 100;
     [ColorUsageAttribute(true, true)]
-    public Color particleColor = Color.white;
+    public Color dashVFXParticleColor = Color.white;
 
     //Other Components
     private CameraController cameraController;
@@ -77,14 +83,14 @@ public class PlayerController : MonoBehaviour
         {
             combos[i].Initialize();
         }
-        int count = VFXPool.GetCount();
+        int count = dashVFXPool.GetCount();
         for (int i = 0; i < count; i++)
         {
-            VFX vfx = VFXPool.Get();
-            vfx.SetFloat("Lifetime", lifeTime);
-            vfx.SetFloat("ParticleCount", particleCount);
-            vfx.SetVector4("Color", particleColor);
-            VFXPool.Release(vfx);
+            VFX vfx = dashVFXPool.Get();
+            vfx.SetFloat("Lifetime", dashVFXLifeTime);
+            vfx.SetFloat("ParticleCount", dashVFXParticleCount);
+            vfx.SetVector4("Color", dashVFXParticleColor);
+            dashVFXPool.Release(vfx);
         }
     }
 
@@ -137,17 +143,20 @@ public class PlayerController : MonoBehaviour
 
     public void Attack()
     {
-        if (currentAttackIndex + 1 > combos[currentComboIndex].GetComboLength() || Time.time - comboStartTime >= comboExpireTime)
+        if (currentAttackIndex + 1 > combos[currentComboIndex].GetComboLength() || !isComboActive)
         {
             currentAttackIndex = 0;
         }
 
-        comboStartTime = Time.time;
         if (currentAttackIndex == 0)
         {
             currentComboIndex = Random.Range(0, combos.Length);
-            comboTimer = StartCoroutine(ComboTimer());
+            //comboTimer = StartCoroutine(ComboExpireTimer());
         }
+
+        isComboLayerActive = true;
+        isComboActive = true;
+        isAttacking = true;
         animator.SetTrigger(combos[currentComboIndex].attacks[currentAttackIndex].triggerHash);
         currentAttackIndex++;
         if (moveToEnemyCoroutine != null)
@@ -159,14 +168,14 @@ public class PlayerController : MonoBehaviour
             moveToEnemyCoroutine = StartCoroutine(MoveToEnemy(closestEnemy));
     }
 
-    IEnumerator ComboTimer()
+    public IEnumerator ComboExpireTimer()
     {
-        isComboLayerActive = true;
-        while (Time.time - comboStartTime < comboExpireTime)
+        comboExpireStartTime = Time.time;
+        while (Time.time - comboExpireStartTime < comboExpireTime)
         {
-            //Debug.Log("Combo Timer: " + (Time.time - comboStartTime));
             yield return null;
         }
+        isComboActive = false;
         currentAttackIndex = 0;
         isComboLayerActive = false;
     }
@@ -208,7 +217,7 @@ public class PlayerController : MonoBehaviour
 
     public void Dash(Vector2 dir)
     {
-        if (!dashAvailable || VFXPool.GetCount() == 0)
+        if (!dashAvailable || dashVFXPool.GetCount() == 0)
             return;
         StartCoroutine(DashCooldown());
         Vector3 dashDirection = new Vector3(dir.x, 0, dir.y);
@@ -227,17 +236,17 @@ public class PlayerController : MonoBehaviour
 
     void PlayVFX()
     {
-        VFX vfx = VFXPool.Get();
+        VFX vfx = dashVFXPool.Get();
         vfx.SetPosition(transform.position);
         vfx.SetRotation(transform.rotation);
         vfx.Play();
-        StartCoroutine(ReleaseVFX(vfx, lifeTime));
+        StartCoroutine(ReleaseVFX(vfx, dashVFXLifeTime));
     }
 
     IEnumerator ReleaseVFX(VFX vfx, float delay)
     {
         yield return new WaitForSeconds(delay);
-        VFXPool.Release(vfx);
+        dashVFXPool.Release(vfx);
         yield break;
     }
 }
