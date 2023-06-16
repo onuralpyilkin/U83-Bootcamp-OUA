@@ -4,39 +4,39 @@ using UnityEngine;
 
 public class EnemyMetalon : MonoBehaviour
 {
-    [Header ("EnemyMetalon Health")]
-    public int health = 100;
+    //EnemyMetalonHealth
+    public int maxHealth = 50;
+    private int currentHealth;
 
-    private int damageAmount;
+    private int damageAmount; 
 
     public Animator enemyMetalonAnim;
 
     private void Start()
     {
+        currentHealth = maxHealth;
         enemyMetalonAnim = GetComponent<Animator>();
     }
 
     // EnemyMetalon takes damage from player
     public void TakeDamage()   // Take Damage i player attack scriptinde cagir
     {
-        health -= damageAmount;
-        if(health <= 0)
+        currentHealth -= damageAmount;
+
+        if(currentHealth <= 0)
         {
-            // Death Anim
-            enemyMetalonAnim.SetTrigger("die");
+            enemyMetalonAnim.SetTrigger("die");  // EnemyMetalon Death Anim
+            Destroy(gameObject);
         }
         else
         {
-            // Get Hit Anim
-            enemyMetalonAnim.SetTrigger("damage");
-
+           enemyMetalonAnim.SetTrigger("damage"); // EnemyMetalon Get Hit Anim
         }
     }
 
-    public void DamageToPlayer()
-    {
-        // player ile çarpıştığında player health i azalt
-        
-    }
+   // public void DamageToPlayer()   // player ile çarpıştığında player health i azalt
+    //{
+       
+    //}
     
 }
