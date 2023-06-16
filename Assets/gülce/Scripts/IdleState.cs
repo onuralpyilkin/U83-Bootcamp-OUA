@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class IdleState : StateMachineBehaviour
 {
-    float timer;
-    Transform player;
-    float chaseRange = 7.0f;
+    private float timer;
+    private Transform player;
+    private float chaseRange = 7.0f; //takip mesafesi aralığı
     //OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
@@ -19,10 +19,10 @@ public class IdleState : StateMachineBehaviour
     {
         timer += Time.deltaTime;
         if (timer > 5)
-            animator.SetBool("isPatrolling", true);
-        float distance = Vector3.Distance(player.position, animator.transform.position);
+            animator.SetBool("isPatrolling", true); //ilk 5 sn idle kal daha sonra gezinmeye başla
+        float distance = Vector3.Distance(player.position, animator.transform.position); //player ile enemymatalon arasındaki mesafe
         if (distance < chaseRange)
-            animator.SetBool("isChasing", true);
+            animator.SetBool("isChasing", true); // aralarındaki mesafe takip mesafesinden küçükse takip etmeye devam et
     }
 
     //OnStateExit is called when a transition ends and the state machine finishes evaluating this state
