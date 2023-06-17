@@ -8,8 +8,8 @@ Takım U-83
 
 ## Takım Elemanları
 
-- Onuralp Yılkın: Product Owner
-- Gülce Çapak: Scrum Master
+- Onuralp Yılkın: Product Owner/Team Member/Developer
+- Gülce Çapak: Scrum Master/Team Member/Developer
 - Berkay Köksal: Team Member/Developer
 - Mustafa Uğur Yanardağ: Team Member/Developer
 - Veysel Enes Yiğitoğlu: Team Member/Developer
@@ -51,23 +51,58 @@ Saf hack and slash aksiyonunu hissedeceğiniz bu oyunda bir yandan düşmanlarla
 
 Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözüken kırmızı item'lar yapılacak işleri (task) gösterirken, mavi item'lar story'leri temsil etmektedir.
 
-- **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Discord üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır:
+- **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Discord üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır: [Daily Scrum Görselleri.docx](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/files/11780078/Daily.Scrum.Gorselleri.docx)
 
-- **Sprint board update**: Sprint board screenshotları: 
+- **Sprint board update**: Sprint board screenshotları:
+
+  -Sprint 1-1 
+![Sprint 1 Backlog 1](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/f88f0c7d-0b6f-41e3-a71c-0a708c7532c0)
+
+  -Sprint 1-2
+![Sprint 1 Backlog 2](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/552c905b-3dcd-4472-a773-3c36ea68c74f)
+
 
 
 - **Ürün Durumu**: Ekran görüntüleri:
   
+  ![image](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/948532d5-4aa7-41a8-907e-173a7972db5c)
+
+  ![2](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/0e773c53-3e07-44a0-a0d7-6c1c63828c68)
+
+  ![3](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/832768e4-33d2-45fd-931d-c9b424f05bad)
+
+  ![4](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/0e5bab11-5542-4bcd-88e9-ee2999f411c3)
+
+  ![5](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/f1558c65-4cc7-4b37-b10b-f8e59ccce763)
+  
+  ![6](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/0b6725b7-e33b-429d-8f61-d3b844d48abf)
+
+  ![7](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/ebef8704-10e8-4d21-aedd-5978d5651eba)
+
+  - Oyun içi görüntüsü için tek bir branchten alınan videonun linki: [Oyun İçi Video Linki](https://www.youtube.com/watch?v=VxGKRcb2G5U)
+
 - **Sprint Review**: 
-Alınan kararlar: 
-Sprint Review katılımcıları: ......
+
+    Alınan kararlar:
+
+  - Oyunun temel hikayesi kararlaştırıldı ve bu hikayeye uyularak oyun mekanikleri belirlendi.
+  - Ana karakter ve düşmanların genel mekanikleri tamamlandı.
+  - Animasyon gibi ek özelliklerinin bir sonraki sprintte eklenebileceğine karar verildi.
+  - Temel kamera kontrol sistemi oluşturuldu.
+  - Grafik tarzına karar verildi ve uygun shaderlar kodlandı.
+  - Planladığımız şekilde oyunun temel mekaniklerinin yüzde 80'lik kısmı tamamlandı.
+
+Sprint Review katılımcıları:
+Onuralp Yılkın - Gülce Çapak - Berkay Köksal -  Mustafa Uğur Yanardağ - Veysel Enes Yiğitoğlu
 
 - **Sprint Retrospective:**
-  - 
-  - 
-  - 
--**Diğer Notlar**:
-- N/A
+  - Ekip içinde karar verme süreci sorunsuz gerçekleştirildi.
+  - Ekip içi iletişimde sorun yaşanmadı.
+  - İkinci sprint için daily scrumların daha sık yapılmasına karar verildi.
+  - Hikaye ve oyun mekaniklerinin ikinci sprintte daha fazla detaylandırılmasına karar verildi.
+  - Ekip içinde yeterli modelleme bilgisi olmadığı göz önünde bulundurularak ikinci sprintte hazır assetlere yönelmeye karar verildi.
+    
+
 
 ---
 
