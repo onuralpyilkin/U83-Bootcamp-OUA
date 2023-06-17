@@ -53,7 +53,7 @@ Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözük
 
 - **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Discord üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır:
   
-[Daily Scrum Görselleri.docx](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/files/11780078/Daily.Scrum.Gorselleri.docx)
+ [Daily Scrum Görselleri.docx](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/files/11780078/Daily.Scrum.Gorselleri.docx)
 
 - **Sprint board update**: Sprint board screenshotları:
 
