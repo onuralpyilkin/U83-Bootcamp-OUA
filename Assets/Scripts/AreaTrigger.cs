@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class AreaTrigger : MonoBehaviour
 {
-    public bool isCombatArea = false;
+    public bool IsCombatArea = false;
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            if (isCombatArea)
+            if (IsCombatArea)
             {
                 CameraController.Instance.SetCombatCameraState(true);
             }

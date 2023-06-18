@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 82bf56c24d49be64b95d5fcaf14be109, type: 3}
   m_Name: SwordCombo1
   m_EditorClassIdentifier: 
-  comboName: Sword Combo 1
-  attacks:
+  ComboName: Combo1
+  Attacks:
   - {fileID: 11400000, guid: 8b52dff199c6d2c4d9eab267833aefb6, type: 2}
   - {fileID: 11400000, guid: 5613df2b77448134aa40935c202d4777, type: 2}
   - {fileID: 11400000, guid: 6ee4d1fda2917034991819b184e42d40, type: 2}

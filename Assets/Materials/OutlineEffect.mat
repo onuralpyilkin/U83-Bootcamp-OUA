@@ -102,8 +102,10 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _IsActivated: 1
+    - _IsActivated: 0
+    - _MaxDepth: 100
     - _Metallic: 0
+    - _MinDepth: 0.5
     - _NormalThreshold: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005

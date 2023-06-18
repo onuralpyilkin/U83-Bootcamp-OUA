@@ -6,32 +6,32 @@ using UnityEngine.VFX;
 public struct VFX
 {
     public GameObject gameObject;
-    public VisualEffect vfx;
+    public VisualEffect Vfx;
 
     public VFX(VisualEffect vfx)
     {
         this.gameObject = vfx.gameObject;
-        this.vfx = vfx;
+        this.Vfx = vfx;
     }
 
     public void SetFloat(string name, float value)
     {
-        vfx.SetFloat(name, value);
+        Vfx.SetFloat(name, value);
     }
 
     public void SetVector4(string name, Vector4 value)
     {
-        vfx.SetVector4(name, value);
+        Vfx.SetVector4(name, value);
     }
 
     public void Play()
     {
-        vfx.Play();
+        Vfx.Play();
     }
 
     public void Stop()
     {
-        vfx.Stop();
+        Vfx.Stop();
     }
 
     public void SetPosition(Vector3 position)

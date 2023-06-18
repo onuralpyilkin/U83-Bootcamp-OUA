@@ -7,7 +7,7 @@ public class VFXPoolController : MonoBehaviour
 {
 
     //public List<VisualEffect> vfxList = new List<VisualEffect>();
-    public Queue<VFX> vfxQueue = new Queue<VFX>();
+    private Queue<VFX> vfxQueue = new Queue<VFX>();
 
     void Awake()
     {

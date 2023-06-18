@@ -8,61 +8,56 @@ using UnityEngine.Rendering.Universal;
 public class OutlineEffectPassController : MonoBehaviour
 {
     //private string featureName = "OutlinePassRendererFeature";
-    public Material effectMaterial;
-    public bool debugMode = false;
-    public int dotsDensity = 0;
-
-    [Range(0f, 1f)]
-    public float dotsCutOff = 0f;
-    public Vector2 scrollDirection = new Vector2();
-    public float normalThreshold = 0f;
-    public float depthThreshold = 0f;
-    public Color outlineColor = Color.white;
-    public float sobelOffset = 0f;
+    public Material EffectMaterial;
+    public bool DebugMode = false;
+    public float NormalThreshold = 0f;
+    public float DepthThreshold = 0f;
+    public float MinDepthinWorldSpace = 0f;
+    public float MaxDepthinWorldSpace = 100f;
+    public Color OutlineColor = Color.white;
+    public float SobelOffset = 0f;
     void Start()
     {
         if (IsActive())
         {
-            effectMaterial.SetInt("_IsActivated", 1);
-            effectMaterial.SetInt("_DotsDensity", dotsDensity);
-            effectMaterial.SetFloat("_DotsCutOff", dotsCutOff);
-            effectMaterial.SetVector("_ScrollDirection", scrollDirection);
-            effectMaterial.SetFloat("_NormalThreshold", normalThreshold);
-            effectMaterial.SetFloat("_DepthThreshold", depthThreshold);
-            effectMaterial.SetColor("_OutlineColor", outlineColor);
-            effectMaterial.SetFloat("_SobelOffset", sobelOffset);
+            EffectMaterial.SetInt("_IsActivated", 1);
+            EffectMaterial.SetFloat("_NormalThreshold", NormalThreshold);
+            EffectMaterial.SetFloat("_DepthThreshold", DepthThreshold);
+            EffectMaterial.SetColor("_OutlineColor", OutlineColor);
+            EffectMaterial.SetFloat("_SobelOffset", SobelOffset);
+            EffectMaterial.SetFloat("_MinDepth", MinDepthinWorldSpace);
+            EffectMaterial.SetFloat("_MaxDepth", MaxDepthinWorldSpace);
         }
         else
         {
-            effectMaterial.SetInt("_IsActivated", 0);
+            EffectMaterial.SetInt("_IsActivated", 0);
         }
     }
 
     void Update()
     {
-        if (debugMode)
+        if (DebugMode)
         {
             if (IsActive())
             {
-                effectMaterial.SetInt("_IsActivated", 1);
-                effectMaterial.SetInt("_DotsDensity", dotsDensity);
-                effectMaterial.SetFloat("_DotsCutOff", dotsCutOff);
-                effectMaterial.SetVector("_ScrollDirection", scrollDirection);
-                effectMaterial.SetFloat("_NormalThreshold", normalThreshold);
-                effectMaterial.SetFloat("_DepthThreshold", depthThreshold);
-                effectMaterial.SetColor("_OutlineColor", outlineColor);
-                effectMaterial.SetFloat("_SobelOffset", sobelOffset);
+                EffectMaterial.SetInt("_IsActivated", 1);
+                EffectMaterial.SetFloat("_NormalThreshold", NormalThreshold);
+                EffectMaterial.SetFloat("_DepthThreshold", DepthThreshold);
+                EffectMaterial.SetColor("_OutlineColor", OutlineColor);
+                EffectMaterial.SetFloat("_SobelOffset", SobelOffset);
+                EffectMaterial.SetFloat("_MinDepth", MinDepthinWorldSpace);
+                EffectMaterial.SetFloat("_MaxDepth", MaxDepthinWorldSpace);
             }
             else
             {
-                effectMaterial.SetInt("_IsActivated", 0);
+                EffectMaterial.SetInt("_IsActivated", 0);
             }
         }
     }
 
     public bool IsActive()
     {
-        if (dotsDensity == 0 && dotsCutOff == 0 && scrollDirection == Vector2.zero && normalThreshold == 0 && outlineColor == Color.white && sobelOffset == 0)
+        if (NormalThreshold == 0 && OutlineColor == Color.white && SobelOffset == 0)
             return false;
         else
             return true;

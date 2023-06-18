@@ -6,19 +6,24 @@ using UnityEngine.VFX;
 public class PlayerController : MonoBehaviour
 {
     public static PlayerController Instance;
+
+    [Header("Player Stats")]
+    private int health = 100;
+    public int MaxHealth = 100;
+
     [Header("Movement Animation Thresholds")]
-    public float walkThreshold = 0.1f;
-    public float runThreshold = 0.9f;
-    public float combatWalkThreshold = 0.1f;
+    public float WalkThreshold = 0.1f;
+    public float RunThreshold = 0.9f;
+    public float CombatWalkThreshold = 0.1f;
 
     [Header("Movement Values")]
-    public float acceleration = 1f;
-    public float deceleration = 1f;
-    public float turnSpeed = 1f;
+    public float Acceleration = 1f;
+    public float Deceleration = 1f;
+    public float TurnSpeed = 1f;
 
     private float velocity, targetVelocity;
     private bool isRunning;
-    public float angle, targetAngle; //angles on the Y axis
+    private float angle, targetAngle; //angles on the Y axis
     private Vector2 moveDirection;
 
     //Animator variables
@@ -26,43 +31,39 @@ public class PlayerController : MonoBehaviour
     private int velocityHash;
 
     [Header("Combos")]
-    public Combo[] combos;
+    public Combo[] Combos;
     private int currentComboIndex = 0;
     private int currentAttackIndex = 0;
-    public float comboExpireTime = 0.5f;
+    public float ComboExpireTime = 0.5f;
     [HideInInspector]
-    public Coroutine comboExpireTimer;
+    public Coroutine ComboExpireTimer;
     private bool isComboLayerActive = false;
-    public float comboLayerWeightChangeSpeed = 5f;
-    public float animationSpeed = 1f;
+    public float ComboLayerWeightChangeSpeed = 5f;
+    public float AnimationSpeed = 1f;
     private int animationSpeedHash;
     [HideInInspector]
-    public bool isAttacking = false;
+    public bool IsAttacking = false;
     [HideInInspector]
-    public float comboExpireStartTime = 0f;
+    public float ComboExpireStartTime = 0f;
     private bool isComboActive = false;
-
-    [HideInInspector]
-    public List<EnemyCapsule> enemies = new List<EnemyCapsule>();
-    private EnemyCapsule closestEnemy;
-    private Coroutine moveToEnemyCoroutine;
-    public float moveToEnemyTime = 1f;
+    public LayerMask EnemyLayer;
 
     [Header("Dash")]
-    public float dashDistance = 5;
-    public float dashCooldown = 1;
-    public bool dashAvailable = true;
+    public float DashDistance = 5;
+    public float DashCooldown = 1;
+    public bool DashAvailable = true;
 
     [Header("Dash VFX")]
-    public VFXPoolController dashVFXPool;
-    public float dashVFXLifeTime = 1;
-    public float dashVFXParticleCount = 100;
+    public VFXPoolController DashVFXPool;
+    public float DashVFXLifeTime = 1;
+    public float DashVFXParticleCount = 100;
     [ColorUsageAttribute(true, true)]
-    public Color dashVFXParticleColor = Color.white;
+    public Color DashVFXParticleColor = Color.white;
 
     //Other Components
     private CameraController cameraController;
     private PlayerInputManager inputManager;
+    private AudioSource swordAudioSource;
 
     void Awake()
     {
@@ -75,42 +76,43 @@ public class PlayerController : MonoBehaviour
         Application.targetFrameRate = 60;
         cameraController = CameraController.Instance;
         inputManager = PlayerInputManager.Instance;
+        swordAudioSource = GetComponentInChildren<AudioSource>();
         animator = GetComponent<Animator>();
         velocityHash = Animator.StringToHash("Velocity");
         animationSpeedHash = Animator.StringToHash("AnimationSpeed");
-        animator.SetFloat(animationSpeedHash, animationSpeed);
-        for (int i = 0; i < combos.Length; i++)
+        animator.SetFloat(animationSpeedHash, AnimationSpeed);
+        for (int i = 0; i < Combos.Length; i++)
         {
-            combos[i].Initialize();
+            Combos[i].Initialize();
         }
-        int count = dashVFXPool.GetCount();
+        int count = DashVFXPool.GetCount();
         for (int i = 0; i < count; i++)
         {
-            VFX vfx = dashVFXPool.Get();
-            vfx.SetFloat("Lifetime", dashVFXLifeTime);
-            vfx.SetFloat("ParticleCount", dashVFXParticleCount);
-            vfx.SetVector4("Color", dashVFXParticleColor);
-            dashVFXPool.Release(vfx);
+            VFX vfx = DashVFXPool.Get();
+            vfx.SetFloat("Lifetime", DashVFXLifeTime);
+            vfx.SetFloat("ParticleCount", DashVFXParticleCount);
+            vfx.SetVector4("Color", DashVFXParticleColor);
+            DashVFXPool.Release(vfx);
         }
     }
 
     void Update()
     {
         //Set Velocity
-        velocity = Mathf.MoveTowards(velocity, targetVelocity * (isComboLayerActive ? combatWalkThreshold : (isRunning ? runThreshold : walkThreshold)), (velocity <= targetVelocity ? acceleration : deceleration) * Time.deltaTime);
+        velocity = Mathf.MoveTowards(velocity, targetVelocity * (isComboLayerActive ? CombatWalkThreshold : (isRunning ? RunThreshold : WalkThreshold)), (velocity <= targetVelocity ? Acceleration : Deceleration) * Time.deltaTime);
         animator.SetFloat(velocityHash, velocity);
 
         //Set Y Angle
         if (velocity != 0 && moveDirection != Vector2.zero)
-            targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.y) * Mathf.Rad2Deg + cameraController.angleOnYAxis;
-        angle = Mathf.LerpAngle(angle, targetAngle, turnSpeed * Time.deltaTime);
+            targetAngle = Mathf.Atan2(moveDirection.x, moveDirection.y) * Mathf.Rad2Deg + cameraController.AngleOnYAxis;
+        angle = Mathf.LerpAngle(angle, targetAngle, TurnSpeed * Time.deltaTime);
         transform.rotation = Quaternion.Euler(0f, angle, 0f);
 
         //Debug
         float currentAnimLength = animator.GetCurrentAnimatorClipInfo(1).Length;
         float currentAnimTime = animator.GetCurrentAnimatorStateInfo(1).normalizedTime * currentAnimLength;
 
-        animator.SetLayerWeight(1, Mathf.MoveTowards(animator.GetLayerWeight(1), isComboLayerActive ? 1 : 0, Time.deltaTime * comboLayerWeightChangeSpeed));
+        animator.SetLayerWeight(1, Mathf.MoveTowards(animator.GetLayerWeight(1), isComboLayerActive ? 1 : 0, Time.deltaTime * ComboLayerWeightChangeSpeed));
     }
 
     public void SetTargetVelocity(float velocity)
@@ -143,35 +145,34 @@ public class PlayerController : MonoBehaviour
 
     public void Attack()
     {
-        if (currentAttackIndex + 1 > combos[currentComboIndex].GetComboLength() || !isComboActive)
+        if (currentAttackIndex + 1 > Combos[currentComboIndex].GetComboLength() || !isComboActive)
         {
             currentAttackIndex = 0;
         }
 
         if (currentAttackIndex == 0)
         {
-            currentComboIndex = Random.Range(0, combos.Length);
+            currentComboIndex = Random.Range(0, Combos.Length);
             //comboTimer = StartCoroutine(ComboExpireTimer());
         }
 
         isComboLayerActive = true;
         isComboActive = true;
-        isAttacking = true;
-        animator.SetTrigger(combos[currentComboIndex].attacks[currentAttackIndex].triggerHash);
+        IsAttacking = true;
+        animator.SetTrigger(Combos[currentComboIndex].Attacks[currentAttackIndex].TriggerHash);
         currentAttackIndex++;
-        if (moveToEnemyCoroutine != null)
+
+        List<IEnemy> enemies = GetEnemiesInAttackRange(Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range);
+        for (int i = 0; i < enemies.Count; i++)
         {
-            StopCoroutine(moveToEnemyCoroutine);
+            enemies[i].TakeDamage((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage);
         }
-        closestEnemy = GetClosestEnemy();
-        if (closestEnemy != null)
-            moveToEnemyCoroutine = StartCoroutine(MoveToEnemy(closestEnemy));
     }
 
-    public IEnumerator ComboExpireTimer()
+    public IEnumerator ComboExpireTimerCoroutine()
     {
-        comboExpireStartTime = Time.time;
-        while (Time.time - comboExpireStartTime < comboExpireTime)
+        ComboExpireStartTime = Time.time;
+        while (Time.time - ComboExpireStartTime < ComboExpireTime)
         {
             yield return null;
         }
@@ -180,73 +181,76 @@ public class PlayerController : MonoBehaviour
         isComboLayerActive = false;
     }
 
-    IEnumerator MoveToEnemy(EnemyCapsule enemy)
+    List<IEnemy> GetEnemiesInAttackRange(float range, bool useDotProduct = true)
     {
-        float distance = Vector3.Distance(transform.position, enemy.transform.position);
-        float speed = distance / moveToEnemyTime;
-        while (distance > enemy.playerFightDistance)
+        Collider[] enemies = Physics.OverlapSphere(transform.position, range, EnemyLayer);
+        List<IEnemy> iEnemies = new List<IEnemy>();
+        if (!useDotProduct)
+            return iEnemies;
+        for (int i = 0; i < enemies.Length; i++)
         {
-            Vector3 targetPos = enemy.transform.position;
-            targetPos.y = transform.position.y;
-            transform.position = Vector3.Lerp(transform.position, targetPos, speed * Time.deltaTime);
-            distance = Vector3.Distance(transform.position, targetPos);
-            yield return new WaitForEndOfFrame();
-        }
-    }
-
-    EnemyCapsule GetClosestEnemy()
-    {
-        //get closest enemy by moveDirection value (dot product)
-        if (this.closestEnemy != null && moveDirection == Vector2.zero)
-        {
-            return this.closestEnemy;
-        }
-        float closestEnemyDot = -1f;
-        EnemyCapsule closestEnemy = null;
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            float dot = Vector3.Dot(transform.forward, (enemies[i].transform.position - transform.position).normalized);
-            if (dot > closestEnemyDot && enemies[i].isInRange)
+            float dotProduct = Vector3.Dot(transform.forward, (enemies[i].transform.position - transform.position).normalized);
+            if (dotProduct > 0)
             {
-                closestEnemyDot = dot;
-                closestEnemy = enemies[i];
+                IEnemy iEnemy = enemies[i].GetComponent<IEnemy>();
+                if (iEnemy != null)
+                    iEnemies.Add(iEnemy);
             }
         }
-        return closestEnemy;
+        return iEnemies;
     }
 
     public void Dash(Vector2 dir)
     {
-        if (!dashAvailable || dashVFXPool.GetCount() == 0)
+        if (!DashAvailable || DashVFXPool.GetCount() == 0)
             return;
-        StartCoroutine(DashCooldown());
+        StartCoroutine(DashCooldownCoroutine());
         Vector3 dashDirection = new Vector3(dir.x, 0, dir.y);
         PlayVFX();
-        transform.position += dashDirection * dashDistance;
+        transform.position += dashDirection * DashDistance;
         PlayVFX();
     }
 
-    IEnumerator DashCooldown()
+    IEnumerator DashCooldownCoroutine()
     {
-        dashAvailable = false;
-        yield return new WaitForSeconds(dashCooldown);
-        dashAvailable = true;
+        DashAvailable = false;
+        yield return new WaitForSeconds(DashCooldown);
+        DashAvailable = true;
         yield break;
     }
 
     void PlayVFX()
     {
-        VFX vfx = dashVFXPool.Get();
+        VFX vfx = DashVFXPool.Get();
         vfx.SetPosition(transform.position);
         vfx.SetRotation(transform.rotation);
         vfx.Play();
-        StartCoroutine(ReleaseVFX(vfx, dashVFXLifeTime));
+        StartCoroutine(ReleaseVFX(vfx, DashVFXLifeTime));
     }
 
     IEnumerator ReleaseVFX(VFX vfx, float delay)
     {
         yield return new WaitForSeconds(delay);
-        dashVFXPool.Release(vfx);
+        DashVFXPool.Release(vfx);
         yield break;
+    }
+
+    public void PlaySwordSound()
+    {
+        swordAudioSource.Play();
+    }
+
+    public void TakeDamage(int damage)
+    {
+        health -= damage;
+        if (health <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        Debug.Log("You died.");
     }
 }

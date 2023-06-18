@@ -22,16 +22,16 @@ public class PlayerInputManager : MonoBehaviour
     PlayerInput input;
     PlayerController controller;
     CameraController cameraController;
-    public bool inverseCameraY = false;
-    public float cameraRotationThreshold = 0.1f;
-    public float movementThreshold = 0.1f;
-    public bool useMouse = false;
-    public float mouseSensitivity = 1f;
+    public bool InverseCameraY = false;
+    public float CameraRotationThreshold = 0.1f;
+    public float MovementThreshold = 0.1f;
+    public bool UseMouse = false;
+    public float MouseSensitivity = 1f;
     private Vector2 lastMovementDirection = Vector2.zero;
     [HideInInspector]
-    public List<AttackBufferItem> attackBuffer = new List<AttackBufferItem>();
-    public float attackBufferTime = 0.5f;
-    public bool attackStarted = false;
+    public List<AttackBufferItem> AttackBuffer = new List<AttackBufferItem>();
+    public float AttackBufferTime = 0.5f;
+    public bool AttackStarted = false;
 
     void Awake()
     {
@@ -49,9 +49,9 @@ public class PlayerInputManager : MonoBehaviour
         input.Player.Run.canceled += ctx => controller.SetRunState(false);
         input.Player.Camera.performed += ctx => Camera(ctx.ReadValue<Vector2>());
         input.Player.Camera.canceled += ctx => Camera(Vector2.zero);
-        if (useMouse)
+        if (UseMouse)
         {
-            input.Player.CameraMouse.performed += ctx => Camera(ctx.ReadValue<Vector2>() * mouseSensitivity);
+            input.Player.CameraMouse.performed += ctx => Camera(ctx.ReadValue<Vector2>() * MouseSensitivity);
             input.Player.CameraMouse.canceled += ctx => Camera(Vector2.zero);
         }
         input.Player.Attack.performed += ctx => Attack();
@@ -61,16 +61,16 @@ public class PlayerInputManager : MonoBehaviour
 
     void Update()
     {
-        if (attackBuffer.Count > 0)
+        if (AttackBuffer.Count > 0)
         {
-            if (Time.time - attackBuffer[0].GetPressedTime() > attackBufferTime)
+            if (Time.time - AttackBuffer[0].GetPressedTime() > AttackBufferTime)
             {
-                attackBuffer.RemoveAt(0);
+                AttackBuffer.RemoveAt(0);
             }
-            else if (Time.time - attackBuffer[0].GetPressedTime() < attackBufferTime && !attackStarted)
+            else if (Time.time - AttackBuffer[0].GetPressedTime() < AttackBufferTime && !AttackStarted)
             {
-                attackStarted = true;
-                attackBuffer.RemoveAt(0);
+                AttackStarted = true;
+                AttackBuffer.RemoveAt(0);
                 PlayerController.Instance.Attack();
             }
         }
@@ -79,7 +79,7 @@ public class PlayerInputManager : MonoBehaviour
     void Movement(Vector2 direction)
     {
         lastMovementDirection = direction;
-        if (direction.magnitude < movementThreshold)
+        if (direction.magnitude < MovementThreshold)
             direction = Vector2.zero;
         controller.SetTargetVelocity(direction.magnitude);
         /*if(direction == Vector2.zero)
@@ -89,11 +89,11 @@ public class PlayerInputManager : MonoBehaviour
 
     void Camera(Vector2 direction)
     {
-        if (Mathf.Abs(direction.x) < cameraRotationThreshold)
+        if (Mathf.Abs(direction.x) < CameraRotationThreshold)
             direction.x = 0;
-        if (Mathf.Abs(direction.y) < cameraRotationThreshold)
+        if (Mathf.Abs(direction.y) < CameraRotationThreshold)
             direction.y = 0;
-        if (inverseCameraY)
+        if (InverseCameraY)
             direction.y *= -1;
         //controller.RotateCamera(direction);
         cameraController.RotateCamera(direction);
@@ -101,7 +101,7 @@ public class PlayerInputManager : MonoBehaviour
 
     void Attack()
     {
-        attackBuffer.Add(new AttackBufferItem());
-        attackBuffer[attackBuffer.Count - 1].SetPressedTime(Time.time);
+        AttackBuffer.Add(new AttackBufferItem());
+        AttackBuffer[AttackBuffer.Count - 1].SetPressedTime(Time.time);
     }
 }

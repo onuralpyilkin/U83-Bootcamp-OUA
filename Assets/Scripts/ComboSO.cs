@@ -5,16 +5,16 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Combo", menuName = "Combo")]
 public class Combo : ScriptableObject
 {
-    public string comboName;
-    public List<Attack> attacks = new List<Attack>();
+    public string ComboName;
+    public List<Attack> Attacks = new List<Attack>();
     private int comboLength = 0;
 
     public void Initialize()
     {
-        comboLength = attacks.Count;
-        for (int i = 0; i < attacks.Count; i++)
+        comboLength = Attacks.Count;
+        for (int i = 0; i < Attacks.Count; i++)
         {
-            attacks[i].Initialize();
+            Attacks[i].Initialize();
         }
     }
 

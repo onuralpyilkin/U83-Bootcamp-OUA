@@ -11,7 +11,7 @@ public class EnemyCapsule : MonoBehaviour
     public bool isInRange = false;
     void Start()
     {
-        PlayerController.Instance.enemies.Add(this);
+        //PlayerController.Instance.enemies.Add(this);
     }
 
     void Update()

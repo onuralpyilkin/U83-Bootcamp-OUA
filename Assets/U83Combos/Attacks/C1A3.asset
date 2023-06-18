@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 48beb8ffdafd3e64a978d1042332419a, type: 3}
-  m_Name: SwordAttack1
+  m_Name: C1A3
   m_EditorClassIdentifier: 
-  attackName: Sword Attack 1
-  animatorTriggerName: SwordAttack1
-  damage: 20
-  triggerHash: 0
+  AttackName: C1A3
+  AnimatorTriggerName: C1A3
+  Damage: 40
+  Range: 10
+  TriggerHash: -604063686

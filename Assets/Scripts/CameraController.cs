@@ -6,16 +6,16 @@ public class CameraController : MonoBehaviour
 {
     public static CameraController Instance;
     [Header("Third Person Camera Values")]
-    public GameObject thirdPersonCamera;
-    public Transform cameraTarget;
-    public float cameraRotationSpeed = 10;
-    public float cameraDownLimit = 15, cameraUpLimit = 15;
+    public GameObject ThirdPersonCamera;
+    public Transform CameraTarget;
+    public float CameraRotationSpeed = 10;
+    public float CameraDownLimit = 15, CameraUpLimit = 15;
     private Vector2 cameraRotationInput;
 
     [Header("Combat Camera Values")]
-    public GameObject combatCamera;
+    public GameObject CombatCamera;
     [HideInInspector]
-    public float angleOnYAxis;
+    public float AngleOnYAxis;
     PlayerController player;
     private bool isCombatCameraActive = false;
 
@@ -30,24 +30,24 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        cameraTarget.position = new Vector3(player.transform.position.x, cameraTarget.position.y, player.transform.position.z);
+        CameraTarget.position = new Vector3(player.transform.position.x, CameraTarget.position.y, player.transform.position.z);
         if (isCombatCameraActive)
             return;
-        cameraTarget.rotation *= Quaternion.AngleAxis(cameraRotationInput.x * cameraRotationSpeed * Time.deltaTime, Vector3.up);
-        cameraTarget.rotation *= Quaternion.AngleAxis(cameraRotationInput.y * cameraRotationSpeed * Time.deltaTime, Vector3.right);
-        Vector3 angles = cameraTarget.localEulerAngles;
+        CameraTarget.rotation *= Quaternion.AngleAxis(cameraRotationInput.x * CameraRotationSpeed * Time.deltaTime, Vector3.up);
+        CameraTarget.rotation *= Quaternion.AngleAxis(cameraRotationInput.y * CameraRotationSpeed * Time.deltaTime, Vector3.right);
+        Vector3 angles = CameraTarget.localEulerAngles;
         angles.z = 0;
-        float clampedAngle = cameraTarget.localEulerAngles.x;
-        if (clampedAngle > 180 && clampedAngle < (360 - cameraUpLimit))
+        float clampedAngle = CameraTarget.localEulerAngles.x;
+        if (clampedAngle > 180 && clampedAngle < (360 - CameraUpLimit))
         {
-            angles.x = 360 - cameraUpLimit;
+            angles.x = 360 - CameraUpLimit;
         }
-        else if (clampedAngle < 180 && clampedAngle > (cameraDownLimit))
+        else if (clampedAngle < 180 && clampedAngle > (CameraDownLimit))
         {
-            angles.x = cameraDownLimit;
+            angles.x = CameraDownLimit;
         }
-        cameraTarget.localEulerAngles = angles;
-        angleOnYAxis = cameraTarget.localEulerAngles.y;
+        CameraTarget.localEulerAngles = angles;
+        AngleOnYAxis = CameraTarget.localEulerAngles.y;
     }
 
     public void RotateCamera(Vector2 input)
@@ -58,12 +58,12 @@ public class CameraController : MonoBehaviour
     public void SetCombatCameraState(bool state)
     {
         isCombatCameraActive = state;
-        thirdPersonCamera.SetActive(!state);
-        combatCamera.SetActive(state);
+        ThirdPersonCamera.SetActive(!state);
+        CombatCamera.SetActive(state);
         if (isCombatCameraActive)
         {
-            cameraTarget.localEulerAngles = Vector3.zero;
-            angleOnYAxis = 0;
+            CameraTarget.localEulerAngles = Vector3.zero;
+            AngleOnYAxis = 0;
         }
     }
 }
