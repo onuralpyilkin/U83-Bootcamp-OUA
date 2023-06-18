@@ -41,7 +41,7 @@ Saf hack and slash aksiyonunu hissedeceğiniz bu oyunda bir yandan düşmanlarla
 [Miro Backlog Board](https://miro.com/app/board/uXjVMCbtpUA=/)
 # Sprint 1
 
-- **Sprint Notları**: User Story'ler product backlog'ların içine yazılmıştır. Product backlog item'lara tıklandığında hikayelerin detayları okunabilir.
+- **Sprint Notları**: User Story'ler product backlog'ların içine yazılmıştır. Product backlog item'lara tıklandığında hikayelerin detayları okunabilir. Toplantı notlarına MiroBoard üzerinden ulaşılabilir.
 
 - **Sprint içinde tamamlanması tahmin edilen puan**: 150 Puan
 
@@ -53,7 +53,7 @@ Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözük
 
 - **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Discord üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır:
   
- [Daily Scrum Görselleri.docx](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/files/11780078/Daily.Scrum.Gorselleri.docx)
+    [Daily Scrum Görselleri.docx](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/files/11780078/Daily.Scrum.Gorselleri.docx)
 
 - **Sprint board update**: Sprint board screenshotları:
 
@@ -61,7 +61,10 @@ Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözük
 ![Sprint 1 Backlog 1](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/f88f0c7d-0b6f-41e3-a71c-0a708c7532c0)
 
   -Sprint 1-2
-![Sprint 1 Backlog 2](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/552c905b-3dcd-4472-a773-3c36ea68c74f)
+![Sprint 1 Backlog 2](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/0f0e749f-765c-452a-8714-a44c6a1fc42d)
+
+  -Sprint 1-3
+![Sprint 1 Backlog 3](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/552c905b-3dcd-4472-a773-3c36ea68c74f)
 
 
 
