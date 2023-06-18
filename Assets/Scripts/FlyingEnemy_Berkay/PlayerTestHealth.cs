@@ -5,7 +5,7 @@ using UnityEngine;
 public class PlayerTestHealth : MonoBehaviour
 {
     public int maxHealth = 100; // Toplam can
-    private int currentHealth; // Mevcut can
+    [SerializeField]private int currentHealth; // Mevcut can
 
     private void Start()
     {
@@ -15,6 +15,7 @@ public class PlayerTestHealth : MonoBehaviour
     public void TakeDamage(int damageAmount)
     {
         currentHealth -= damageAmount; // Can miktarından hasarı çıkar
+        Debug.Log("Mevcut Can :" + currentHealth);
 
         // Eğer canı <= 0 karakteri öldür
         if (currentHealth <= 0)

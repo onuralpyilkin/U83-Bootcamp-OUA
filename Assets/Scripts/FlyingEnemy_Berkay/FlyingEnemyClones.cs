@@ -4,18 +4,23 @@ using UnityEngine;
 
 public class FlyingEnemyClones : MonoBehaviour
 {
-    public GameObject vfxPrefab;
-
-    [Header("Movement")]
+    [Header("Movement Settings")]
+    [SerializeField]private GameObject vfxPrefab;
     public float movementSpeed = 3f;
+    public float suzulmeYuksekligi = 10f;
+    public float suzulmeHizi = 5f;
+    public float idleDuration = 2f;
+    public float collisionBekleme = 2f;
 
     private Transform playerBodyTransform;
+    private Vector3 initialPosition;
+    private bool _Suzulme = false;
+    private bool isAttacking = false;
+    private bool inCollided = false;
     private GameObject vfxInstance;
     private Rigidbody _rb;
 
-    private bool colliderEnter = false;
-    private float freezeDuration = 0.2f;
-
+    
     [Header("Attack Settings")]
     [SerializeField]private float attackInterval = 2f; // Saldırı aralığı (her 2 saniyede bir)
     private float nextAttackTime = 0f;
@@ -23,14 +28,20 @@ public class FlyingEnemyClones : MonoBehaviour
     public string attackPlayerTag = "PlayerBody";
 
 
+    private void Awake() {
+        _rb = GetComponent<Rigidbody>();
+        _rb.isKinematic = true; // Duvarlardan gecmeyi ac
+    }
+
+
     private void Start()
     {
-        _rb = GetComponent<Rigidbody>();
-        _rb.constraints = RigidbodyConstraints.None; // Freeze position devre disi bırak
+        initialPosition = transform.position;
+
         GameObject playerBodyObject = GameObject.FindGameObjectWithTag("PlayerBody");
         if (playerBodyObject != null)
         {
-            playerBodyTransform = playerBodyObject.transform; //hedef oyuncu
+            playerBodyTransform = playerBodyObject.transform;
         }
         else
         {
@@ -39,51 +50,100 @@ public class FlyingEnemyClones : MonoBehaviour
 
         if (vfxPrefab != null)
         {
-            vfxInstance = Instantiate(vfxPrefab, transform.position, Quaternion.identity); //vfxPrefab objesini olustur
-            vfxInstance.transform.SetParent(transform); //vfxPrefab objesini düşman objesinin altina ekle
-            StartCoroutine(DestroyVFXAfterDelay()); //particle yok etmek icin gereken süre
+            vfxInstance = Instantiate(vfxPrefab, transform.position, Quaternion.identity);
+            vfxInstance.transform.SetParent(transform);
+            StartCoroutine(DestroyVFXAfterDelay());
         }
+
+        StartAttacking();
     }
 
     private void Update()
     {
         if (playerBodyTransform != null)
         {
-            Vector3 direction = playerBodyTransform.position - transform.position; 
-            direction.Normalize();
+            if (isAttacking)
+            {
+                // Karaktere doğru hareket
+                Vector3 direction = playerBodyTransform.position - transform.position;
+                direction.Normalize();
+                transform.Translate(direction * movementSpeed * Time.deltaTime, Space.World);
 
-            // Yeni pozisyonu hesapla ve yüksekliği en az 1f olarak sınırla
-            Vector3 newPosition = transform.position + (direction * movementSpeed * Time.deltaTime);
-            newPosition.y = Mathf.Max(newPosition.y, 1f);
+                //yüksekliği 1f olarak sınırla
+                Vector3 newPosition = transform.position + (direction * movementSpeed * Time.deltaTime);
+                newPosition.y = Mathf.Max(newPosition.y, 1.1f);
 
-            transform.position = newPosition; // Dusman hareketi
+                transform.position = newPosition; //dusman hareketi
 
-            Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f); // Dusmanin rotasyonu
+                Quaternion targetRotation = Quaternion.LookRotation(direction, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+
+                // Yükselmeye başlama kontrolü
+                if (Vector3.Distance(transform.position, playerBodyTransform.position) <= 1f)
+                {
+                    Invoke("StartAscending", collisionBekleme);
+                }
+            }
+            else if (_Suzulme)
+            {
+                // Yükselme hareketi
+                Vector3 targetPosition = new Vector3(initialPosition.x, suzulmeYuksekligi, initialPosition.z);
+                Vector3 ascendDirection = targetPosition - transform.position;
+                ascendDirection.Normalize();
+                transform.Translate(ascendDirection * suzulmeHizi * Time.deltaTime, Space.World);
+
+                Quaternion targetRotation = Quaternion.LookRotation(ascendDirection, Vector3.up);
+                transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * 10f);
+
+                if (Vector3.Distance(transform.position, targetPosition) <= 0.1f)
+                {
+                    _Suzulme = false;
+                    Invoke("StartAttacking", idleDuration);
+                }
+            }
         }
-
-        if(colliderEnter == false)
-        {
-            _rb.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezePositionY | RigidbodyConstraints.FreezePositionZ; // Freeze position etkinlestirme
-
-        }else
-        Invoke("Unfreeze", freezeDuration);
     }
 
-    private void OnDestroy()
+    private void StartAttacking()
     {
-        if (vfxInstance != null)
+        if (!inCollided)
         {
-            Destroy(vfxInstance); //particle yok etme
+            _Suzulme = false;
+            isAttacking = true;
         }
+        else
+        {
+            Invoke("StartAttacking", collisionBekleme);
+            inCollided = false;
+        }
+    }
+
+    private void StartAscending()
+    {
+        _Suzulme = true;
+        isAttacking = false;
+    }
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject.CompareTag("PlayerBody"))
+        {
+            inCollided = true;
+            Invoke("ResetCollision", collisionBekleme);
+        }
+    }
+
+    private void ResetCollision()
+    {
+        inCollided = false;
     }
 
     private IEnumerator DestroyVFXAfterDelay()
     {
-        yield return new WaitForSeconds(2f); //particle yok etmek icicin gereken sure
+        yield return new WaitForSeconds(2f);
         if (vfxInstance != null)
         {
-            Destroy(vfxInstance); //particle yok etme
+            Destroy(vfxInstance);
         }
     }
 
@@ -95,22 +155,19 @@ public class FlyingEnemyClones : MonoBehaviour
             PlayerTestHealth playerHealth = other.GetComponent<PlayerTestHealth>();
             if (playerHealth != null)
             {
-                playerHealth.TakeDamage(damageCount);
+                playerHealth.TakeDamage(damageCount); //Player a hasar verme
             }
             nextAttackTime = Time.time + attackInterval;
         }
-        if(other.CompareTag("PlayerBody"))
-        {colliderEnter = true;}
+    }
+
+    private void OnTriggerEnter(Collider other) {
+        if(other.CompareTag(attackPlayerTag))
+        {_rb.isKinematic = false;}
     }
 
     private void OnTriggerExit(Collider other) {
-        if (other.CompareTag("PlayerBody"))
-        {colliderEnter = false;}
+        if(other.CompareTag(attackPlayerTag))
+        {_rb.isKinematic = true;}
     }
-
-    private void Unfreeze()
-    {
-        _rb.constraints = RigidbodyConstraints.None; // Freeze position devre disi bırak
-    }
-
 }
