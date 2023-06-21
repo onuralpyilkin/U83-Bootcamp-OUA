@@ -1020,11 +1020,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FlyingEnemy
       objectReference: {fileID: 0}
-    - target: {fileID: 3364631350793719122, guid: ae7a14d772cc98d46a95f685280945e8,
-        type: 3}
-      propertyPath: suzulmeHizi
-      value: 2
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
