@@ -6,17 +6,17 @@ public class FlyingEnemies : MonoBehaviour
 {
     public GameObject enemyPrefab;
     public float detectionDistance = 3f; // algi mesafesi (eger player'a 3 metre yakınsa kendinden 2 tane daha klonlar)
-    public float copyOffset = 10f; // copyalama yaricapi
+    public float copyOffset = 20f; // copyalama yaricapi
 
     [Header("Movement Settings")]
     public float movementSpeed = 3f;
     public float suzulmeYuksekligi = 10f;
-    public float suzulmeHizi = 6f;
+    public float suzulmeHizi = 2f;
     public float idleDuration = 2f;
     public float collisionBekleme = 2f;
 
     [Header("Fog Settings")]
-    public float fogDensityAlive = 0.3f;
+    public float fogDensityAlive = 0.2f;
     public float fogDensityDead = 0f;
     public Color fogColor;
     public Color defaultFogColor;
@@ -27,6 +27,7 @@ public class FlyingEnemies : MonoBehaviour
     private bool isAttacking = false;
     private bool inCollided = false;
     private Rigidbody _rb;
+    private Animator _animator;
 
     private bool isPlayerDetected = false;
     private bool hasCopied = false;
@@ -37,7 +38,7 @@ public class FlyingEnemies : MonoBehaviour
     [Header("Attack Settings")]
     [SerializeField]private float attackInterval = 2f; // Saldırı aralığı (her 2 saniyede bir)
     private float nextAttackTime = 0f;
-    public int damageCount = 5;
+    public int damageCount = 2;
     public string attackPlayerTag = "PlayerBody";
 
 
@@ -49,6 +50,7 @@ public class FlyingEnemies : MonoBehaviour
 
     private void Start()
     {
+        _animator = GetComponentInChildren<Animator>();
         initialPosition = transform.position;
 
         GameObject playerBodyObject = GameObject.FindGameObjectWithTag("PlayerBody");
@@ -217,11 +219,17 @@ public class FlyingEnemies : MonoBehaviour
 
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag(attackPlayerTag))
-        {_rb.isKinematic = false;}
+        {
+            _rb.isKinematic = false;
+            _animator.SetBool("isAttack", true);
+        }
     }
 
     private void OnTriggerExit(Collider other) {
         if(other.CompareTag(attackPlayerTag))
-        {_rb.isKinematic = true;}
+        {
+            _rb.isKinematic = true;
+            _animator.SetBool("isAttack", false);
+        }
     }
 }
