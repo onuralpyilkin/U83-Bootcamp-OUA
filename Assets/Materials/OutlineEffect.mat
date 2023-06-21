@@ -91,7 +91,7 @@ Material:
     - _ClearCoatSmoothness: 0
     - _Cull: 2
     - _Cutoff: 0.5
-    - _DepthThreshold: 0.01
+    - _DepthThreshold: 0.1
     - _DetailAlbedoMapScale: 1
     - _DetailNormalMapScale: 1
     - _DotsCutOff: 0
@@ -102,10 +102,10 @@ Material:
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
-    - _IsActivated: 0
+    - _IsActivated: 1
     - _MaxDepth: 100
     - _Metallic: 0
-    - _MinDepth: 0.5
+    - _MinDepth: 0.1
     - _NormalThreshold: 1
     - _OcclusionStrength: 1
     - _Parallax: 0.005
