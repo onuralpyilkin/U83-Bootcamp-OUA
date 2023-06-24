@@ -147,9 +147,9 @@ MonoBehaviour:
     type: 3}
   detectionDistance: 3
   copyOffset: 20
-  movementSpeed: 1
+  movementSpeed: 1.25
   suzulmeYuksekligi: 10
-  suzulmeHizi: 2
+  suzulmeHizi: 3
   idleDuration: 2
   collisionBekleme: 2
   fogDensityAlive: 0.2
@@ -157,8 +157,8 @@ MonoBehaviour:
   fogColor: {r: 0, g: 0, b: 0, a: 1}
   defaultFogColor: {r: 0.5019608, g: 0.5019608, b: 0.5019608, a: 1}
   attackInterval: 2
-  damageCount: 2
-  attackPlayerTag: PlayerBody
+  damageCount: 3
+  attackPlayerTag: FlyingEnemyAttackArea
 --- !u!95 &4869918120762902154
 Animator:
   serializedVersion: 5

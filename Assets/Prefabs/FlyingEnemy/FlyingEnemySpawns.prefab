@@ -4981,14 +4981,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   vfxPrefab: {fileID: 2540116421829168774, guid: dda3693abc732ec4a95f319eb5afc4af,
     type: 3}
-  movementSpeed: 3
-  suzulmeYuksekligi: 5
-  suzulmeHizi: 5
+  movementSpeed: 1.25
+  suzulmeYuksekligi: 10
+  suzulmeHizi: 3
   idleDuration: 2
   collisionBekleme: 2
   attackInterval: 2
-  damageCount: 5
-  attackPlayerTag: PlayerBody
+  damageCount: 2
+  attackPlayerTag: FlyingEnemyAttackArea
 --- !u!114 &-6201640150361938004
 MonoBehaviour:
   m_ObjectHideFlags: 0

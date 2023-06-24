@@ -53,7 +53,7 @@ public class FlyingEnemies : MonoBehaviour
         _animator = GetComponentInChildren<Animator>();
         initialPosition = transform.position;
 
-        GameObject playerBodyObject = GameObject.FindGameObjectWithTag("PlayerBody");
+        GameObject playerBodyObject = GameObject.FindGameObjectWithTag(attackPlayerTag);
         if (playerBodyObject != null)
         {
             playerBodyTransform = playerBodyObject.transform;
@@ -191,7 +191,7 @@ public class FlyingEnemies : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("PlayerBody"))
+        if (collision.gameObject.CompareTag(attackPlayerTag))
         {
             inCollided = true;
             Invoke("ResetCollision", collisionBekleme);
@@ -208,10 +208,12 @@ public class FlyingEnemies : MonoBehaviour
         if (other.CompareTag(attackPlayerTag) && Time.time >= nextAttackTime)
         {
             // Oyuncuya 5 hasar verme
-            PlayerTestHealth playerHealth = other.GetComponent<PlayerTestHealth>();
+            PlayerController playerHealth = other.GetComponentInParent<PlayerController>();
             if (playerHealth != null)
             {
                 playerHealth.TakeDamage(damageCount); //Player a hasar verme
+                // Debug.Log("Mevcut Can :" + playerHealth.health);
+                Debug.Log("Hasar verdi :" + damageCount);
             }
             nextAttackTime = Time.time + attackInterval;
         }
