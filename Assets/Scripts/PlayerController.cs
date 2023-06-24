@@ -11,6 +11,9 @@ public class PlayerController : MonoBehaviour
     private int health = 100;
     public int MaxHealth = 100;
 
+    // HealthBar referansı
+    public HealthBar healthBar;
+
     [Header("Movement Animation Thresholds")]
     public float WalkThreshold = 0.1f;
     public float RunThreshold = 0.9f;
@@ -53,6 +56,7 @@ public class PlayerController : MonoBehaviour
     public float DashCooldown = 1;
     public bool DashAvailable = true;
 
+
     [Header("Dash VFX")]
     public VFXPoolController DashVFXPool;
     public float DashVFXLifeTime = 1;
@@ -81,6 +85,9 @@ public class PlayerController : MonoBehaviour
         velocityHash = Animator.StringToHash("Velocity");
         animationSpeedHash = Animator.StringToHash("AnimationSpeed");
         animator.SetFloat(animationSpeedHash, AnimationSpeed);
+        //healthBar.SetMaxHealth(MaxHealth);
+
+
         for (int i = 0; i < Combos.Length; i++)
         {
             Combos[i].Initialize();
@@ -243,6 +250,8 @@ public class PlayerController : MonoBehaviour
     public void TakeDamage(int damage)
     {
         health -= damage;
+        health = Mathf.Clamp(health, 0, 100); // 0 ile 100 arasında sınırlandır
+        healthBar.SetHealth(health);
         if (health <= 0)
         {
             Die();
