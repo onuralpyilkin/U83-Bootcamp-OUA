@@ -12,6 +12,11 @@ public class comboUI : MonoBehaviour
     [SerializeField]private int totalComboCount = 0;
     public float comboTimer = 5f;
 
+    private float B_combos;
+    private float A_combos;
+    private float S_combos;
+    private float SS_combos;
+
     
     public Image B_comboFill;
     public Image B_comboUnfill;
@@ -88,12 +93,17 @@ public class comboUI : MonoBehaviour
             SS_comboFill.gameObject.SetActive(true);
             SS_comboUnfill.gameObject.SetActive(true);
         }
+        
+        B_comboFill.fillAmount = (float)B_combos / 5;
+        A_comboFill.fillAmount = (float)A_combos / 5;
+        S_comboFill.fillAmount = (float)S_combos / 15;
+        SS_comboFill.fillAmount = (float)SS_combos / 25;
 
 
-        B_comboFill.fillAmount = (float)comboCount / 5;
-        A_comboFill.fillAmount = (float)comboCount / 10;
-        S_comboFill.fillAmount = (float)comboCount / 25;
-        SS_comboFill.fillAmount = (float)comboCount / 50;
+        // B_comboFill.fillAmount = (float)comboCount / 5;
+        // A_comboFill.fillAmount = (float)comboCount / 10;
+        // S_comboFill.fillAmount = (float)comboCount / 25;
+        // SS_comboFill.fillAmount = (float)comboCount / 50;
     }
 
 
@@ -101,6 +111,24 @@ public class comboUI : MonoBehaviour
     {
         totalComboCount++;
         comboCount++;
+
+        if(comboCount >= 1 && comboCount <= 4)
+        {
+            B_combos++;
+        }
+        if(comboCount >= 5 && comboCount <= 9)
+        {
+            A_combos++;
+        }
+        if(comboCount >= 10 && comboCount <= 24)
+        {
+            S_combos++;
+        }
+        if(comboCount >= 25)
+        {
+            SS_combos++;
+        }
+
         comboText.text = "x" + comboCount.ToString();
         comboText.gameObject.SetActive(true);
         float rotationAngle = Random.Range(-20f, 20f);
@@ -125,22 +153,10 @@ public class comboUI : MonoBehaviour
     private void ComboReset()
     {
         comboCount = 0;
+        B_combos = 0;
+        A_combos = 0;
+        S_combos = 0;
+        SS_combos = 0;
         comboText.gameObject.SetActive(false);
-    }
-
-    public void Add(float i)
-    {
-        B_comboFill.fillAmount = (float)comboCount / 5;
-        A_comboFill.fillAmount = (float)comboCount / 10;
-        S_comboFill.fillAmount = (float)comboCount / 25;
-        SS_comboFill.fillAmount = (float)comboCount / 50;
-    }
-
-    public void Deduct(float i)
-    {
-        B_comboFill.fillAmount = (float)comboCount / 5;
-        A_comboFill.fillAmount = (float)comboCount / 10;
-        S_comboFill.fillAmount = (float)comboCount / 25;
-        SS_comboFill.fillAmount = (float)comboCount / 50;
     }
 }
