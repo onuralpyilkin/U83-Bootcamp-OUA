@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Cinemachine;
 
 public class CameraController : MonoBehaviour
 {
@@ -19,6 +20,10 @@ public class CameraController : MonoBehaviour
     PlayerController player;
     private bool isCombatCameraActive = false;
 
+    [Header("Camera Shake Values")]
+    public float ShakeForce = 1;
+    private CinemachineImpulseSource impulseSource;
+
     void Awake()
     {
         Instance = Instance != null ? Instance : this;
@@ -26,6 +31,7 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         player = PlayerController.Instance;
+        impulseSource = GetComponent<CinemachineImpulseSource>();
     }
 
     void Update()
@@ -65,5 +71,10 @@ public class CameraController : MonoBehaviour
             CameraTarget.localEulerAngles = Vector3.zero;
             AngleOnYAxis = 0;
         }
+    }
+
+    public void ShakeCamera()
+    {
+        impulseSource.GenerateImpulse(ShakeForce);
     }
 }

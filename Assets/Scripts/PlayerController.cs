@@ -54,7 +54,14 @@ public class PlayerController : MonoBehaviour
     [Header("Dash")]
     public float DashDistance = 5;
     public float DashCooldown = 1;
-    public bool DashAvailable = true;
+    public float DashMoveTime = 0.1f;
+    private bool dashAvailable = true;
+    private int dashStartTriggerHash;
+    private int dashEndTriggerHash;
+    [HideInInspector]
+    public bool dashStartStateRunning = false;
+    [HideInInspector]
+    public bool dashEndStateRunning = false;
 
 
     [Header("Dash VFX")]
@@ -64,10 +71,21 @@ public class PlayerController : MonoBehaviour
     [ColorUsageAttribute(true, true)]
     public Color DashVFXParticleColor = Color.white;
 
+    [Header("Sword VFX")]
+    public VFXPoolController SwordVFXPool;
+    public Transform SwordVFXSpawnReference;
+    public float SwordVFXLifeTime = 1;
+    public SoundEffectPack SwordSoundEffectPack;
+    [ColorUsageAttribute(true, true)]
+    public Color[] SwordVFXEmissionColors;
+    private int lastSwordVFXEmissiveColorIndex = 0;
+
     //Other Components
     private CameraController cameraController;
     private PlayerInputManager inputManager;
     private AudioSource swordAudioSource;
+    private SkinnedMeshRenderer skinnedMeshRenderer;
+    public GameObject SwordTransform;
 
     void Awake()
     {
@@ -101,6 +119,18 @@ public class PlayerController : MonoBehaviour
             vfx.SetVector4("Color", DashVFXParticleColor);
             DashVFXPool.Release(vfx);
         }
+
+        count = SwordVFXPool.GetCount();
+        for (int i = 0; i < count; i++)
+        {
+            VFX vfx = SwordVFXPool.Get();
+            vfx.SetFloat("Lifetime", SwordVFXLifeTime);
+            SwordVFXPool.Release(vfx);
+        }
+
+        dashStartTriggerHash = Animator.StringToHash("DashStart");
+        dashEndTriggerHash = Animator.StringToHash("DashEnd");
+        skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
     }
 
     void Update()
@@ -209,42 +239,102 @@ public class PlayerController : MonoBehaviour
 
     public void Dash(Vector2 dir)
     {
-        if (!DashAvailable || DashVFXPool.GetCount() == 0)
+        /*if (!DashAvailable || DashVFXPool.GetCount() == 0)
             return;
         StartCoroutine(DashCooldownCoroutine());
         Vector3 dashDirection = new Vector3(dir.x, 0, dir.y);
-        PlayVFX();
+        PlayDashVFX();
         transform.position += dashDirection * DashDistance;
-        PlayVFX();
+        PlayDashVFX();*/
+
+        StartCoroutine(DashCooldownCoroutine());
+        isComboLayerActive = true;
+        isComboActive = true;
+        IsAttacking = true;
+        StartCoroutine(DashCoroutine(new Vector3(dir.x, 0, dir.y), DashMoveTime));
+    }
+
+    IEnumerator DashCoroutine(Vector3 dashDirection, float dashTime = 0.1f)
+    {
+        dashStartStateRunning = true;
+        animator.SetTrigger(dashStartTriggerHash);
+        while (dashStartStateRunning)
+        {
+            yield return null;
+        }
+        skinnedMeshRenderer.enabled = false;
+        SwordTransform.SetActive(false);
+        PlayDashVFX();
+        float startTime = Time.time;
+        while (Time.time - startTime < dashTime)
+        {
+            yield return null;
+        }
+        transform.position += dashDirection * DashDistance;
+        skinnedMeshRenderer.enabled = true;
+        SwordTransform.SetActive(true);
+        dashEndStateRunning = true;
+        animator.SetTrigger(dashEndTriggerHash);
+        while (dashEndStateRunning)
+        {
+            yield return null;
+        }
+        yield break;
     }
 
     IEnumerator DashCooldownCoroutine()
     {
-        DashAvailable = false;
+        dashAvailable = false;
         yield return new WaitForSeconds(DashCooldown);
-        DashAvailable = true;
+        dashAvailable = true;
         yield break;
     }
 
-    void PlayVFX()
+    void PlayDashVFX()
     {
         VFX vfx = DashVFXPool.Get();
         vfx.SetPosition(transform.position);
         vfx.SetRotation(transform.rotation);
         vfx.Play();
-        StartCoroutine(ReleaseVFX(vfx, DashVFXLifeTime));
+        StartCoroutine(ReleaseDashVFX(vfx, DashVFXLifeTime));
     }
 
-    IEnumerator ReleaseVFX(VFX vfx, float delay)
+    IEnumerator ReleaseDashVFX(VFX vfx, float delay)
     {
         yield return new WaitForSeconds(delay);
         DashVFXPool.Release(vfx);
         yield break;
     }
 
+    public void PlaySwordVFX(int isRightToLeft = 1)
+    {
+        VFX vfx = SwordVFXPool.Get();
+        vfx.SetPosition(SwordVFXSpawnReference.position);
+        vfx.SetRotation(SwordVFXSpawnReference.rotation);
+        vfx.SetBool("IsRightToLeft", isRightToLeft == 1);
+        if (SwordVFXEmissionColors.Length > 0){
+            int randomIndex = Random.Range(0, SwordVFXEmissionColors.Length);
+            if(randomIndex == lastSwordVFXEmissiveColorIndex)
+                randomIndex = (randomIndex + 1) % SwordVFXEmissionColors.Length;
+            vfx.SetVector4("Emission Color", SwordVFXEmissionColors[randomIndex]);
+            lastSwordVFXEmissiveColorIndex = randomIndex;
+        }
+        vfx.Play();
+        StartCoroutine(ReleaseSwordVFX(vfx, SwordVFXLifeTime));
+    }
+
+    IEnumerator ReleaseSwordVFX(VFX vfx, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        SwordVFXPool.Release(vfx);
+        yield break;
+    }
+
     public void PlaySwordSound()
     {
+        swordAudioSource.clip = SwordSoundEffectPack.GetRandomSoundEffect();
         swordAudioSource.Play();
+        cameraController.ShakeCamera();
     }
 
     public void TakeDamage(int damage)

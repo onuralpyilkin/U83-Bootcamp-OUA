@@ -19,6 +19,11 @@ public struct VFX
         Vfx.SetFloat(name, value);
     }
 
+    public void SetBool(string name, bool value)
+    {
+        Vfx.SetBool(name, value);
+    }
+
     public void SetVector4(string name, Vector4 value)
     {
         Vfx.SetVector4(name, value);
