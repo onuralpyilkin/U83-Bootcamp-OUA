@@ -10,7 +10,10 @@ public class OutlineEffectPassController : MonoBehaviour
     //private string featureName = "OutlinePassRendererFeature";
     public Material EffectMaterial;
     public bool DebugMode = false;
-    public float NormalThreshold = 0f;
+    public float NormalThresholdMin = 0f;
+    public float NormalThresholdMax = 1f;
+    public float MinNormalDistance = 0f;
+    public float MaxNormalDistance = 1f;
     public float DepthThreshold = 0f;
     public float MinDepthinWorldSpace = 0f;
     public float MaxDepthinWorldSpace = 100f;
@@ -18,49 +21,45 @@ public class OutlineEffectPassController : MonoBehaviour
     public float SobelOffset = 0f;
     void Start()
     {
-        if (IsActive())
-        {
-            EffectMaterial.SetInt("_IsActivated", 1);
-            EffectMaterial.SetFloat("_NormalThreshold", NormalThreshold);
-            EffectMaterial.SetFloat("_DepthThreshold", DepthThreshold);
-            EffectMaterial.SetColor("_OutlineColor", OutlineColor);
-            EffectMaterial.SetFloat("_SobelOffset", SobelOffset);
-            EffectMaterial.SetFloat("_MinDepth", MinDepthinWorldSpace);
-            EffectMaterial.SetFloat("_MaxDepth", MaxDepthinWorldSpace);
-        }
-        else
-        {
-            EffectMaterial.SetInt("_IsActivated", 0);
-        }
+        /*if (IsActive())
+        {*/
+        EffectMaterial.SetFloat("_NormalThresholdMin", NormalThresholdMin);
+        EffectMaterial.SetFloat("_NormalThresholdMax", NormalThresholdMax);
+        EffectMaterial.SetFloat("_MinNormalDist", MinNormalDistance);
+        EffectMaterial.SetFloat("_MaxNormalDist", MaxNormalDistance);
+        EffectMaterial.SetFloat("_DepthThreshold", DepthThreshold);
+        EffectMaterial.SetColor("_OutlineColor", OutlineColor);
+        EffectMaterial.SetFloat("_SobelOffset", SobelOffset);
+        EffectMaterial.SetFloat("_MinDepth", MinDepthinWorldSpace);
+        EffectMaterial.SetFloat("_MaxDepth", MaxDepthinWorldSpace);
+        //}
     }
 
     void Update()
     {
         if (DebugMode)
         {
-            if (IsActive())
-            {
-                EffectMaterial.SetInt("_IsActivated", 1);
-                EffectMaterial.SetFloat("_NormalThreshold", NormalThreshold);
-                EffectMaterial.SetFloat("_DepthThreshold", DepthThreshold);
-                EffectMaterial.SetColor("_OutlineColor", OutlineColor);
-                EffectMaterial.SetFloat("_SobelOffset", SobelOffset);
-                EffectMaterial.SetFloat("_MinDepth", MinDepthinWorldSpace);
-                EffectMaterial.SetFloat("_MaxDepth", MaxDepthinWorldSpace);
-            }
-            else
-            {
-                EffectMaterial.SetInt("_IsActivated", 0);
-            }
+            /*if (IsActive())
+            {*/
+            EffectMaterial.SetFloat("_NormalThresholdMin", NormalThresholdMin);
+            EffectMaterial.SetFloat("_NormalThresholdMax", NormalThresholdMax);
+            EffectMaterial.SetFloat("_MinNormalDist", MinNormalDistance);
+            EffectMaterial.SetFloat("_MaxNormalDist", MaxNormalDistance);
+            EffectMaterial.SetFloat("_DepthThreshold", DepthThreshold);
+            EffectMaterial.SetColor("_OutlineColor", OutlineColor);
+            EffectMaterial.SetFloat("_SobelOffset", SobelOffset);
+            EffectMaterial.SetFloat("_MinDepth", MinDepthinWorldSpace);
+            EffectMaterial.SetFloat("_MaxDepth", MaxDepthinWorldSpace);
+            //}
         }
     }
 
-    public bool IsActive()
+    /*public bool IsActive()
     {
-        if (NormalThreshold == 0 && OutlineColor == Color.white && SobelOffset == 0)
+        if (NormalThresholdMin == 0 && OutlineColor == Color.white && SobelOffset == 0)
             return false;
         else
             return true;
-    }
+    }*/
 
 }

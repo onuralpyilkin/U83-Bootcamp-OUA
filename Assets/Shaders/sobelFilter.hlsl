@@ -1,57 +1,62 @@
-void RGBtoHSV_float(float3 In, out float3 Out)
+void sobelNormal_float(float2 upLeft, float2 up, float2 upRight, float2 left, float2 right, float2 downLeft, float2 down, float2 downRight, out float sobel)
 {
-    float4 K = float4(0.0, -1.0 / 3.0, 2.0 / 3.0, -1.0);
-    float4 P = lerp(float4(In.bg, K.wz), float4(In.gb, K.xy), step(In.b, In.g));
-    float4 Q = lerp(float4(P.xyw, In.r), float4(In.r, P.yzx), step(P.x, In.r));
-    float D = Q.x - min(Q.w, Q.y);
-    float  E = 1e-10;
-    float V = (D == 0) ? Q.x : (Q.x + E);
-    Out = float3(abs(Q.z + (Q.w - Q.y)/(6.0 * D + E)), D / (Q.x + E), V);
+        float3 upLeftC = SHADERGRAPH_SAMPLE_SCENE_NORMAL(upLeft);
+        float3 upC = SHADERGRAPH_SAMPLE_SCENE_NORMAL(up);
+        float3 upRightC = SHADERGRAPH_SAMPLE_SCENE_NORMAL(upRight);
+        float3 leftC = SHADERGRAPH_SAMPLE_SCENE_NORMAL(left);
+        float3 rightC = SHADERGRAPH_SAMPLE_SCENE_NORMAL(right);
+        float3 downLeftC = SHADERGRAPH_SAMPLE_SCENE_NORMAL(downLeft);
+        float3 downC = SHADERGRAPH_SAMPLE_SCENE_NORMAL(down);
+        float3 downRightC = SHADERGRAPH_SAMPLE_SCENE_NORMAL(downRight);
+
+        float sobelXr = upLeftC.x * -1 + upC.x * -2 + upRightC.x * -1
+                + downLeftC.x * 1 + downC.x * 2 + downRightC.x * 1;
+        
+        float sobelYr = upLeftC.x * -1 + upRightC.x * 1
+                + leftC.x * -2 + rightC.x * 2
+                + downLeftC.x * -1 + downRightC.x * 1;
+
+        float sobelXg = upLeftC.y * -1 + upC.y * -2 + upRightC.y * -1
+                + downLeftC.y * 1 + downC.y * 2 + downRightC.y * 1;
+
+        float sobelYg = upLeftC.y * -1 + upRightC.y * 1
+                + leftC.y * -2 + rightC.y * 2
+                + downLeftC.y * -1 + downRightC.y * 1;
+        
+        float sobelXb = upLeftC.z * -1 + upC.z * -2 + upRightC.z * -1
+                + downLeftC.z * 1 + downC.z * 2 + downRightC.z * 1;
+        
+        float sobelYb = upLeftC.z * -1 + upRightC.z * 1
+                + leftC.z * -2 + rightC.z * 2
+                + downLeftC.z * -1 + downRightC.z * 1;
+
+        float sobelR = sqrt((sobelXr * sobelXr) + (sobelYr * sobelYr));
+        float sobelG = sqrt((sobelXg * sobelXg) + (sobelYg * sobelYg));
+        float sobelB = sqrt((sobelXb * sobelXb) + (sobelYb * sobelYb));
+
+        sobel = (sobelR + sobelG + sobelB) / 3;
 }
 
-void sobelNormal_float(float3 center, float3 upLeft, float3 up, float3 upRight, float3 left, float3 right, float3 downLeft, float3 down, float3 downRight, out float sobel){
-    float sobelXr = upLeft.x * -1 + up.x * -2 + upRight.x * -1
-            + left.x * 0 + center.x * 0 + right.x * 0
-            + downLeft.x * 1 + down.x * 2 + downRight.x * 1;
-
-    float sobelYr = upLeft.x * -1 + up.x * 0 + upRight.x * 1
-            + left.x * -2 + center.x * 0 + right.x * 2
-            + downLeft.x * -1 + down.x * 0 + downRight.x * 1;
-
-    float sobelXg = upLeft.y * -1 + up.y * -2 + upRight.y * -1
-            + left.y * 0 + center.y * 0 + right.y * 0
-            + downLeft.y * 1 + down.y * 2 + downRight.y * 1;
-    
-    float sobelYg = upLeft.y * -1 + up.y * 0 + upRight.y * 1
-            + left.y * -2 + center.y * 0 + right.y * 2
-            + downLeft.y * -1 + down.y * 0 + downRight.y * 1;
-
-    float sobelXb = upLeft.z * -1 + up.z * -2 + upRight.z * -1
-            + left.z * 0 + center.z * 0 + right.z * 0
-            + downLeft.z * 1 + down.z * 2 + downRight.z * 1;
-    
-    float sobelYb = upLeft.z * -1 + up.z * 0 + upRight.z * 1
-            + left.z * -2 + center.z * 0 + right.z * 2
-            + downLeft.z * -1 + down.z * 0 + downRight.z * 1;
-
-    float sobelR = sqrt((sobelXr * sobelXr) + (sobelYr * sobelYr));
-    float sobelG = sqrt((sobelXg * sobelXg) + (sobelYg * sobelYg));
-    float sobelB = sqrt((sobelXb * sobelXb) + (sobelYb * sobelYb));
-
-    sobel = (sobelR + sobelG + sobelB) / 3;
-}
-
-void sobelDepth_float(float center, float upLeft, float up, float upRight, float left, float right, float downLeft, float down, float downRight, out float sobel)
+void sobelDepth_float(float2 upLeft, float2 up, float2 upRight, float2 left, float2 right, float2 downLeft, float2 down, float2 downRight, out float sobel)
 {
-    float sobelX = upLeft * -1 + up * -2 + upRight * -1
-            + left * 0 + center * 0 + right * 0
-            + downLeft * 1 + down * 2 + downRight * 1;
+        float upLeftC = SHADERGRAPH_SAMPLE_SCENE_DEPTH(upLeft);
+        float upC = SHADERGRAPH_SAMPLE_SCENE_DEPTH(up);
+        float upRightC = SHADERGRAPH_SAMPLE_SCENE_DEPTH(upRight);
+        float leftC = SHADERGRAPH_SAMPLE_SCENE_DEPTH(left);
+        float rightC = SHADERGRAPH_SAMPLE_SCENE_DEPTH(right);
+        float downLeftC = SHADERGRAPH_SAMPLE_SCENE_DEPTH(downLeft);
+        float downC = SHADERGRAPH_SAMPLE_SCENE_DEPTH(down);
+        float downRightC = SHADERGRAPH_SAMPLE_SCENE_DEPTH(downRight);
 
-    float sobelY = upLeft * -1 + up * 0 + upRight * 1
-            + left * -2 + center * 0 + right * 2
-            + downLeft * -1 + down * 0 + downRight * 1;
+        float sobelX = upLeftC * -1 + upC * -2 + upRightC * -1
+                + downLeftC * 1 + downC * 2 + downRightC * 1;
 
-    sobel = sqrt((sobelX * sobelX) + (sobelY * sobelY));
+        float sobelY = upLeftC * -1 + upRightC * 1
+                + leftC * -2 + rightC * 2
+                + downLeftC * -1 + downRightC * 1;
+
+        sobel = sqrt((sobelX * sobelX) + (sobelY * sobelY));
+
 }
 
 void getSobelUVs_float(float2 center, float offset, out float2 upLeft, out float2 up, out float2 upRight, out float2 left, out float2 right, out float2 downLeft, out float2 down, out float2 downRight)
@@ -66,4 +71,49 @@ void getSobelUVs_float(float2 center, float offset, out float2 upLeft, out float
     downLeft = center + float2(-xIncrement, -yIncrement);
     down = center + float2(0, -yIncrement);
     downRight = center + float2(xIncrement, -yIncrement);   
+}
+
+void getSobelOffset_float(float2 uv, float minDepth, float maxDepth, out float offset, out float oneMinusOffset){
+        float depthEye = 0;
+        if (unity_OrthoParams.w == 1.0)
+        {
+                depthEye = LinearEyeDepth(ComputeWorldSpacePosition(uv, SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv), UNITY_MATRIX_I_VP), UNITY_MATRIX_V);
+        }
+        else
+        {
+                depthEye = LinearEyeDepth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv), _ZBufferParams);
+        }
+        if(depthEye < minDepth)
+                depthEye = minDepth;
+        if(depthEye > maxDepth)
+                depthEye = maxDepth;
+        offset = (depthEye - minDepth) / (maxDepth - minDepth);
+        oneMinusOffset = 1.0f - offset;
+}
+
+void combine_float(float normalSobel, float normalThresholdMin, float normalThresholdMax, float minNormalDist, float maxNormalDist, float depthSobel, float depthThreshold, float4 outlineColor, UnityTexture2D blit, SamplerState ss, float2 uv, float minDepth, float maxDepth, out float4 color){
+        float depthEye = 0;
+        bool isInDepthRange = false;
+        if (unity_OrthoParams.w == 1.0)
+        {
+                depthEye = LinearEyeDepth(ComputeWorldSpacePosition(uv, SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv), UNITY_MATRIX_I_VP), UNITY_MATRIX_V);
+        }
+        else
+        {
+                depthEye = LinearEyeDepth(SHADERGRAPH_SAMPLE_SCENE_DEPTH(uv), _ZBufferParams);
+        }
+        if(depthEye <= maxDepth && depthEye >= minDepth)
+                isInDepthRange = true;
+        if(depthEye < minNormalDist)
+                depthEye = minNormalDist;
+        if(depthEye > maxNormalDist)
+                depthEye = maxNormalDist;
+        float oneMinusOffset = 1.0f - ((depthEye - minNormalDist) / (maxNormalDist - minNormalDist));
+        bool normalPass = normalSobel > (normalThresholdMin + (oneMinusOffset * (normalThresholdMax - normalThresholdMin)));
+        bool depthPass = depthSobel > depthThreshold;
+        if((!normalPass && !depthPass) || !isInDepthRange){
+                color = SAMPLE_TEXTURE2D(blit, ss, uv);
+        }else{
+                color = outlineColor;
+        }
 }
