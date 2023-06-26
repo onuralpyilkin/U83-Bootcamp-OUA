@@ -73,6 +73,8 @@ public class PlayerInputManager : MonoBehaviour
         input.Player.Attack.performed += ctx => Attack();
         //input.Player.Dash.performed += ctx => controller.Dash(lastMovementDirection);
         input.Player.Dash.performed += ctx => Attack(AttackType.Dash);
+        input.Player.Dodge.performed += ctx => controller.Dodge(true);
+        input.Player.Dodge.canceled += ctx => controller.Dodge(false);
         input.Enable();
     }
 

@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 79d6ada03fc8ca840bdeae089758d1b8
+guid: 4ed06f891799b3e4b9f66a20d346d3a1
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -33,11 +33,11 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: U83-Walk
-      takeName: U83-Walk
-      internalID: 4671953830604176494
+      name: U83-Run
+      takeName: U83-Run
+      internalID: 485898317880682573
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 24
       wrapMode: 0
       orientationOffsetY: 0
       level: 0

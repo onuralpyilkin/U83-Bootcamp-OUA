@@ -65,11 +65,12 @@ public class PlayerController : MonoBehaviour
 
 
     [Header("Dash VFX")]
-    public VFXPoolController DashVFXPool;
+    //public VFXPoolController DashVFXPool;
     public float DashVFXLifeTime = 1;
-    public float DashVFXParticleCount = 100;
+    //public float DashVFXParticleCount = 100;
     [ColorUsageAttribute(true, true)]
     public Color DashVFXParticleColor = Color.white;
+    public VFXPoolController DashNewVFXPool;
 
     [Header("Sword VFX")]
     public VFXPoolController SwordVFXPool;
@@ -86,6 +87,8 @@ public class PlayerController : MonoBehaviour
     private AudioSource swordAudioSource;
     private SkinnedMeshRenderer skinnedMeshRenderer;
     public GameObject SwordTransform;
+    private int dodgeTriggerHash;
+    private int idleTriggerHash;
 
     void Awake()
     {
@@ -102,6 +105,8 @@ public class PlayerController : MonoBehaviour
         animator = GetComponent<Animator>();
         velocityHash = Animator.StringToHash("Velocity");
         animationSpeedHash = Animator.StringToHash("AnimationSpeed");
+        dodgeTriggerHash = Animator.StringToHash("Dodge");
+        idleTriggerHash = Animator.StringToHash("Idle");
         animator.SetFloat(animationSpeedHash, AnimationSpeed);
         //healthBar.SetMaxHealth(MaxHealth);
 
@@ -110,7 +115,7 @@ public class PlayerController : MonoBehaviour
         {
             Combos[i].Initialize();
         }
-        int count = DashVFXPool.GetCount();
+        /*int count = DashVFXPool.GetCount();
         for (int i = 0; i < count; i++)
         {
             VFX vfx = DashVFXPool.Get();
@@ -118,14 +123,23 @@ public class PlayerController : MonoBehaviour
             vfx.SetFloat("ParticleCount", DashVFXParticleCount);
             vfx.SetVector4("Color", DashVFXParticleColor);
             DashVFXPool.Release(vfx);
-        }
+        }*/
 
-        count = SwordVFXPool.GetCount();
+        int count = SwordVFXPool.GetCount();
         for (int i = 0; i < count; i++)
         {
             VFX vfx = SwordVFXPool.Get();
             vfx.SetFloat("Lifetime", SwordVFXLifeTime);
             SwordVFXPool.Release(vfx);
+        }
+
+        count = DashNewVFXPool.GetCount();
+        for (int i = 0; i < count; i++)
+        {
+            VFX vfx = DashNewVFXPool.Get();
+            vfx.SetFloat("Lifetime", DashVFXLifeTime);
+            vfx.SetVector4("Color", DashVFXParticleColor);
+            DashNewVFXPool.Release(vfx);
         }
 
         dashStartTriggerHash = Animator.StringToHash("DashStart");
@@ -178,6 +192,19 @@ public class PlayerController : MonoBehaviour
             array[i] = temp;
         }
         return array;
+    }
+
+    public void Dodge(bool activate = true)
+    {
+        if (activate)
+        {
+            animator.SetTrigger(dodgeTriggerHash);
+        }else
+        {
+            animator.ResetTrigger(dodgeTriggerHash);
+            animator.SetTrigger(idleTriggerHash);
+        }
+        isComboLayerActive = activate;
     }
 
     public void Attack()
@@ -292,8 +319,9 @@ public class PlayerController : MonoBehaviour
 
     void PlayDashVFX()
     {
-        VFX vfx = DashVFXPool.Get();
-        vfx.SetPosition(transform.position);
+        //VFX vfx = DashVFXPool.Get();
+        VFX vfx = DashNewVFXPool.Get();
+        vfx.SetPosition(transform.position + Vector3.up * 1f);
         vfx.SetRotation(transform.rotation);
         vfx.Play();
         StartCoroutine(ReleaseDashVFX(vfx, DashVFXLifeTime));
@@ -302,7 +330,8 @@ public class PlayerController : MonoBehaviour
     IEnumerator ReleaseDashVFX(VFX vfx, float delay)
     {
         yield return new WaitForSeconds(delay);
-        DashVFXPool.Release(vfx);
+        //DashVFXPool.Release(vfx);
+        DashNewVFXPool.Release(vfx);
         yield break;
     }
 
@@ -312,9 +341,10 @@ public class PlayerController : MonoBehaviour
         vfx.SetPosition(SwordVFXSpawnReference.position);
         vfx.SetRotation(SwordVFXSpawnReference.rotation);
         vfx.SetBool("IsRightToLeft", isRightToLeft == 1);
-        if (SwordVFXEmissionColors.Length > 0){
+        if (SwordVFXEmissionColors.Length > 0)
+        {
             int randomIndex = Random.Range(0, SwordVFXEmissionColors.Length);
-            if(randomIndex == lastSwordVFXEmissiveColorIndex)
+            if (randomIndex == lastSwordVFXEmissiveColorIndex)
                 randomIndex = (randomIndex + 1) % SwordVFXEmissionColors.Length;
             vfx.SetVector4("Emission Color", SwordVFXEmissionColors[randomIndex]);
             lastSwordVFXEmissiveColorIndex = randomIndex;

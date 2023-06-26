@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: 79d6ada03fc8ca840bdeae089758d1b8
+guid: b0d0c6caf0d81044e998812c43dad3b5
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
@@ -24,7 +24,7 @@ ModelImporter:
     animationDoRetargetingWarnings: 0
     importAnimatedCustomProperties: 0
     importConstraints: 0
-    animationCompression: 0
+    animationCompression: 1
     animationRotationError: 0.5
     animationPositionError: 0.5
     animationScaleError: 0.5
@@ -33,18 +33,18 @@ ModelImporter:
     extraUserProperties: []
     clipAnimations:
     - serializedVersion: 16
-      name: U83-Walk
-      takeName: U83-Walk
-      internalID: 4671953830604176494
+      name: U83-DashAttackEnd-Updated
+      takeName: U83-DashAttackEnd-Updated
+      internalID: -2145875532744112338
       firstFrame: 0
-      lastFrame: 30
+      lastFrame: 15
       wrapMode: 0
       orientationOffsetY: 0
       level: 0
       cycleOffset: 0
       loop: 0
       hasAdditiveReferencePose: 0
-      loopTime: 1
+      loopTime: 0
       loopBlend: 0
       loopBlendOrientation: 1
       loopBlendPositionY: 1
