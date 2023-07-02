@@ -112,6 +112,67 @@ Onuralp Yılkın - Gülce Çapak - Berkay Köksal -  Mustafa Uğur Yanardağ - V
 ---
 
 # Sprint 2
+- **Sprint Notları**: User Story'ler product backlog'ların içine yazılmıştır. Product backlog item'lara tıklandığında hikayelerin detayları okunabilir. Toplantı notlarına MiroBoard üzerinden ulaşılabilir.
+
+- **Sprint içinde tamamlanması tahmin edilen puan**: 100 Puan
+
+- **Puan tamamlama mantığı**: Toplamda proje boyunca tamamlanması gereken 350 puanlık backlog bulunmaktadır. İkinci sprint'in 100 puan olması gerektiğine karar verildi.
+
+- **Backlog düzeni ve Story seçimleri**: Backlog'umuz ilk yapılacak story'lere göre düzenlenmiştir. Sprint başına tahmin edilen puan sayısını geçmeyecek şekilde sıradan seçimler yapılmaktadır. Story başına çıkan tahmin puanı, toplam puanın yarısından az tutulmuştur. 
+
+Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözüken kırmızı item'lar yapılacak işleri (task) gösterirken, mavi item'lar story'leri temsil etmektedir.
+
+- **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Discord üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır:
+  
+  [Daily Scrum Görselleri-Sprint2.docx](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/files/11931152/Daily.Scrum.Gorselleri-Sprint2.docx)
+
+- **Sprint board update**: Sprint board screenshotları:
+
+  -Sprint 2-1
+  ![Sprint 2 Backlog 1](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/3065dfe7-b796-4647-8b03-e9fb11705d74)
+  
+  -Sprint 2-2
+  ![Sprint 2 Backlog 2](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/960e1df2-1090-4512-9ba5-6a9dd2843890)
+  
+  -Sprint 2-3
+  ![Sprint 2 Backlog 3](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/9d04c00c-fdbf-4b74-8590-7f3b31dc8e59)
+
+
+
+- **Ürün Durumu**: Ekran görüntüleri:
+  
+  ![image1](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/91dcb310-95f0-44c4-b392-9407bfe65559)
+  
+  ![image2](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/06def37b-1b2d-4aec-8447-c4e9aa08c123)
+  
+  ![image3](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/a6b39f9e-6509-4b1e-bbb5-26a47ca141f3)
+
+   - Oyun içi görüntüsü için tek bir branchten alınan videonun linki: [Oyun İçi Video Linki](https://www.youtube.com/watch?v=1Iw-_UvhbsE)
+
+- **Sprint Review**: 
+
+    Alınan kararlar:
+
+  - İlk sprintte yapılanlar birleştirildi.
+  - Level temasına karar verildi ve uygun assetler hazırlanıp, leveller tasarlanmaya başlandı.
+  - UI tasarımına karar verilip oyun içi UI tamamlandı.
+  - Kılıç efektlerine ait görsel efektler oluşturuldu ve ses efektlerine ait dosyalar eklendi.
+  - Player scriptinde iyileştirmeler yapıldı.
+  - Dodge mekaniği tasarlandı ve gerekli animasyon ile eklendi.
+  - Ana menü ve pause menüsünün bir sonraki sprintte yapılmasına karar verildi.
+
+
+Sprint Review katılımcıları:
+Onuralp Yılkın - Gülce Çapak - Mustafa Uğur Yanardağ
+
+- **Sprint Retrospective:**
+  - Ekip içi iletişimde sorun yaşanmadı.
+  - Bir önceki sprinte kıyasla daha yavaş ilerlendiği tespit edildi.
+  - Bir sonraki sprintte daha hızlı ilerlenmesi gerektiğine karar verildi.
+  - Oyunu özgünleştirecek mekanik detaylandırılarak belirlendi ve 3. sprintte tamamlanmasına karar verildi.
+
+
+
 
 
 ---
