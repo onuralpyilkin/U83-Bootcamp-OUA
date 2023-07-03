@@ -194,17 +194,10 @@ public class PlayerController : MonoBehaviour
         return array;
     }
 
-    public void Dodge(bool activate = true)
+    public void Dodge()
     {
-        if (activate)
-        {
-            animator.SetTrigger(dodgeTriggerHash);
-        }else
-        {
-            animator.ResetTrigger(dodgeTriggerHash);
-            animator.SetTrigger(idleTriggerHash);
-        }
-        isComboLayerActive = activate;
+        animator.SetTrigger(dodgeTriggerHash);
+        isComboLayerActive = true;
     }
 
     public void Attack()
@@ -278,7 +271,11 @@ public class PlayerController : MonoBehaviour
         isComboLayerActive = true;
         isComboActive = true;
         IsAttacking = true;
-        StartCoroutine(DashCoroutine(new Vector3(dir.x, 0, dir.y), DashMoveTime));
+        Vector3 cameraForward = cameraController.BrainCamera.transform.forward;
+        cameraForward.y = 0;
+        Vector3 cameraRight = cameraController.BrainCamera.transform.right;
+        Vector3 dashDirection = cameraForward * dir.y + cameraRight * dir.x;
+        StartCoroutine(DashCoroutine(dashDirection.normalized, DashMoveTime));
     }
 
     IEnumerator DashCoroutine(Vector3 dashDirection, float dashTime = 0.1f)

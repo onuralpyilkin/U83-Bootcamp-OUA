@@ -73,8 +73,7 @@ public class PlayerInputManager : MonoBehaviour
         input.Player.Attack.performed += ctx => Attack();
         //input.Player.Dash.performed += ctx => controller.Dash(lastMovementDirection);
         input.Player.Dash.performed += ctx => Attack(AttackType.Dash);
-        input.Player.Dodge.performed += ctx => controller.Dodge(true);
-        input.Player.Dodge.canceled += ctx => controller.Dodge(false);
+        input.Player.Dodge.performed += ctx => controller.Dodge();
         input.Enable();
     }
 
@@ -128,5 +127,15 @@ public class PlayerInputManager : MonoBehaviour
         AttackBuffer.Add(new AttackBufferItem());
         AttackBuffer[AttackBuffer.Count - 1].SetPressedTime(Time.time);
         AttackBuffer[AttackBuffer.Count - 1].SetAttackType(type);
+    }
+
+    public void EnableInput()
+    {
+        input.Enable();
+    }
+
+    public void DisableInput()
+    {
+        input.Disable();
     }
 }

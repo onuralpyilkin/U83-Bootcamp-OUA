@@ -111,8 +111,8 @@ Material:
     - _Glossiness: 0
     - _GlossyReflections: 0
     - _IsActivated: 1
-    - _MaxDepth: 30
-    - _MaxNormalDist: 10
+    - _MaxDepth: 100
+    - _MaxNormalDist: 5
     - _Metallic: 0
     - _MinDepth: 0.1
     - _MinNormalDist: 0.1

@@ -6,6 +6,7 @@ using Cinemachine;
 public class CameraController : MonoBehaviour
 {
     public static CameraController Instance;
+    public GameObject BrainCamera;
     [Header("Third Person Camera Values")]
     public GameObject ThirdPersonCamera;
     public Transform CameraTarget;
