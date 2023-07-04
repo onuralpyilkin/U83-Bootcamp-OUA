@@ -55,7 +55,7 @@ public class PlayerController : MonoBehaviour
     public float DashDistance = 5;
     public float DashCooldown = 1;
     public float DashMoveTime = 0.1f;
-    private bool dashAvailable = true;
+    public bool DashAvailable = true;
     private int dashStartTriggerHash;
     private int dashEndTriggerHash;
     [HideInInspector]
@@ -308,9 +308,9 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator DashCooldownCoroutine()
     {
-        dashAvailable = false;
+        DashAvailable = false;
         yield return new WaitForSeconds(DashCooldown);
-        dashAvailable = true;
+        DashAvailable = true;
         yield break;
     }
 
