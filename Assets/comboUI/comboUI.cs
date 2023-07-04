@@ -9,7 +9,8 @@ public class comboUI : MonoBehaviour
     /* public comboUI comboUI; ve start fonksiyonuna comboUI = GetComponent<comboUI>(); eklenmesi gerekiyor*/
     [SerializeField]private Text comboText;
     [HideInInspector]public int comboCount = 0;
-    [SerializeField]private int totalComboCount = 0;
+    [SerializeField]private int totalHitCount = 0;
+    [SerializeField]private int BestComboCount = 0;
     public float comboTimer = 5f;
 
     private float B_combos;
@@ -45,8 +46,20 @@ public class comboUI : MonoBehaviour
         S_comboUnfill.gameObject.SetActive(false);
         SS_comboFill.gameObject.SetActive(false);
         SS_comboUnfill.gameObject.SetActive(false);
+        Load();
     }
 
+    public void Load()
+    {
+        totalHitCount = int.Parse(PlayerPrefs.GetString("totalHitCount", "0"));
+        BestComboCount = int.Parse(PlayerPrefs.GetString("BestComboCount", "0"));
+    }
+
+     public void Save()
+    {
+        PlayerPrefs.SetString("totalHitCount", totalHitCount.ToString());
+        PlayerPrefs.SetString("BestComboCount", BestComboCount.ToString());
+    }
 
     private void Update() {
         if(comboCount == 0)
@@ -104,13 +117,19 @@ public class comboUI : MonoBehaviour
         // A_comboFill.fillAmount = (float)comboCount / 10;
         // S_comboFill.fillAmount = (float)comboCount / 25;
         // SS_comboFill.fillAmount = (float)comboCount / 50;
+        
+        Save();
     }
 
 
     public void comboSayac()
     {
-        totalComboCount++;
+        totalHitCount++;
         comboCount++;
+        if(comboCount >= BestComboCount)
+        {
+            BestComboCount = comboCount;
+        }
 
         if(comboCount >= 1 && comboCount <= 4)
         {
