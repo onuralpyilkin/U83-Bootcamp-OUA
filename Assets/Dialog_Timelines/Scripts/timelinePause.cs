@@ -7,6 +7,8 @@ public class timelinePause : MonoBehaviour
 {
     public KeyCode resumePlaying = KeyCode.E;
     public Text displayText;
+    public Image pressX;
+    public Image pressE;
 
     private void OnEnable() {
         Time.timeScale = 0;
@@ -22,11 +24,13 @@ public class timelinePause : MonoBehaviour
         bool isGamepadConnected = Input.GetJoystickNames().Length > 0;
         if (isGamepadConnected)
         {
-            displayText.text = "Devam etmek icin JoystickButton2'ye basın!";
+            pressX.gameObject.SetActive(true);
+            pressE.gameObject.SetActive(false);
         }
         else
         {
-            displayText.text = "Devam etmek icin E'ye basın!";
+            pressE.gameObject.SetActive(true);
+            pressX.gameObject.SetActive(false);
         }
         
         if(Input.GetKeyDown(resumePlaying) || (Input.GetButtonDown("Submit")))
