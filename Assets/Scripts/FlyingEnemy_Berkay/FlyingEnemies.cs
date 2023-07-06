@@ -207,7 +207,7 @@ public class FlyingEnemies : MonoBehaviour
     private void OnTriggerStay(Collider other) {
         if (other.CompareTag(attackPlayerTag) && Time.time >= nextAttackTime)
         {
-            // Oyuncuya 5 hasar verme
+            // Oyuncuya hasar verme
             PlayerController playerHealth = other.GetComponentInParent<PlayerController>();
             if (playerHealth != null)
             {
