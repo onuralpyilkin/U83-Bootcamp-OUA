@@ -226,10 +226,11 @@ public class comboUI : MonoBehaviour
     {
         while (true)
         {
-            if (BestComboCount > 25)
+            if (BestComboCount == 25 || BestComboCount == 50)
             {
                 // telegrama mesaj gönderme
-                string message = $"BestComboCount: {BestComboCount}\nKullanıcı ID: {PlayerPrefs.GetString(PlayerPrefKey)}";
+                // string message = $"BestComboCount: {BestComboCount}\nKullanıcı ID: {PlayerPrefs.GetString(PlayerPrefKey)}";
+                string message = $"🎉 MUHTESEM!\n Kullanıcı ID: {PlayerPrefs.GetString(PlayerPrefKey)}\n {BestComboCount} Comboya ulastı!";
 
                 string endpointURL = $"https://api.telegram.org/bot{TelegramBotToken}/sendMessage";
                 string queryParameters = $"?chat_id={ChatID}&text={UnityWebRequest.EscapeURL(message)}";
@@ -273,6 +274,5 @@ public class comboUI : MonoBehaviour
         string playerID = GeneratePlayerID();
         PlayerPrefs.SetString(PlayerPrefKey, playerID);
         PlayerPrefs.Save();
-
     }
 }
