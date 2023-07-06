@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using System.IO;
+using UnityEditor;
 
 public class comboUI : MonoBehaviour
 {
@@ -12,6 +15,12 @@ public class comboUI : MonoBehaviour
     [SerializeField]private int totalHitCount = 0;
     [SerializeField]private int BestComboCount = 0;
     public float comboTimer = 5f;
+
+    [Header("Telegram API")]
+    private string TelegramBotToken = "6303462751:AAEcH6uf4okk3AehI54MhDczPoUCFbwsnQs";
+    private static string PlayerPrefKey = "PlayerID";
+    private string ChatID = "-1001941348433";
+    public Text PlayerIDText;
 
     private float B_combos;
     private float A_combos;
@@ -46,6 +55,9 @@ public class comboUI : MonoBehaviour
         S_comboUnfill.gameObject.SetActive(false);
         SS_comboFill.gameObject.SetActive(false);
         SS_comboUnfill.gameObject.SetActive(false);
+
+        InitializePlayerID();
+        StartCoroutine(UpdateVariableValue());
         Load();
     }
 
@@ -118,6 +130,12 @@ public class comboUI : MonoBehaviour
         // S_comboFill.fillAmount = (float)comboCount / 25;
         // SS_comboFill.fillAmount = (float)comboCount / 50;
         
+
+        // PlayerID'yi UI'da göster
+        if (PlayerIDText != null)
+        {
+            PlayerIDText.text = "Player ID: " + PlayerPrefs.GetString(PlayerPrefKey);
+        }
         Save();
     }
 
@@ -177,5 +195,84 @@ public class comboUI : MonoBehaviour
         S_combos = 0;
         SS_combos = 0;
         comboText.gameObject.SetActive(false);
+    }
+
+    //TELEGRAM API   
+
+    private static string GeneratePlayerID()
+    {
+        // 6 haneli rastgele ID
+        string playerID = string.Empty;
+        for (int i = 0; i < 6; i++)
+        {
+            playerID += Random.Range(0, 6).ToString();
+        }
+        return playerID;
+    }
+
+    
+    private void InitializePlayerID()
+    {
+        // ID kontrolu eger ıd yoksa yeni id olusturuyor
+        if (!PlayerPrefs.HasKey(PlayerPrefKey))
+        {
+            string playerID = GeneratePlayerID();
+            PlayerPrefs.SetString(PlayerPrefKey, playerID);
+            PlayerPrefs.Save();
+        }        
+    }
+
+    private IEnumerator UpdateVariableValue()
+    {
+        while (true)
+        {
+            if (BestComboCount > 25)
+            {
+                // telegrama mesaj gönderme
+                string message = $"BestComboCount: {BestComboCount}\nKullanıcı ID: {PlayerPrefs.GetString(PlayerPrefKey)}";
+
+                string endpointURL = $"https://api.telegram.org/bot{TelegramBotToken}/sendMessage";
+                string queryParameters = $"?chat_id={ChatID}&text={UnityWebRequest.EscapeURL(message)}";
+
+                UnityWebRequest webRequest = UnityWebRequest.Get(endpointURL + queryParameters);
+
+                yield return webRequest.SendWebRequest();
+
+                if (webRequest.result == UnityWebRequest.Result.Success)
+                {
+                    Debug.Log("Telegrama gönderilen sayac güncellendi: " + BestComboCount);
+                }
+                else
+                {
+                    Debug.LogError("Telegrama gönderilen sayacta hata olustu!!!");
+                }
+            }
+
+            yield return new WaitForSeconds(10f); // mesaj gönderim aralığı
+        }
+    }
+
+
+    // Admin Komutları
+    [MenuItem("Admin/ChangeID")]
+    public static void ChangeAdminID()
+    {
+        if (EditorUtility.DisplayDialog("ID'yi AdminID olarak degistirmek istiyor musun? ",
+        "Bundan Eminmisin geri dönüşü olmayabilir " +
+        "Bu işlem geri alınamaz!", "Devam Et"))
+        Debug.Log("ID AdminId olarak degistirildi!");
+        PlayerPrefs.SetString(PlayerPrefKey, "AdminID");
+    }
+    [MenuItem("Admin/ChangeRandomID")]
+    public static void ChangeRandomID()
+    {
+        if (EditorUtility.DisplayDialog("ID'yi rastgele degistirmek istiyor musun? ",
+        "Bundan Eminmisin geri dönüşü olmayabilir " +
+        "Bu işlem geri alınamaz!", "Devam Et"))
+        Debug.Log("ID rastgele degistirildi!");
+        string playerID = GeneratePlayerID();
+        PlayerPrefs.SetString(PlayerPrefKey, playerID);
+        PlayerPrefs.Save();
+
     }
 }
