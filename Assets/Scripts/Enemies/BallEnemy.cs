@@ -14,6 +14,8 @@ public class BallEnemy : MonoBehaviour, IEnemy
     }
     [SerializeField]
     public int Health { get; set; }
+    public bool HasTicket { get; set; }
+    public EnemyGroupController GroupController { get; set; }
 
     public float DetectionRange = 10f;
     public float AttackRange = 2f;
@@ -30,7 +32,7 @@ public class BallEnemy : MonoBehaviour, IEnemy
     public float AttackRotationSpeed = 5f;
     public float AttackStartDelay = 0.5f;
     private float attackStartTimer = 0f;
-    private float attackTimer = 0f;
+    private float attackTimer = 0f; 
 
     // Start is called before the first frame update
     void Start()
@@ -48,6 +50,12 @@ public class BallEnemy : MonoBehaviour, IEnemy
     // Update is called once per frame
     void Update()
     {
+        if (!HasTicket)
+        {
+            state = State.Idle;
+            agent.SetDestination(transform.position);
+            return;
+        }
         Vector3 position = transform.position;
         position.y = 0;
         Vector3 playerPosition = PlayerController.Instance.transform.position;
@@ -130,6 +138,7 @@ public class BallEnemy : MonoBehaviour, IEnemy
     {
         Debug.Log("Enemy died.");
         state = State.Dead;
+        GroupController.RemoveEnemy(this);
         Destroy(gameObject);
     }
 }
