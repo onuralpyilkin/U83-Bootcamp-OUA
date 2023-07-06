@@ -741,6 +741,61 @@ Transform:
   m_Father: {fileID: 560511849}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &114016663
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 114016665}
+  - component: {fileID: 114016664}
+  m_Layer: 0
+  m_Name: 'OutlineEffectPassController '
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &114016664
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114016663}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a5dd67e2b32e84fa9af940a51e9681, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  EffectMaterial: {fileID: 2100000, guid: 047bb6489c372e448abd5025bfe47f64, type: 2}
+  DebugMode: 0
+  NormalThresholdMin: 0.4
+  NormalThresholdMax: 1
+  MinNormalDistance: 0.1
+  MaxNormalDistance: 5
+  DepthThreshold: 0.1
+  MinDepthinWorldSpace: 0.1
+  MaxDepthinWorldSpace: 100
+  OutlineColor: {r: 0, g: 0, b: 0, a: 1}
+  SobelOffset: 1
+--- !u!4 &114016665
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 114016663}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.6203246, y: 1.9799404, z: 18.641869}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 16
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &123291733
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1470,7 +1525,7 @@ Transform:
   - {fileID: 802165359}
   - {fileID: 398593559}
   m_Father: {fileID: 0}
-  m_RootOrder: 16
+  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &321698030
 GameObject:
@@ -4982,6 +5037,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2afe84b62eb82b448733fd18ca67944, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  BrainCamera: {fileID: 0}
   ThirdPersonCamera: {fileID: 1588104818}
   CameraTarget: {fileID: 1573647677}
   CameraRotationSpeed: 60
@@ -4989,6 +5045,7 @@ MonoBehaviour:
   CameraUpLimit: 90
   CombatCamera: {fileID: 670797219}
   AngleOnYAxis: 0
+  ShakeForce: 1
 --- !u!4 &1017703434
 Transform:
   m_ObjectHideFlags: 0
@@ -6130,58 +6187,6 @@ Transform:
   - {fileID: 883410643}
   m_Father: {fileID: 1477036269}
   m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1328921829
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1328921831}
-  - component: {fileID: 1328921830}
-  m_Layer: 0
-  m_Name: OutlineEffectPassController
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1328921830
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328921829}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 31a5dd67e2b32e84fa9af940a51e9681, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  EffectMaterial: {fileID: 2100000, guid: 047bb6489c372e448abd5025bfe47f64, type: 2}
-  DebugMode: 0
-  NormalThreshold: 1
-  DepthThreshold: 0.1
-  MinDepthinWorldSpace: 0.1
-  MaxDepthinWorldSpace: 100
-  OutlineColor: {r: 0, g: 0, b: 0, a: 1}
-  SobelOffset: 1
---- !u!4 &1328921831
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1328921829}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.6203246, y: 1.9799404, z: 18.641869}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 15
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1329251383
 GameObject:
@@ -7790,11 +7795,19 @@ MonoBehaviour:
     m_Bits: 64
   DashDistance: 5
   DashCooldown: 1
+  DashMoveTime: 0.1
   DashAvailable: 1
-  DashVFXPool: {fileID: 307882722}
+  dashStartStateRunning: 0
+  dashEndStateRunning: 0
   DashVFXLifeTime: 1
-  DashVFXParticleCount: 10000
   DashVFXParticleColor: {r: 16, g: 16, b: 0, a: 1}
+  DashNewVFXPool: {fileID: 0}
+  SwordVFXPool: {fileID: 0}
+  SwordVFXSpawnReference: {fileID: 0}
+  SwordVFXLifeTime: 1
+  SwordSoundEffectPack: {fileID: 0}
+  SwordVFXEmissionColors: []
+  SwordTransform: {fileID: 0}
 --- !u!95 &1549752174
 Animator:
   serializedVersion: 5
