@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class PlayerInputManager : MonoBehaviour
 {
@@ -48,6 +49,10 @@ public class PlayerInputManager : MonoBehaviour
     public List<AttackBufferItem> AttackBuffer = new List<AttackBufferItem>();
     public float AttackBufferTime = 0.5f;
     public bool AttackStarted = false;
+    [HideInInspector]
+    public UnityEvent OnSubmit;
+    [HideInInspector]
+    public bool LatestInputIsGamepad = false;
 
     void Awake()
     {
@@ -59,22 +64,72 @@ public class PlayerInputManager : MonoBehaviour
         controller = PlayerController.Instance;
         cameraController = CameraController.Instance;
         input = new PlayerInput();
-        input.Player.Movement.performed += ctx => Movement(ctx.ReadValue<Vector2>());
-        input.Player.Movement.canceled += ctx => Movement(Vector2.zero);
-        input.Player.Run.performed += ctx => controller.SetRunState(true);
-        input.Player.Run.canceled += ctx => controller.SetRunState(false);
-        input.Player.Camera.performed += ctx => Camera(ctx.ReadValue<Vector2>());
-        input.Player.Camera.canceled += ctx => Camera(Vector2.zero);
+        input.Player.Movement.performed += ctx =>
+        {
+            Movement(ctx.ReadValue<Vector2>());
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Player.Movement.canceled += ctx =>
+        {
+            Movement(Vector2.zero);
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Player.Run.performed += ctx =>
+        {
+            controller.SetRunState(true);
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Player.Run.canceled += ctx =>
+        {
+            controller.SetRunState(false);
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Player.Camera.performed += ctx =>
+        {
+            Camera(ctx.ReadValue<Vector2>());
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Player.Camera.canceled += ctx =>
+        {
+            Camera(Vector2.zero);
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
         if (UseMouse)
         {
-            input.Player.CameraMouse.performed += ctx => Camera(ctx.ReadValue<Vector2>() * MouseSensitivity);
-            input.Player.CameraMouse.canceled += ctx => Camera(Vector2.zero);
+            input.Player.CameraMouse.performed += ctx =>
+            {
+                Camera(ctx.ReadValue<Vector2>() * MouseSensitivity);
+                SetLatestDeviceType(false);
+            };
+            input.Player.CameraMouse.canceled += ctx =>
+            {
+                Camera(Vector2.zero);
+                SetLatestDeviceType(false);
+            };
         }
-        input.Player.Attack.performed += ctx => Attack();
-        //input.Player.Dash.performed += ctx => controller.Dash(lastMovementDirection);
-        input.Player.Dash.performed += ctx => Attack(AttackType.Dash);
-        input.Player.Dodge.performed += ctx => controller.Dodge();
+        input.Player.Attack.performed += ctx =>
+        {
+            Attack();
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Player.Dash.performed += ctx =>
+        {
+            Attack(AttackType.Dash);
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Player.Dodge.performed += ctx =>
+        {
+            controller.Dodge();
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.UI.Submit.performed += ctx =>
+        {
+            OnSubmit.Invoke();
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
         input.Enable();
+        input.Player.Enable();
+        input.UI.Disable();
     }
 
     void Update()
@@ -97,6 +152,11 @@ public class PlayerInputManager : MonoBehaviour
                 AttackBuffer.RemoveAt(0);
             }
         }
+    }
+
+    void SetLatestDeviceType(bool isGamepad)
+    {
+        LatestInputIsGamepad = isGamepad;
     }
 
     void Movement(Vector2 direction)
@@ -137,5 +197,25 @@ public class PlayerInputManager : MonoBehaviour
     public void DisableInput()
     {
         input.Disable();
+    }
+
+    public void EnablePlayerInput()
+    {
+        input.Player.Enable();
+    }
+
+    public void DisablePlayerInput()
+    {
+        input.Player.Disable();
+    }
+
+    public void EnableUIInput()
+    {
+        input.UI.Enable();
+    }
+
+    public void DisableUIInput()
+    {
+        input.UI.Disable();
     }
 }

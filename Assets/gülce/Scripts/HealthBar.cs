@@ -12,9 +12,8 @@ public class HealthBar : MonoBehaviour
 
     private void Start()
     {
-        playerController = FindObjectOfType<PlayerController>();
+        playerController = PlayerController.Instance;
         SetMaxHealth(playerController.MaxHealth);
-
     }
 
     public void SetMaxHealth(int health)
