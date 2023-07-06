@@ -34,6 +34,7 @@ public class PlayerController : MonoBehaviour
     private int velocityHash;
 
     [Header("Combos")]
+    public comboUI ComboUI;
     public Combo[] Combos;
     private int currentComboIndex = 0;
     private int currentAttackIndex = 0;
@@ -52,6 +53,7 @@ public class PlayerController : MonoBehaviour
     public LayerMask EnemyLayer;
 
     [Header("Dash")]
+    public DashIndicator dashIndicator;
     public float DashDistance = 5;
     public float DashCooldown = 1;
     public float DashMoveTime = 0.1f;
@@ -141,7 +143,7 @@ public class PlayerController : MonoBehaviour
             vfx.SetVector4("Color", DashVFXParticleColor);
             DashNewVFXPool.Release(vfx);
         }
-
+        dashIndicator.UpdateDashIndicator(DashAvailable = true);
         dashStartTriggerHash = Animator.StringToHash("DashStart");
         dashEndTriggerHash = Animator.StringToHash("DashEnd");
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
@@ -218,7 +220,7 @@ public class PlayerController : MonoBehaviour
         IsAttacking = true;
         animator.SetTrigger(Combos[currentComboIndex].Attacks[currentAttackIndex].TriggerHash);
         currentAttackIndex++;
-
+        ComboUI.comboSayac(); //Temporarily here for debugging, we will write it in where that enemies take damage (maybe inside the next for loop)
         List<IEnemy> enemies = GetEnemiesInAttackRange(Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range);
         for (int i = 0; i < enemies.Count; i++)
         {
@@ -308,9 +310,9 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator DashCooldownCoroutine()
     {
-        DashAvailable = false;
+        dashIndicator.UpdateDashIndicator(DashAvailable = false);
         yield return new WaitForSeconds(DashCooldown);
-        DashAvailable = true;
+        dashIndicator.UpdateDashIndicator(DashAvailable = true);
         yield break;
     }
 

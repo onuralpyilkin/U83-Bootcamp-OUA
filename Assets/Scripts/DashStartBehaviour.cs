@@ -18,8 +18,9 @@ public class DashStartBehaviour : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if (stateInfo.normalizedTime >= 0.99f)
+        if (stateInfo.normalizedTime >= 0.99f && isStarted)
         {
+            isStarted = false;
             PlayerController.Instance.dashStartStateRunning = false;
         }
     }
