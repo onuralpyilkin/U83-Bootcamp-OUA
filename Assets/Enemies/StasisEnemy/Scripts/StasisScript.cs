@@ -3,8 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class StasisScript : MonoBehaviour
+public class StasisScript : MonoBehaviour, IEnemy
 {
+    public int Health { get; set; }
+    public bool HasTicket { get; set; }
+    public EnemyGroupController GroupController { get; set; }
     Animator StasisAnim;
 
     Transform _player;
@@ -28,6 +31,15 @@ public class StasisScript : MonoBehaviour
 
     void Update()
     {
+        if (!HasTicket)
+        {
+            StopAllCoroutines();
+            StasisAnim.SetBool("isTeleporting", false);
+            StasisAnim.SetBool("fleeing", false);
+            StasisAnim.SetFloat("speed", 0f);
+
+            return;
+        }
         StasisAnim.SetFloat("speed", _agent.velocity.magnitude);
 
         _distance = Vector3.Distance(transform.position, _player.position);
@@ -62,7 +74,7 @@ public class StasisScript : MonoBehaviour
                 }
                 else
                 {
-                    _agent.destination = transform.position; 
+                    _agent.destination = transform.position;
                 }
             }
         }
@@ -84,14 +96,14 @@ public class StasisScript : MonoBehaviour
         StasisAnim.SetBool("isTeleporting", true);
         yield return new WaitForSeconds(2f);
 
-        
+
         Vector3 fleePosition = FindFleePosition();
         transform.position = fleePosition;
 
         // can doldur
         _health = 50;
 
-        
+
         _agent.enabled = false;
 
         yield return new WaitForSeconds(2f);
@@ -100,13 +112,13 @@ public class StasisScript : MonoBehaviour
         StasisAnim.SetBool("fleeing", false);
         StasisAnim.SetBool("isTeleporting", false);
 
-        
+
         _agent.enabled = true;
     }
 
     Vector3 FindFleePosition()
     {
-        // en uzak noktayý bul
+        // en uzak noktayï¿½ bul
         Vector3 fleePosition = Vector3.zero;
         float maxDistance = 0f;
 
@@ -115,16 +127,16 @@ public class StasisScript : MonoBehaviour
 
         for (int i = 0; i < 100; i++) // 100 deneme yap
         {
-            Vector3 randomPosition = Random.insideUnitSphere * 20f; // Random konum seçme
+            Vector3 randomPosition = Random.insideUnitSphere * 20f; // Random konum seï¿½me
             randomPosition += transform.position;
             randomPosition.y = transform.position.y;
 
-            if (NavMesh.SamplePosition(randomPosition, out hit, 1f, NavMesh.AllAreas)) // bake var mý kontrol et
+            if (NavMesh.SamplePosition(randomPosition, out hit, 1f, NavMesh.AllAreas)) // bake var mï¿½ kontrol et
             {
-                if (NavMesh.CalculatePath(transform.position, hit.position, NavMesh.AllAreas, path)) 
+                if (NavMesh.CalculatePath(transform.position, hit.position, NavMesh.AllAreas, path))
                 {
                     float distance = GetPathDistance(path);
-                    if (distance > maxDistance) 
+                    if (distance > maxDistance)
                     {
                         maxDistance = distance;
                         fleePosition = hit.position;
@@ -157,5 +169,23 @@ public class StasisScript : MonoBehaviour
 
         isTeleporting = false;
         StasisAnim.SetBool("isTeleporting", false);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
+        //Debug.Log("Enemy took " + damage + " damage. Health: " + Health);
+        if (Health <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        Debug.Log("Enemy died.");
+        //state = State.Dead;
+        GroupController.RemoveEnemy(this);
+        Destroy(gameObject);
     }
 }
