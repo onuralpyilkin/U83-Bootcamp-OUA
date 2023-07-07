@@ -9,6 +9,7 @@ public class Attack : ScriptableObject
     public string AnimatorTriggerName;
     public float Damage;
     public float Range;
+    public float PowerCost;
     //public float knockback;
 
     [HideInInspector]

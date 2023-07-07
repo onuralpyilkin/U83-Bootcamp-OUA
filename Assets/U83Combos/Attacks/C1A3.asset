@@ -16,4 +16,5 @@ MonoBehaviour:
   AnimatorTriggerName: C1A3
   Damage: 40
   Range: 10
+  PowerCost: 10
   TriggerHash: -604063686

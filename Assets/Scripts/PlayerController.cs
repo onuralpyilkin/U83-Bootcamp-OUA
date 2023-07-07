@@ -10,9 +10,15 @@ public class PlayerController : MonoBehaviour
     [Header("Player Stats")]
     private int health = 100;
     public int MaxHealth = 100;
+    private float powerAmount = 0;
+    public float MaxPower = 100f;
+    public int PowerAttackDamageMultiplier = 2;
 
     // HealthBar referansı
     public HealthBar healthBar;
+
+    // PowerBar referansı
+    public PowerBar powerBar;
 
     [Header("Movement Animation Thresholds")]
     public float WalkThreshold = 0.1f;
@@ -221,10 +227,12 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger(Combos[currentComboIndex].Attacks[currentAttackIndex].TriggerHash);
         currentAttackIndex++;
         ComboUI.comboSayac(); //Temporarily here for debugging, we will write it in where that enemies take damage (maybe inside the next for loop)
+        AddPower(-Combos[currentComboIndex].Attacks[currentAttackIndex - 1].PowerCost);
+        powerBar.SetPower(powerAmount);
         List<IEnemy> enemies = GetEnemiesInAttackRange(Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range);
         for (int i = 0; i < enemies.Count; i++)
         {
-            enemies[i].TakeDamage((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage);
+            enemies[i].TakeDamage((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1));
         }
     }
 
@@ -380,5 +388,12 @@ public class PlayerController : MonoBehaviour
     public void Die()
     {
         Debug.Log("You died.");
+    }
+
+    public void AddPower(float amount)
+    {
+        powerAmount += amount;
+        powerAmount = Mathf.Clamp(powerAmount, 0, 100); // 0 ile 100 arasında sınırlandır
+        powerBar.SetPower(powerAmount);
     }
 }
