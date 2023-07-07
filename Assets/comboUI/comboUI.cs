@@ -12,31 +12,35 @@ public class comboUI : MonoBehaviour
     /* public comboUI comboUI; ve start fonksiyonuna comboUI = GetComponent<comboUI>(); eklenmesi gerekiyor*/
     [SerializeField]private Text comboText;
     [HideInInspector]public int comboCount = 0;
-    [SerializeField]private int totalHitCount = 0;
-    [SerializeField]private int BestComboCount = 0;
+    [HideInInspector]public int totalHitCount = 0;
+    [HideInInspector]public int BestComboCount = 0;
     public float comboTimer = 5f;
 
-    [Header("Telegram API")]
-    private string TelegramBotToken = "6303462751:AAEcH6uf4okk3AehI54MhDczPoUCFbwsnQs";
-    private static string PlayerPrefKey = "PlayerID";
-    private string ChatID = "-1001941348433";
-    public Text PlayerIDText;
+    [Header("Telegram & Firebase API")]
+    public APImanager APImanager;
+    [HideInInspector]private string TelegramBotToken = "6303462751:AAESnqjmKbmSrx216v-wsciNqrJMOAITmKU";
+    [HideInInspector]private string databaseURL = "https://u83firebase-default-rtdb.europe-west1.firebasedatabase.app/";
+    [HideInInspector]private static string PlayerPrefKey = "PlayerID";
+    [HideInInspector]private string ChatID = "-1001941348433";
 
     private float B_combos;
     private float A_combos;
     private float S_combos;
     private float SS_combos;
 
-    
+    [Header("Combos_B")]
     public Image B_comboFill;
     public Image B_comboUnfill;
 
+    [Header("Combos_A")]
     public Image A_comboFill;
     public Image A_comboUnfill;
 
+    [Header("Combos_S")]
     public Image S_comboFill;
     public Image S_comboUnfill;
 
+    [Header("Combos_SS")]
     public Image SS_comboFill;
     public Image SS_comboUnfill;
 
@@ -46,7 +50,6 @@ public class comboUI : MonoBehaviour
         S_comboFill.fillAmount = 0;
         SS_comboFill.fillAmount = 0;
 
-        
         B_comboFill.gameObject.SetActive(false);
         B_comboUnfill.gameObject.SetActive(false);
         A_comboFill.gameObject.SetActive(false);
@@ -56,21 +59,22 @@ public class comboUI : MonoBehaviour
         SS_comboFill.gameObject.SetActive(false);
         SS_comboUnfill.gameObject.SetActive(false);
 
-        InitializePlayerID();
-        StartCoroutine(UpdateVariableValue());
+        // PlayerPrefKey = PlayerPrefs.GetString(PlayerPrefKey);
+        APImanager = GetComponent<APImanager>();
+        PlayerPrefKey = comboUI.PlayerPrefKey;
         Load();
     }
 
     public void Load()
     {
         totalHitCount = int.Parse(PlayerPrefs.GetString("totalHitCount", "0"));
-        BestComboCount = int.Parse(PlayerPrefs.GetString("BestComboCount", "0"));
+        // BestComboCount = int.Parse(PlayerPrefs.GetString("BestComboCount", "0"));
     }
 
      public void Save()
     {
         PlayerPrefs.SetString("totalHitCount", totalHitCount.ToString());
-        PlayerPrefs.SetString("BestComboCount", BestComboCount.ToString());
+        // PlayerPrefs.SetString("BestComboCount", BestComboCount.ToString());
     }
 
     private void Update() {
@@ -122,19 +126,11 @@ public class comboUI : MonoBehaviour
         B_comboFill.fillAmount = (float)B_combos / 5;
         A_comboFill.fillAmount = (float)A_combos / 5;
         S_comboFill.fillAmount = (float)S_combos / 15;
-        SS_comboFill.fillAmount = (float)SS_combos / 25;
+        SS_comboFill.fillAmount = (float)SS_combos / 25;        
 
-
-        // B_comboFill.fillAmount = (float)comboCount / 5;
-        // A_comboFill.fillAmount = (float)comboCount / 10;
-        // S_comboFill.fillAmount = (float)comboCount / 25;
-        // SS_comboFill.fillAmount = (float)comboCount / 50;
-        
-
-        // PlayerID'yi UI'da göster
-        if (PlayerIDText != null)
+        if (Input.GetKeyDown(KeyCode.E) && Input.GetKeyDown(KeyCode.Q))
         {
-            PlayerIDText.text = "Player ID: " + PlayerPrefs.GetString(PlayerPrefKey);
+            comboSayac();
         }
         Save();
     }
@@ -197,82 +193,4 @@ public class comboUI : MonoBehaviour
         comboText.gameObject.SetActive(false);
     }
 
-    //TELEGRAM API   
-
-    private static string GeneratePlayerID()
-    {
-        // 6 haneli rastgele ID
-        string playerID = string.Empty;
-        for (int i = 0; i < 6; i++)
-        {
-            playerID += Random.Range(0, 6).ToString();
-        }
-        return playerID;
-    }
-
-    
-    private void InitializePlayerID()
-    {
-        // ID kontrolu eger ıd yoksa yeni id olusturuyor
-        if (!PlayerPrefs.HasKey(PlayerPrefKey))
-        {
-            string playerID = GeneratePlayerID();
-            PlayerPrefs.SetString(PlayerPrefKey, playerID);
-            PlayerPrefs.Save();
-        }        
-    }
-
-    private IEnumerator UpdateVariableValue()
-    {
-        while (true)
-        {
-            if (BestComboCount == 25 || BestComboCount == 50)
-            {
-                // telegrama mesaj gönderme
-                // string message = $"BestComboCount: {BestComboCount}\nKullanıcı ID: {PlayerPrefs.GetString(PlayerPrefKey)}";
-                string message = $"🎉 MUHTESEM!\n Kullanıcı ID: {PlayerPrefs.GetString(PlayerPrefKey)}\n {BestComboCount} Comboya ulastı!";
-
-                string endpointURL = $"https://api.telegram.org/bot{TelegramBotToken}/sendMessage";
-                string queryParameters = $"?chat_id={ChatID}&text={UnityWebRequest.EscapeURL(message)}";
-
-                UnityWebRequest webRequest = UnityWebRequest.Get(endpointURL + queryParameters);
-
-                yield return webRequest.SendWebRequest();
-
-                if (webRequest.result == UnityWebRequest.Result.Success)
-                {
-                    Debug.Log("Telegrama gönderilen sayac güncellendi: " + BestComboCount);
-                }
-                else
-                {
-                    Debug.LogError("Telegrama gönderilen sayacta hata olustu!!!");
-                }
-            }
-
-            yield return new WaitForSeconds(10f); // mesaj gönderim aralığı
-        }
-    }
-
-
-    // Admin Komutları
-    [MenuItem("Admin/ChangeID")]
-    public static void ChangeAdminID()
-    {
-        if (EditorUtility.DisplayDialog("ID'yi AdminID olarak degistirmek istiyor musun? ",
-        "Bundan Eminmisin geri dönüşü olmayabilir " +
-        "Bu işlem geri alınamaz!", "Devam Et"))
-        Debug.Log("ID AdminId olarak degistirildi!");
-        PlayerPrefs.SetString(PlayerPrefKey, "AdminID");
-    }
-    [MenuItem("Admin/ChangeRandomID")]
-    public static void ChangeRandomID()
-    {
-        if (EditorUtility.DisplayDialog("ID'yi rastgele degistirmek istiyor musun? ",
-        "Bundan Eminmisin geri dönüşü olmayabilir " +
-        "Bu işlem geri alınamaz!", "Devam Et"))
-        Debug.Log("ID rastgele degistirildi!");
-        string playerID = GeneratePlayerID();
-        PlayerPrefs.SetString(PlayerPrefKey, playerID);
-        PlayerPrefs.Save();
-    }
 }
