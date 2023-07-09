@@ -8,18 +8,21 @@ using DG.Tweening;
 using UnityEngine.EventSystems;
 
 
-public class VolumeManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
+public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public Transform targetPosition; // butonların target pozisyonları
+    public GameObject settingsMenuFirstButton;
+
+
+    public Transform targetPosition; // Butonların target pozisyonları
     public float duration = 1f;
-    public float delay = 0.5f; // butonların arasındaki süre
+    public float delay = 0.5f; // ,butonların arasındaki süre
 
     //Şekil değiştirme
     private Button button;
     private Vector3 originalScale;
 
-    public float selectedScale = 1.2f; // buton seçiliykenki scale
-    public float animationDuration = 0.2f; // animasyon süresi
+    public float selectedScale = 1.2f; // Buton seçiliykenki scale
+    public float animationDuration = 0.2f; // Animasyon süresi
 
 
     public AudioSource audioSource;
@@ -27,19 +30,31 @@ public class VolumeManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public Button decreaseButton;
     public TextMeshProUGUI volumeText; // Ses miktarını gösteren metin nesnesi
 
+   
+
     private void Start()
     {
+
         increaseButton.onClick.AddListener(IncreaseVolume);
         decreaseButton.onClick.AddListener(DecreaseVolume);
 
-        UpdateVolumeText(); // Başlangıçta ses miktarını güncellemek için
+        UpdateVolumeText(); // Başlangıçta ses miktarını güncelle
 
         transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z); // Kayma Animasyonu
         MoveButton();
+
         button = GetComponent<Button>();
         originalScale = transform.localScale;
 
         button.onClick.AddListener(OnButtonClick);
+
+        if (PlayerPrefs.HasKey("Volume")) //Kaydedeilen ses ayarlarını geri yükle
+        {
+            float savedVolume = PlayerPrefs.GetFloat("Volume");
+            audioSource.volume = savedVolume;
+            UpdateVolumeText();
+        }
+
     }
 
     // Kayma Animasyonu
@@ -70,18 +85,27 @@ public class VolumeManager : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     {
         audioSource.volume += 0.1f;
         audioSource.volume = Mathf.Clamp01(audioSource.volume);
-        UpdateVolumeText(); 
+        UpdateVolumeText();
+        SaveVolumeSettings();
     }
 
     private void DecreaseVolume()
     {
         audioSource.volume -= 0.1f;
         audioSource.volume = Mathf.Clamp01(audioSource.volume);
-        UpdateVolumeText(); 
+        UpdateVolumeText();
+        SaveVolumeSettings();
     }
 
     private void UpdateVolumeText()
     {
-        volumeText.text = " " + Mathf.RoundToInt(audioSource.volume * 100f); // Ses miktarını metin nesnesine ekle
+        volumeText.text = " " + Mathf.RoundToInt(audioSource.volume * 100f); //Ses miktarını metin nesnesine ekle
     }
+
+    private void SaveVolumeSettings() //Ses ayarlarını kaydet
+    {
+        PlayerPrefs.SetFloat("Volume", audioSource.volume);
+        PlayerPrefs.Save();
+    }
+
 }

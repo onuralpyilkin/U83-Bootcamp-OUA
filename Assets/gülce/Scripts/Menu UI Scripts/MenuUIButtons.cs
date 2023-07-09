@@ -11,17 +11,11 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     // Kayma Animasyonu
     public Transform targetPosition; // butonların target pozisyonları
     public float duration = 1f;
-    public float delay = 0.5f; // butonların arasındaki süre 
+    public float delay = 0.5f; // butonların arasındaki süre
 
     //Şekil değiştirme
     private Button button;
     private Vector3 originalScale;
-
-    //Renk değiştirme
-    //private Color normalColor;
-    //private Color selectedColor;
-
-
 
     public float selectedScale = 1.2f; // buton seçiliykenki scale
     public float animationDuration = 0.2f; // animasyon süresi
@@ -35,10 +29,6 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         button = GetComponent<Button>();
         originalScale = transform.localScale;
-        //normalColor = button.colors.normalColor;
-        //selectedColor = button.colors.highlightedColor;
-
-
 
         button.onClick.AddListener(OnButtonClick);
     }
@@ -49,30 +39,16 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         transform.DOMove(targetPosition.position, duration).SetDelay(delay);
     }
 
-
-
     public void OnPointerEnter(PointerEventData eventData)
     {
         // Büyüme animasyonunu başlat
         transform.DOScale(selectedScale, animationDuration);
-
-        // Renk değişikliği için DOTween kullanarak geçiş yap
-        //var colorBlock = button.colors;
-        //colorBlock.normalColor = selectedColor;
-        //button.colors = colorBlock;
-
     }
 
     public void OnPointerExit(PointerEventData eventData)
     {
         // Küçülme animasyonunu başlat
         transform.DOScale(originalScale, animationDuration);
-
-        // Renk değişikliği için DOTween kullanarak geçiş yap
-        //var colorBlock = button.colors;
-        //colorBlock.normalColor = normalColor;
-        //button.colors = colorBlock;
-
     }
 
     private void OnButtonClick()
