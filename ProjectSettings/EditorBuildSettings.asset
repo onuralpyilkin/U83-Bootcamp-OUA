@@ -8,6 +8,12 @@ EditorBuildSettings:
   - enabled: 0
     path: Assets/Scenes/SampleScene.unity
     guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: Assets/Scenes/GameLevels/LEVEL0.unity
+    guid: d709675ca5f7d554dbc07a16ed77f1cd
+  - enabled: 1
+    path: "Assets/gu\u0308lce/Scene_Gulce/Menu UI.unity"
+    guid: 2cb21d00f9ddf470dbf334bba106c026
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9f49ec60144034543b51c12c2a64575b,
       type: 2}
