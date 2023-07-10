@@ -76,12 +76,24 @@ public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         transform.DOScale(originalScale, animationDuration);
     }
 
-    private void OnButtonClick()
+    public void OnPointerEnter()
+    {
+        // Büyüme animasyonunu başlat
+        transform.DOScale(selectedScale, animationDuration);
+    }
+
+    public void OnPointerExit()
+    {
+        // Küçülme animasyonunu başlat
+        transform.DOScale(originalScale, animationDuration);
+    }
+
+    public void OnButtonClick()
     {
         Debug.Log("Button Clicked!");
     }
 
-    private void IncreaseVolume()
+    public void IncreaseVolume()
     {
         audioSource.volume += 0.1f;
         audioSource.volume = Mathf.Clamp01(audioSource.volume);
@@ -89,7 +101,7 @@ public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitH
         SaveVolumeSettings();
     }
 
-    private void DecreaseVolume()
+    public void DecreaseVolume()
     {
         audioSource.volume -= 0.1f;
         audioSource.volume = Mathf.Clamp01(audioSource.volume);

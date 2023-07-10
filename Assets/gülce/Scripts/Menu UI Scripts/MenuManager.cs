@@ -7,6 +7,7 @@ using System;
 
 public class MenuManager : MonoBehaviour
 {
+    MenuInputManager menuInputManager;
     public string sceneName;
     public GameObject settingsPanel;
     public GameObject mainMenuPanel;
@@ -16,7 +17,10 @@ public class MenuManager : MonoBehaviour
 
     public GameObject settingsMenuButton, creditsMenuButton, creditsMenuBackButton;
 
-
+    void Start()
+    {
+        menuInputManager = MenuInputManager.Instance;
+    }
 
     public void StartGame()
     {
@@ -36,7 +40,18 @@ public class MenuManager : MonoBehaviour
         creditsPanel.SetActive(false);
         settingsPanel.SetActive(false);
         mainMenuPanel.SetActive(false);
+        menuInputManager.GetCurrentPanel();
+        menuInputManager.IsCurrentPanelVertical = false;
+    }
 
+    public void CloseLoadGame()
+    {
+        levelsPanel.SetActive(false);
+        creditsPanel.SetActive(false);
+        settingsPanel.SetActive(false);
+        mainMenuPanel.SetActive(true);
+        menuInputManager.GetCurrentPanel();
+        menuInputManager.IsCurrentPanelVertical = true;
     }
 
     public void OpenSettings()
@@ -44,6 +59,7 @@ public class MenuManager : MonoBehaviour
         // Settings panelini aç
         settingsPanel.SetActive(true);
         mainMenuPanel.SetActive(false);
+        menuInputManager.GetCurrentPanel();
     }
 
     public void CloseSettings()
@@ -56,6 +72,7 @@ public class MenuManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         //set a new selected object
         EventSystem.current.SetSelectedGameObject(settingsMenuButton);
+        menuInputManager.GetCurrentPanel();
     }
 
     public void OpenCredits()
@@ -69,6 +86,7 @@ public class MenuManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         //set a new selected object
         EventSystem.current.SetSelectedGameObject(creditsMenuBackButton);
+        menuInputManager.GetCurrentPanel();
     }
     public void CloseCredits()
     {
@@ -82,6 +100,7 @@ public class MenuManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         //set a new selected object
         EventSystem.current.SetSelectedGameObject(creditsMenuButton);
+        menuInputManager.GetCurrentPanel();
     }
 
 }
