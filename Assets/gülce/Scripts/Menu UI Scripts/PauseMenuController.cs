@@ -20,14 +20,14 @@ public class PauseMenuController : MonoBehaviour
     public void Resume()
     {
         pauseMenuPanel.SetActive(false);
-        //Time.timeScale = 1f;
+        Time.timeScale = 1f;
         gameIsPaused = false;
     }
 
     public void Restart()
     {
         pauseMenuPanel.SetActive(false);
-        //Time.timeScale = 1f;
+        Time.timeScale = 1f;
         gameIsPaused = false;
 
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
@@ -37,7 +37,7 @@ public class PauseMenuController : MonoBehaviour
     public void Pause()
     {
         pauseMenuPanel.SetActive(true);
-        //Time.timeScale = 0f;
+        Time.timeScale = 0f;
         gameIsPaused = true;
     }
 
