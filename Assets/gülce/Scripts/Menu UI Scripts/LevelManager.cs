@@ -29,6 +29,13 @@ public class LevelManager : MonoBehaviour
         EventSystem.current.SetSelectedGameObject(null);
         //Yeni bir seçili nesne belirle
         EventSystem.current.SetSelectedGameObject(levelMenuFirstButton);
+        MenuInputManager.MenuPanel levelPanel = MenuInputManager.Instance.GetPanel("Levels");
+        for (int i = 0; i < levelPanel.buttons.Count; i++)
+        {
+            MenuInputManager.MenuButton button = levelPanel.buttons[i];
+            if(buttons[i].interactable == false)
+                levelPanel.buttons.Remove(button);
+        }
     }
 
     public void OpenLevel(int levelId)

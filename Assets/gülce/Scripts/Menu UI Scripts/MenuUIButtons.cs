@@ -30,13 +30,15 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         button = GetComponent<Button>();
         originalScale = transform.localScale;
 
-        button.onClick.AddListener(OnButtonClick);
+        if(button != null)
+            button.onClick.AddListener(OnButtonClick);
     }
 
     // Kayma Animasyonu
     private void MoveButton()
     {
-        transform.DOMove(targetPosition.position, duration).SetDelay(delay);
+        if(targetPosition != null)
+            transform.DOMove(targetPosition.position, duration).SetDelay(delay);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -51,7 +53,19 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         transform.DOScale(originalScale, animationDuration);
     }
 
-    private void OnButtonClick()
+    public void OnPointerEnter()
+    {
+        // Büyüme animasyonunu başlat
+        transform.DOScale(selectedScale, animationDuration);
+    }
+
+    public void OnPointerExit()
+    {
+        // Küçülme animasyonunu başlat
+        transform.DOScale(originalScale, animationDuration);
+    }
+
+    public void OnButtonClick()
     {
         Debug.Log("Button Clicked!");
     }
