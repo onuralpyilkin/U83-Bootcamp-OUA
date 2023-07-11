@@ -28,6 +28,9 @@ public class comboUI : MonoBehaviour
     private float S_combos;
     private float SS_combos;
 
+    
+    public Image comboEffectFill;
+    public Image SupercomboEffectFill;
     [Header("Combos_B")]
     public Image B_comboFill;
     public Image B_comboUnfill;
@@ -49,6 +52,9 @@ public class comboUI : MonoBehaviour
         A_comboFill.fillAmount = 0;
         S_comboFill.fillAmount = 0;
         SS_comboFill.fillAmount = 0;
+
+        comboEffectFill.gameObject.SetActive(false);
+        SupercomboEffectFill.gameObject.SetActive(false);
 
         B_comboFill.gameObject.SetActive(false);
         B_comboUnfill.gameObject.SetActive(false);
@@ -162,6 +168,23 @@ public class comboUI : MonoBehaviour
             SS_combos++;
         }
 
+
+        // if(comboCount == 5)
+        // {
+            // comboEffectFill.gameObject.SetActive(true);
+            // Invoke("comboEffect", 0.5f);
+        // }
+        // if(comboCount == 10)
+        // {
+            // comboEffectFill.gameObject.SetActive(true);
+            // Invoke("comboEffect", 0.5f);
+        // }
+        if(comboCount == 25)
+        {
+            SupercomboEffectFill.gameObject.SetActive(true);
+            Invoke("SupercomboEffect", 1.0f);
+        }
+
         comboText.text = "x" + comboCount.ToString();
         comboText.gameObject.SetActive(true);
         float rotationAngle = Random.Range(-20f, 20f);
@@ -179,6 +202,12 @@ public class comboUI : MonoBehaviour
         SS_comboFill.transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
         SS_comboUnfill.transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
 
+        float comboEffecRotationAngle = Random.Range(0f, -360f);
+        comboEffectFill.transform.rotation = Quaternion.Euler(0f, 0f, comboEffecRotationAngle);
+        comboEffectFill.gameObject.SetActive(true);
+        Invoke("comboEffect", 0.25f);
+        
+
         CancelInvoke("ComboReset"); // fonksiyon her çağırıldığında combonun sıfırlanması içiçn 5 saniye baştan başalar
         Invoke("ComboReset", comboTimer);
     }
@@ -191,6 +220,15 @@ public class comboUI : MonoBehaviour
         S_combos = 0;
         SS_combos = 0;
         comboText.gameObject.SetActive(false);
+    }
+
+    private void comboEffect()
+    {
+        comboEffectFill.gameObject.SetActive(false);
+    }
+    private void SupercomboEffect()
+    {
+        SupercomboEffectFill.gameObject.SetActive(false);
     }
 
 }
