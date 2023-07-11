@@ -226,13 +226,14 @@ public class PlayerController : MonoBehaviour
         IsAttacking = true;
         animator.SetTrigger(Combos[currentComboIndex].Attacks[currentAttackIndex].TriggerHash);
         currentAttackIndex++;
-        ComboUI.comboSayac(); //Temporarily here for debugging, we will write it in where that enemies take damage (maybe inside the next for loop)
+        //ComboUI.comboSayac(); //Temporarily here for debugging, we will write it in where that enemies take damage (maybe inside the next for loop)
         AddPower(-Combos[currentComboIndex].Attacks[currentAttackIndex - 1].PowerCost);
         powerBar.SetPower(powerAmount);
         List<IEnemy> enemies = GetEnemiesInAttackRange(Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range);
         for (int i = 0; i < enemies.Count; i++)
         {
             enemies[i].TakeDamage((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1));
+            ComboUI.comboSayac();
         }
     }
 

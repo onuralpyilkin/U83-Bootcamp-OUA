@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class EnemyGroupController : MonoBehaviour
 {
+    public VFXPoolController DieVFXPool;
     public float TicketChangeRate = 30f;
     private float ticketChangeTimer = 30f;
     private int ticketOwnerIndex = -1;
@@ -65,5 +66,22 @@ public class EnemyGroupController : MonoBehaviour
             ticketOwnerIndex = (ticketOwnerIndex + 1) % enemies.Count;
         enemies[ticketOwnerIndex].HasTicket = true;
         lastTicketOwnerIndex = ticketOwnerIndex;
+    }
+
+    public void PlayDieVFX(Transform transform, float DieVFXLifeTime)
+    {
+        VFX vfx = DieVFXPool.Get();
+        vfx.SetPosition(transform.position + Vector3.up * 1f);
+        vfx.SetRotation(transform.rotation);
+        vfx.Play();
+        StartCoroutine(ReleaseDieVFX(vfx, DieVFXLifeTime));
+    }
+
+    IEnumerator ReleaseDieVFX(VFX vfx, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        //DashVFXPool.Release(vfx);
+        DieVFXPool.Release(vfx);
+        yield break;
     }
 }
