@@ -2260,6 +2260,18 @@ GameObject:
     type: 3}
   m_PrefabInstance: {fileID: 7252343400596950895}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &550229325 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7506271999082096918, guid: fdab07be939354febbb50b176cfbed25,
+    type: 3}
+  m_PrefabInstance: {fileID: 7252343400596950895}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 550229320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f352166bc55ae430cb1ffcdee3078e0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &551300333
 GameObject:
   m_ObjectHideFlags: 0
@@ -2512,6 +2524,12 @@ Transform:
   m_Father: {fileID: 1030901096}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &606433475 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 137491872983992750, guid: fdab07be939354febbb50b176cfbed25,
+    type: 3}
+  m_PrefabInstance: {fileID: 7252343400596950895}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &608928561
 GameObject:
   m_ObjectHideFlags: 0
@@ -3149,6 +3167,18 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 16
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &795288685 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 561566912268359715, guid: fdab07be939354febbb50b176cfbed25,
+    type: 3}
+  m_PrefabInstance: {fileID: 7252343400596950895}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1df0f70b6aadb4d938fc2bf14abb5702, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &803509874
 GameObject:
   m_ObjectHideFlags: 0
@@ -6594,6 +6624,205 @@ Transform:
   m_Father: {fileID: 913663260}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1611466761
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1611466763}
+  - component: {fileID: 1611466762}
+  m_Layer: 0
+  m_Name: PauseMenuInputManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1611466762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611466761}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4521c0d2e39511e4fa34afcc7fb920e9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  panels:
+  - name: PauseMenu
+    panel: {fileID: 606433475}
+    OnPanelBack:
+      m_PersistentCalls:
+        m_Calls: []
+    buttons:
+    - name: Resume
+      OnPointerEnter:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 550229325}
+            m_TargetAssemblyTypeName: MenuUIButtons, Assembly-CSharp
+            m_MethodName: OnPointerEnter
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnPointerExit:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 550229325}
+            m_TargetAssemblyTypeName: MenuUIButtons, Assembly-CSharp
+            m_MethodName: OnPointerExit
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnPositiveButtonClick:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 795288685}
+            m_TargetAssemblyTypeName: PauseMenuController, Assembly-CSharp
+            m_MethodName: Resume
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnNegativeButtonClick:
+        m_PersistentCalls:
+          m_Calls: []
+    - name: Restart
+      OnPointerEnter:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 2043994934}
+            m_TargetAssemblyTypeName: MenuUIButtons, Assembly-CSharp
+            m_MethodName: OnPointerEnter
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnPointerExit:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 2043994934}
+            m_TargetAssemblyTypeName: MenuUIButtons, Assembly-CSharp
+            m_MethodName: OnPointerExit
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnPositiveButtonClick:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 795288685}
+            m_TargetAssemblyTypeName: PauseMenuController, Assembly-CSharp
+            m_MethodName: Restart
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnNegativeButtonClick:
+        m_PersistentCalls:
+          m_Calls: []
+    - name: Quit
+      OnPointerEnter:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1839880272}
+            m_TargetAssemblyTypeName: MenuUIButtons, Assembly-CSharp
+            m_MethodName: OnPointerEnter
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnPointerExit:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 1839880272}
+            m_TargetAssemblyTypeName: MenuUIButtons, Assembly-CSharp
+            m_MethodName: OnPointerExit
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnPositiveButtonClick:
+        m_PersistentCalls:
+          m_Calls:
+          - m_Target: {fileID: 795288685}
+            m_TargetAssemblyTypeName: PauseMenuController, Assembly-CSharp
+            m_MethodName: LoadScene
+            m_Mode: 1
+            m_Arguments:
+              m_ObjectArgument: {fileID: 0}
+              m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+              m_IntArgument: 0
+              m_FloatArgument: 0
+              m_StringArgument: 
+              m_BoolArgument: 0
+            m_CallState: 2
+      OnNegativeButtonClick:
+        m_PersistentCalls:
+          m_Calls: []
+  IsCurrentPanelVertical: 1
+--- !u!4 &1611466763
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1611466761}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 25
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1631472815
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -7341,6 +7570,18 @@ Transform:
     type: 3}
   m_PrefabInstance: {fileID: 1320178951}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1839880272 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6060854987436502942, guid: fdab07be939354febbb50b176cfbed25,
+    type: 3}
+  m_PrefabInstance: {fileID: 7252343400596950895}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f352166bc55ae430cb1ffcdee3078e0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1879948756
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -8266,6 +8507,18 @@ Transform:
   m_Father: {fileID: 1065297816}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2043994934 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 948520449757483997, guid: fdab07be939354febbb50b176cfbed25,
+    type: 3}
+  m_PrefabInstance: {fileID: 7252343400596950895}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f352166bc55ae430cb1ffcdee3078e0d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2069425892
 PrefabInstance:
   m_ObjectHideFlags: 0
