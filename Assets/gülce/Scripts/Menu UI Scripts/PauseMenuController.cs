@@ -9,6 +9,7 @@ public class PauseMenuController : MonoBehaviour
 {
     MenuInputManager menuInputManager;
     public GameObject pauseMenuPanel;
+    public GameObject temporaryPanel;
     public static bool gameIsPaused;
 
 
@@ -19,14 +20,15 @@ public class PauseMenuController : MonoBehaviour
         menuInputManager = MenuInputManager.Instance;
     }
 
-    private void Update()
+    /*private void Update()
     {
         PresstoPause();
-    }
+    }*/
 
     public void Resume()
     {
         pauseMenuPanel.SetActive(false);
+        temporaryPanel.SetActive(true);
         menuInputManager.GetCurrentPanel();
         Time.timeScale = 1f;
         gameIsPaused = false;
@@ -35,6 +37,7 @@ public class PauseMenuController : MonoBehaviour
     public void Restart()
     {
         pauseMenuPanel.SetActive(false);
+        temporaryPanel.SetActive(true);
         menuInputManager.GetCurrentPanel();
         Time.timeScale = 1f;
         gameIsPaused = false;
@@ -46,6 +49,7 @@ public class PauseMenuController : MonoBehaviour
     public void Pause()
     {
         pauseMenuPanel.SetActive(true);
+        temporaryPanel.SetActive(false);
         menuInputManager.GetCurrentPanel();
         Time.timeScale = 0f;
         gameIsPaused = true;
@@ -54,7 +58,7 @@ public class PauseMenuController : MonoBehaviour
     public void PresstoPause()
     {
 
-        if (Input.GetKeyDown(KeyCode.Escape))
+        /*if (Input.GetKeyDown(KeyCode.Escape))
         {
             if (gameIsPaused)
             {
@@ -66,6 +70,15 @@ public class PauseMenuController : MonoBehaviour
             {
                 Pause();
             }
+        }*/
+
+        if (gameIsPaused)
+        {
+            Resume();
+        }
+        else
+        {
+            Pause();
         }
     }
 
