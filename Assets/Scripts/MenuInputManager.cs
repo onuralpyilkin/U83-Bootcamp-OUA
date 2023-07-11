@@ -126,6 +126,8 @@ public class MenuInputManager : MonoBehaviour
 
     void Cancel()
     {
+        if(currentPanelIndex == -1)
+            return;
         ResetCurrentPanelButtonScales();
         panels[currentPanelIndex].OnPanelBack.Invoke();
         currentButtonIndex = -1;
