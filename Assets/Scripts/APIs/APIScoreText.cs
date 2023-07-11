@@ -5,85 +5,61 @@ using UnityEngine.UI;
 using UnityEngine.Networking;
 using System.IO;
 
+
+[System.Serializable]
+public class FirebaseData
+{
+    public int BestComboCount;
+}
+
 public class APIScoreText : MonoBehaviour
 {
-    // public GameObject textPrefab;
-    // public Transform textParent;
-    // private string databaseURL = "https://u83firebase-default-rtdb.europe-west1.firebasedatabase.app/.json";
-
-    // private void Start()
-    // {
-        // StartCoroutine(GetBestComboCounts());
-    // }
-
-    // IEnumerator GetBestComboCounts()
-    // {
-        // using (UnityWebRequest request = UnityWebRequest.Get(databaseURL))
-        // {
-            // yield return request.SendWebRequest();
-
-            // if (request.result == UnityWebRequest.Result.Success)
-            // {
-                // string jsonResponse = request.downloadHandler.text;
-                // var firebaseData = JsonUtility.FromJson<Dictionary<string, ComboData>>(jsonResponse);
-
-                // foreach (var data in firebaseData)
-                // {
-                    // int bestComboCount = data.Value.BestComboCount;
-                    // CreateTextObject(data.Key, bestComboCount.ToString());
-                // }
-            // }
-            // else
-            // {
-                // Debug.LogError("Error getting Firebase data: " + request.error);
-            // }
-        // }
-    // }
-
-    // private void CreateTextObject(string ID, string comboCount)
-    // {
-        // GameObject newText = Instantiate(textPrefab, textParent);
-        // newText.GetComponent<Text>().text = "ID: " + ID + " | Best Combo Count: " + comboCount;
-    // }
-
-    // [System.Serializable]
-    // private class ComboData
-    // {
-        // public int BestComboCount;
-        // public string ID;
-        // public int TotalHitCount;
-    // }
-
-
-    
-    public Text comboCountText;
-    private string databaseURL = "https://u83firebase-default-rtdb.europe-west1.firebasedatabase.app/";
+    public Text outputText;
 
     private void Start()
     {
         StartCoroutine(GetBestComboCount());
     }
 
-    IEnumerator GetBestComboCount()
+    private IEnumerator GetBestComboCount()
     {
-        using (UnityWebRequest request = UnityWebRequest.Get(databaseURL + ".json"))
+        using (UnityWebRequest www = UnityWebRequest.Get("https://u83firebase-default-rtdb.europe-west1.firebasedatabase.app/.json"))
         {
-            yield return request.SendWebRequest();
-
-            string jsonResponse = request.downloadHandler.text;
-            var response = JsonUtility.FromJson<BestComboCountResponse>(jsonResponse);
-            if (response != null)
+            yield return www.SendWebRequest();
+            
+            string json = www.downloadHandler.text;
+            var data = JsonUtility.FromJson<Dictionary<string, FirebaseData>>(json);
+            string output = "";
+            foreach (var item in data)
             {
-                int BestComboCount = response.BestComboCount;
-                comboCountText.text = "Best Combo Count: " + BestComboCount.ToString();
+                if (item.Key == "BestComboCount")
+                {
+                    output += item.Value.BestComboCount.ToString() + "\n";
+                }
             }
+            outputText.text = "Best Combo Count: " + output;
         }
     }
 
-    [System.Serializable]
-    private class BestComboCountResponse
-    {
-        public int BestComboCount;
-    }
 
+    
+    // public Text comboCountText;
+    // private string databaseURL = "https://u83firebase-default-rtdb.europe-west1.firebasedatabase.app/";
+
+    // private void Start()
+    // {
+    //     StartCoroutine(GetBestComboCount());
+    // }
+
+    // IEnumerator GetBestComboCount()
+    // {
+    //     using (UnityWebRequest request = UnityWebRequest.Get(databaseURL + ".json"))
+    //     {
+    //         yield return request.SendWebRequest();
+    //         string jsonResponse = request.downloadHandler.text;
+    //         var response = JsonUtility.FromJson<FirebaseData>(jsonResponse);
+    //             int BestComboCount = response.BestComboCount;
+    //             comboCountText.text = "Best Combo Count: " + BestComboCount.ToString();
+    //     }
+    // }
 }
