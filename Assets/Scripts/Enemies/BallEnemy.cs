@@ -21,7 +21,8 @@ public class BallEnemy : MonoBehaviour, IEnemy
     public float AttackRange = 2f;
     public float AttackSpeed = 1f; //the time between attacks
 
-    public int Damage = 1;
+    public int AttackDamage = 1;
+    public LayerMask PlayerLayer;
     private NavMeshAgent agent;
     private Animator animator;
     private int openTriggerHash, closeTriggerHash;
@@ -32,7 +33,7 @@ public class BallEnemy : MonoBehaviour, IEnemy
     public float AttackRotationSpeed = 5f;
     public float AttackStartDelay = 0.5f;
     private float attackStartTimer = 0f;
-    private float attackTimer = 0f; 
+    private float attackTimer = 0f;
 
     // Start is called before the first frame update
     void Start()
@@ -108,17 +109,17 @@ public class BallEnemy : MonoBehaviour, IEnemy
         }
         else if (state == State.Attacking)
         {
-            if(attackStartTimer < AttackStartDelay)
+            if (attackStartTimer < AttackStartDelay)
             {
                 attackStartTimer += Time.deltaTime;
                 attackTimer = 0f;
                 return;
             }
             attackTimer += Time.deltaTime;
-            if(attackTimer >= AttackSpeed)
+            if (attackTimer >= AttackSpeed)
             {
                 attackTimer = 0f;
-                PlayerController.Instance.TakeDamage(Damage);
+                Attack();
             }
             childBody.localEulerAngles = Vector3.Lerp(childBody.eulerAngles, new Vector3(0, childBody.eulerAngles.y + AttackRotationSpeed, 0), Time.deltaTime * AttackRotationSpeed);
         }
@@ -140,5 +141,30 @@ public class BallEnemy : MonoBehaviour, IEnemy
         state = State.Dead;
         GroupController.RemoveEnemy(this);
         Destroy(gameObject);
+    }
+
+    public void Attack()
+    {
+        if (CheckPlayerInAttackRange(AttackRange, false))
+        {
+            PlayerController.Instance.TakeDamage(AttackDamage);
+        }
+    }
+
+    bool CheckPlayerInAttackRange(float range, bool useDotProduct = true)
+    {
+        Collider[] player = Physics.OverlapSphere(transform.position, range, PlayerLayer);
+        if (player.Length <= 0)
+            return false;
+
+        if (!useDotProduct)
+            return true;
+
+        float dotProduct = Vector3.Dot(transform.forward, (player[0].transform.position - transform.position).normalized);
+        if (dotProduct > 0)
+        {
+            return true;
+        }
+        return false;
     }
 }

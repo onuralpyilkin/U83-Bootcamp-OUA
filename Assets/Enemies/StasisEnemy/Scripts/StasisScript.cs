@@ -8,16 +8,18 @@ public class StasisScript : MonoBehaviour, IEnemy
     public int Health { get; set; }
     public bool HasTicket { get; set; }
     public EnemyGroupController GroupController { get; set; }
+
+    public LayerMask PlayerLayer;
+    public float AttackRange = 1f;
+    public int AttackDamage = 5;
     Animator StasisAnim;
 
     Transform _player;
 
     NavMeshAgent _agent;
 
-    public float _distance;
+    private float _distance;
     public float _visionDistance = 6f;
-
-    public int _health = 50;
 
     bool isTeleporting = false;
     bool isFleeing = false;
@@ -27,6 +29,7 @@ public class StasisScript : MonoBehaviour, IEnemy
         StasisAnim = GetComponent<Animator>();
         _agent = gameObject.GetComponent<NavMeshAgent>();
         _player = GameObject.FindWithTag("Player").transform;
+        Health = 100;
     }
 
     void Update()
@@ -37,14 +40,14 @@ public class StasisScript : MonoBehaviour, IEnemy
             StasisAnim.SetBool("isTeleporting", false);
             StasisAnim.SetBool("fleeing", false);
             StasisAnim.SetFloat("speed", 0f);
-
+            _agent.enabled = false;
             return;
         }
         StasisAnim.SetFloat("speed", _agent.velocity.magnitude);
 
         _distance = Vector3.Distance(transform.position, _player.position);
 
-        if (_health <= 5)
+        if (/*_health*/ Health <= 5)
         {
             if (!isFleeing)
             {
@@ -101,7 +104,8 @@ public class StasisScript : MonoBehaviour, IEnemy
         transform.position = fleePosition;
 
         // can doldur
-        _health = 50;
+        /*_health = 50;*/
+        Health = 100;
 
 
         _agent.enabled = false;
@@ -174,7 +178,6 @@ public class StasisScript : MonoBehaviour, IEnemy
     public void TakeDamage(int damage)
     {
         Health -= damage;
-        //Debug.Log("Enemy took " + damage + " damage. Health: " + Health);
         if (Health <= 0)
         {
             Die();
@@ -186,6 +189,32 @@ public class StasisScript : MonoBehaviour, IEnemy
         Debug.Log("Enemy died.");
         //state = State.Dead;
         GroupController.RemoveEnemy(this);
+        GroupController.PlayDieVFX(transform, 5f);
         Destroy(gameObject);
+    }
+
+    public void Attack()
+    {
+        if (CheckPlayerInAttackRange(AttackRange, true))
+        {
+            PlayerController.Instance.TakeDamage(AttackDamage);
+        }
+    }
+
+    bool CheckPlayerInAttackRange(float range, bool useDotProduct = true)
+    {
+        Collider[] player = Physics.OverlapSphere(transform.position, range, PlayerLayer);
+        if (player.Length <= 0)
+            return false;
+
+        if (!useDotProduct)
+            return true;
+
+        float dotProduct = Vector3.Dot(transform.forward, (player[0].transform.position - transform.position).normalized);
+        if (dotProduct > 0)
+        {
+            return true;
+        }
+        return false;
     }
 }
