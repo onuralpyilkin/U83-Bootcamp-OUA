@@ -57,4 +57,9 @@ public class GameManager : MonoBehaviour
         }
         ObjectToDestroyAfterTimeline.Clear();
     }
+
+    public void Test(GameObject[] objects)
+    {
+
+    }
 }

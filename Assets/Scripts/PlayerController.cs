@@ -30,6 +30,9 @@ public class PlayerController : MonoBehaviour
     public float Deceleration = 1f;
     public float TurnSpeed = 1f;
 
+    public SoundEffectPack WalkSoundEffectPack;
+    public SoundEffectPack RunSoundEffectPack;
+
     private float velocity, targetVelocity;
     private bool isRunning;
     private float angle, targetAngle; //angles on the Y axis
@@ -92,7 +95,7 @@ public class PlayerController : MonoBehaviour
     //Other Components
     private CameraController cameraController;
     private PlayerInputManager inputManager;
-    private AudioSource swordAudioSource;
+    private AudioSource audioSource;
     private SkinnedMeshRenderer skinnedMeshRenderer;
     public GameObject SwordTransform;
     private int dodgeTriggerHash;
@@ -109,7 +112,7 @@ public class PlayerController : MonoBehaviour
         Application.targetFrameRate = 60;
         cameraController = CameraController.Instance;
         inputManager = PlayerInputManager.Instance;
-        swordAudioSource = GetComponentInChildren<AudioSource>();
+        audioSource = GetComponentInChildren<AudioSource>();
         animator = GetComponent<Animator>();
         velocityHash = Animator.StringToHash("Velocity");
         animationSpeedHash = Animator.StringToHash("AnimationSpeed");
@@ -370,9 +373,22 @@ public class PlayerController : MonoBehaviour
 
     public void PlaySwordSound()
     {
-        swordAudioSource.clip = SwordSoundEffectPack.GetRandomSoundEffect();
-        swordAudioSource.Play();
+        /*swordAudioSource.clip = SwordSoundEffectPack.GetRandomSoundEffect();
+        swordAudioSource.Play();*/
+        audioSource.PlayOneShot(SwordSoundEffectPack.GetRandomSoundEffect(), SwordSoundEffectPack.Volume);
         cameraController.ShakeCamera();
+    }
+
+    public void PlayWalkSound()
+    {
+        if (!isComboLayerActive)
+            audioSource.PlayOneShot(WalkSoundEffectPack.GetRandomSoundEffect(), WalkSoundEffectPack.Volume);
+    }
+
+    public void PlayRunSound()
+    {
+        if (!isComboLayerActive)
+            audioSource.PlayOneShot(RunSoundEffectPack.GetRandomSoundEffect(), RunSoundEffectPack.Volume);
     }
 
     public void TakeDamage(int damage)
