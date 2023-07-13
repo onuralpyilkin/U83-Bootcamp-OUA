@@ -7,6 +7,7 @@ public class SoundEffectPack : ScriptableObject
 {
     public string SoundEffectPackName;
     public List<AudioClip> SoundEffects = new List<AudioClip>();
+    public float Volume = 1f;
 
     public AudioClip GetRandomSoundEffect()
     {
