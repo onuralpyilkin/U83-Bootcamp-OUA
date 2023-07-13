@@ -20,7 +20,10 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     public float selectedScale = 1.2f; // buton seçiliykenki scale
     public float animationDuration = 0.2f; // animasyon süresi
 
-
+    //Menu Ses
+    public AudioClip hoverSound;
+    public AudioClip clickSound;
+    private AudioSource audioSource;
 
     private void Start()
     {
@@ -30,19 +33,27 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         button = GetComponent<Button>();
         originalScale = transform.localScale;
 
-        if(button != null)
+        if (button != null)
             button.onClick.AddListener(OnButtonClick);
+
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+            audioSource = gameObject.AddComponent<AudioSource>();
+        audioSource.playOnAwake = false;
     }
 
     // Kayma Animasyonu
     private void MoveButton()
     {
-        if(targetPosition != null)
+        if (targetPosition != null)
             transform.DOMove(targetPosition.position, duration).SetDelay(delay);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
     {
+        // Hover sesini çal
+        audioSource.clip = hoverSound;
+        audioSource.Play();
         // Büyüme animasyonunu başlat
         transform.DOScale(selectedScale, animationDuration);
     }
@@ -55,8 +66,12 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter()
     {
+         //Hover sesini çal
+         audioSource.clip = hoverSound;
+         audioSource.Play();
         // Büyüme animasyonunu başlat
         transform.DOScale(selectedScale, animationDuration);
+        
     }
 
     public void OnPointerExit()
@@ -67,9 +82,11 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnButtonClick()
     {
+        // Button tıklama sesini çal
+        audioSource.clip = clickSound;
+        audioSource.Play();
         Debug.Log("Button Clicked!");
     }
-
 }
 
 

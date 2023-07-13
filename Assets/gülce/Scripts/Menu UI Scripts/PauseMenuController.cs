@@ -8,6 +8,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenuController : MonoBehaviour
 {
     MenuInputManager menuInputManager;
+    public AudioSource audioSource;
     public GameObject pauseMenuPanel;
     public GameObject temporaryPanel;
     public static bool gameIsPaused;
@@ -27,6 +28,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void Resume()
     {
+        audioSource.Pause();
         pauseMenuPanel.SetActive(false);
         temporaryPanel.SetActive(true);
         menuInputManager.GetCurrentPanel();
@@ -36,6 +38,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void Restart()
     {
+        audioSource.Pause();
         pauseMenuPanel.SetActive(false);
         temporaryPanel.SetActive(true);
         menuInputManager.GetCurrentPanel();
@@ -48,6 +51,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void Pause()
     {
+        audioSource.Play();
         pauseMenuPanel.SetActive(true);
         temporaryPanel.SetActive(false);
         menuInputManager.GetCurrentPanel();
@@ -84,6 +88,7 @@ public class PauseMenuController : MonoBehaviour
 
     public void LoadScene()
     {
+        audioSource.Pause();
         SceneManager.LoadScene(sceneName);
         menuInputManager.GetCurrentPanel();
     }

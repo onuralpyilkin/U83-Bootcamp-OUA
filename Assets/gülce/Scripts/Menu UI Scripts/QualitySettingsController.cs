@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 
 public class QualitySettingsController : MonoBehaviour
 {
+    MenuUIButtons menuUIButtons;
     public TextMeshProUGUI qualityText;
     public Button increaseButton;
     public Button decreaseButton;
@@ -15,6 +16,7 @@ public class QualitySettingsController : MonoBehaviour
 
     void Start()
     {
+        menuUIButtons = FindObjectOfType<MenuUIButtons>();
         SetQualityText();
         increaseButton.onClick.AddListener(ClickQualityUp);
         decreaseButton.onClick.AddListener(ClickQualityDown);
@@ -28,6 +30,7 @@ public class QualitySettingsController : MonoBehaviour
 
     public void ClickQualityUp()
     {
+        menuUIButtons.OnPointerEnter();
         qualityLevel++;
         if (qualityLevel > 2)
             qualityLevel = 2;
@@ -38,6 +41,7 @@ public class QualitySettingsController : MonoBehaviour
 
     public void ClickQualityDown()
     {
+        menuUIButtons.OnPointerEnter();
         qualityLevel--;
         if (qualityLevel < 0)
             qualityLevel = 0;

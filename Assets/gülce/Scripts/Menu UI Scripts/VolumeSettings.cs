@@ -10,8 +10,9 @@ using UnityEngine.EventSystems;
 
 public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
-    public GameObject settingsMenuFirstButton;
+    MenuUIButtons menuUIButtons;
 
+    public GameObject settingsMenuFirstButton;
 
     public Transform targetPosition; // Butonların target pozisyonları
     public float duration = 1f;
@@ -34,7 +35,7 @@ public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     private void Start()
     {
-
+        menuUIButtons = FindObjectOfType<MenuUIButtons>();
         increaseButton.onClick.AddListener(IncreaseVolume);
         decreaseButton.onClick.AddListener(DecreaseVolume);
 
@@ -66,7 +67,7 @@ public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void OnPointerEnter(PointerEventData eventData)
     {
         // Büyüme animasyonunu başlat
-         transform.DOScale(selectedScale, animationDuration);
+      transform.DOScale(selectedScale, animationDuration);
 
     }
 
@@ -79,7 +80,7 @@ public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     public void OnPointerEnter()
     {
         // Büyüme animasyonunu başlat
-        transform.DOScale(selectedScale, animationDuration);
+       transform.DOScale(selectedScale, animationDuration);
     }
 
     public void OnPointerExit()
@@ -95,6 +96,7 @@ public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void IncreaseVolume()
     {
+        menuUIButtons.OnPointerEnter();
         audioSource.volume += 0.1f;
         audioSource.volume = Mathf.Clamp01(audioSource.volume);
         UpdateVolumeText();
@@ -103,6 +105,7 @@ public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public void DecreaseVolume()
     {
+        menuUIButtons.OnPointerEnter();
         audioSource.volume -= 0.1f;
         audioSource.volume = Mathf.Clamp01(audioSource.volume);
         UpdateVolumeText();
