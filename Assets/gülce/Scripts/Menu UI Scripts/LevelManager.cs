@@ -38,11 +38,20 @@ public class LevelManager : MonoBehaviour
         //Yeni bir seçili nesne belirle
         EventSystem.current.SetSelectedGameObject(levelMenuFirstButton);
         MenuInputManager.MenuPanel levelPanel = MenuInputManager.Instance.GetPanel("Levels");
+        List<MenuInputManager.MenuButton> buttonsToRemove = new List<MenuInputManager.MenuButton>();
         for (int i = 0; i < levelPanel.buttons.Count; i++)
         {
             MenuInputManager.MenuButton button = levelPanel.buttons[i];
             if (buttons[i].interactable == false)
-                levelPanel.buttons.Remove(button);
+            {
+                buttonsToRemove.Add(button);
+                //Debug.Log("Button " + button.name + " removed from list");
+            }
+        }
+
+        foreach (MenuInputManager.MenuButton button in buttonsToRemove)
+        {
+            levelPanel.buttons.Remove(button);
         }
     }
 
@@ -57,14 +66,14 @@ public class LevelManager : MonoBehaviour
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(levelName); //Seviyeyi yükle
 
-       gamepadLoadingScreen.SetActive(true); //bunun yerine SetActiveLoadingScreen() gelicek
+        gamepadLoadingScreen.SetActive(true); //bunun yerine SetActiveLoadingScreen() gelicek
 
         while (operation.isDone == false)
         {
             float progress = Mathf.Clamp01(operation.progress / 0.9f);
 
             slider.value = progress;
-           
+
             yield return null;
         }
 
