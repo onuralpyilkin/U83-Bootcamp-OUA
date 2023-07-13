@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0077834087, g: 0.062289514, b: 0.19571511, a: 1}
+  m_IndirectSpecularColor: {r: 0.007728533, g: 0.062291533, b: 0.1956892, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -3179,12 +3179,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1df0f70b6aadb4d938fc2bf14abb5702, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!224 &795288686 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 991259224734274291, guid: fdab07be939354febbb50b176cfbed25,
-    type: 3}
-  m_PrefabInstance: {fileID: 7252343400596950895}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &803509874
 GameObject:
   m_ObjectHideFlags: 0
@@ -4004,42 +3998,12 @@ Transform:
   m_Father: {fileID: 452958619}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &964560190
+--- !u!1 &964560190 stripped
 GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 8177596743128238768, guid: fdab07be939354febbb50b176cfbed25,
+    type: 3}
+  m_PrefabInstance: {fileID: 7252343400596950895}
   m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 964560191}
-  m_Layer: 5
-  m_Name: TemporaryPanel
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!224 &964560191
-RectTransform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 964560190}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 795288686}
-  m_RootOrder: -1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 100, y: 100}
-  m_Pivot: {x: 0.5, y: 0.5}
 --- !u!4 &987289376 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3749929068546048860, guid: 27c042b753e1fab4ea4dbd61f711e1a4,
@@ -9301,16 +9265,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 561566912268359715, guid: fdab07be939354febbb50b176cfbed25,
-        type: 3}
-      propertyPath: sceneName
-      value: Menu UI with Input
-      objectReference: {fileID: 0}
-    - target: {fileID: 561566912268359715, guid: fdab07be939354febbb50b176cfbed25,
-        type: 3}
-      propertyPath: temporaryPanel
-      value: 
-      objectReference: {fileID: 964560190}
     - target: {fileID: 991259224734274291, guid: fdab07be939354febbb50b176cfbed25,
         type: 3}
       propertyPath: m_Pivot.x
@@ -9423,11 +9377,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 991259224734274291, guid: fdab07be939354febbb50b176cfbed25,
-        type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 964560191}
+    m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fdab07be939354febbb50b176cfbed25, type: 3}
 --- !u!64 &8249732726175213685
