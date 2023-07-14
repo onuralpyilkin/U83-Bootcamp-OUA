@@ -112,13 +112,13 @@ Material:
     - _GlossyReflections: 0
     - _IsActivated: 1
     - _MaxDepth: 100
-    - _MaxNormalDist: 1
+    - _MaxNormalDist: 5
     - _Metallic: 0
     - _MinDepth: 0.1
-    - _MinNormalDist: 0
+    - _MinNormalDist: 0.1
     - _NormalThreshold: 0.4
     - _NormalThresholdMax: 1
-    - _NormalThresholdMin: 0
+    - _NormalThresholdMin: 0.4
     - _OcclusionStrength: 1
     - _Parallax: 0.005
     - _QueueOffset: 0
