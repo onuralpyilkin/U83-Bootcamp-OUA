@@ -29,7 +29,7 @@ public class MenuInputManager : MonoBehaviour
         public UnityEvent OnPointerExit;
         public UnityEvent OnPositiveButtonClick;
         public UnityEvent OnNegativeButtonClick;
-        MenuButton(string name, MenuUIButtons button, UnityEvent OnPointerEnter, UnityEvent OnPointerExit, UnityEvent OnPositiveButtonClick, UnityEvent OnNegativeButtonClick)
+        MenuButton(string name, UnityEvent OnPointerEnter, UnityEvent OnPointerExit, UnityEvent OnPositiveButtonClick, UnityEvent OnNegativeButtonClick)
         {
             this.name = name;
             this.OnPointerEnter = OnPointerEnter;
@@ -133,7 +133,7 @@ public class MenuInputManager : MonoBehaviour
         currentButtonIndex = -1;
     }
 
-    void ResetCurrentPanelButtonScales()
+    public void ResetCurrentPanelButtonScales()
     {
         for (int i = 0; i < panels[currentPanelIndex].buttons.Count; i++)
         {
@@ -167,5 +167,13 @@ public class MenuInputManager : MonoBehaviour
         }
         Debug.LogWarning("No panel found with name: " + name);
         return panels[0];
+    }
+
+    public void SetInputActive(bool isActive)
+    {
+        if (isActive)
+            input.Menu.Enable();
+        else
+            input.Menu.Disable();
     }
 }

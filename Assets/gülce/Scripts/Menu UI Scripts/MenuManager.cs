@@ -6,17 +6,22 @@ using UnityEngine.SceneManagement;
 using System;
 using Unity.VisualScripting;
 using UnityEngine.UI;
+using UnityEngine.Events;
 
 
 public class MenuManager : MonoBehaviour
 {
+    public static MenuManager Instance;
     MenuInputManager menuInputManager;
-    MenuUIButtons menuUIButtons;
     public string sceneName;
     public GameObject settingsPanel;
+    public float settingsPanelCloseDelay = 0.5f;
     public GameObject mainMenuPanel;
+    public float mainMenuPanelCloseDelay = 0.5f;
     public GameObject creditsPanel;
+    public float creditsPanelCloseDelay = 0.5f;
     public GameObject levelsPanel;
+    public float levelsPanelCloseDelay = 0.5f;
     public GameObject gamepadLoadingScreen;
     public GameObject keyboardLoadingScreen;
 
@@ -24,15 +29,21 @@ public class MenuManager : MonoBehaviour
 
     public GameObject settingsMenuButton, creditsMenuButton, creditsMenuBackButton;
 
+    public UnityEvent OnPanelClose;
+
+    void Awake()
+    {
+        Instance = Instance != null ? Instance : this;
+        mainMenuPanel.SetActive(true);
+    }
+
     void Start()
     {
         menuInputManager = MenuInputManager.Instance;
-        menuUIButtons = FindObjectOfType<MenuUIButtons>();
     }
 
     public void NewGame(int levelId)
     {
-        menuUIButtons.OnPointerEnter();
         string levelName = "LEVEL" + levelId; //Seviye adını belirle
         StartCoroutine(LoadAsync(levelName));
     }
@@ -41,77 +52,42 @@ public class MenuManager : MonoBehaviour
     {
         Application.Quit();
         Debug.Log("Quitting Done!");
-        menuUIButtons.OnPointerEnter();
     }
 
     public void OpenLoadGame()
     {
         // Levels Paneli aç
-        levelsPanel.SetActive(true);
-        creditsPanel.SetActive(false);
-        settingsPanel.SetActive(false);
-        mainMenuPanel.SetActive(false);
-        menuInputManager.GetCurrentPanel();
+        StartCoroutine(SwitchPanel(mainMenuPanel, levelsPanel, mainMenuPanelCloseDelay));
         menuInputManager.IsCurrentPanelVertical = false;
     }
 
     public void CloseLoadGame()
     {
-        levelsPanel.SetActive(false);
-        creditsPanel.SetActive(false);
-        settingsPanel.SetActive(false);
-        mainMenuPanel.SetActive(true);
-        menuInputManager.GetCurrentPanel();
+        StartCoroutine(SwitchPanel(levelsPanel, mainMenuPanel, levelsPanelCloseDelay));
         menuInputManager.IsCurrentPanelVertical = true;
     }
 
     public void OpenSettings()
     {
         // Settings panelini aç
-        settingsPanel.SetActive(true);
-        mainMenuPanel.SetActive(false);
-        menuInputManager.GetCurrentPanel();
+        StartCoroutine(SwitchPanel(mainMenuPanel, settingsPanel, mainMenuPanelCloseDelay));
     }
 
     public void CloseSettings()
     {
         // Settings panelini kapatıp main menu panelini aç
-        settingsPanel.SetActive(false);
-        mainMenuPanel.SetActive(true);
-
-        //clear selected object
-        EventSystem.current.SetSelectedGameObject(null);
-        //set a new selected object
-        EventSystem.current.SetSelectedGameObject(settingsMenuButton);
-        menuInputManager.GetCurrentPanel();
+        StartCoroutine(SwitchPanel(settingsPanel, mainMenuPanel, settingsPanelCloseDelay));
     }
 
     public void OpenCredits()
     {
         // Credits panelini aç
-        creditsPanel.SetActive(true);
-        settingsPanel.SetActive(false);
-        mainMenuPanel.SetActive(false);
-
-        //clear selected object
-        EventSystem.current.SetSelectedGameObject(null);
-        //set a new selected object
-        EventSystem.current.SetSelectedGameObject(creditsMenuBackButton);
-        menuInputManager.GetCurrentPanel();
+        StartCoroutine(SwitchPanel(mainMenuPanel, creditsPanel, mainMenuPanelCloseDelay));
     }
     public void CloseCredits()
     {
         // Credits panelini kapat
-        creditsPanel.SetActive(false);
-        settingsPanel.SetActive(false);
-        mainMenuPanel.SetActive(true);
-
-
-        //clear selected object
-        EventSystem.current.SetSelectedGameObject(null);
-        //set a new selected object
-        EventSystem.current.SetSelectedGameObject(creditsMenuButton);
-        menuInputManager.GetCurrentPanel();
+        StartCoroutine(SwitchPanel(creditsPanel, mainMenuPanel, creditsPanelCloseDelay));
     }
     
     IEnumerator LoadAsync(string levelName)
@@ -129,6 +105,17 @@ public class MenuManager : MonoBehaviour
             yield return null;
         }
 
+    }
+
+    IEnumerator SwitchPanel(GameObject sourcePanel, GameObject targetPanel, float delay)
+    {
+        OnPanelClose.Invoke();
+        MenuInputManager.Instance.SetInputActive(false);
+        yield return new WaitForSeconds(delay);
+        sourcePanel.SetActive(false);
+        targetPanel.SetActive(true);
+        MenuInputManager.Instance.GetCurrentPanel();
+        MenuInputManager.Instance.SetInputActive(true);
     }
 
     //public void SetActiveLoadingScreen()

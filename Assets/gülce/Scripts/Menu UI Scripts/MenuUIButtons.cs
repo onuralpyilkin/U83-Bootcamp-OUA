@@ -9,6 +9,7 @@ using TMPro;
 public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 {
     // Kayma Animasyonu
+    public Transform sourcePosition; // butonların başlangıç pozisyonları
     public Transform targetPosition; // butonların target pozisyonları
     public float duration = 1f;
     public float delay = 0.5f; // butonların arasındaki süre
@@ -27,9 +28,6 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     private void Start()
     {
-        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z); // Kayma Animasyonu
-        MoveButton();
-
         button = GetComponent<Button>();
         originalScale = transform.localScale;
 
@@ -43,10 +41,16 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
     }
 
     // Kayma Animasyonu
-    private void MoveButton()
+    private void OpeningMoveButton()
     {
         if (targetPosition != null)
             transform.DOMove(targetPosition.position, duration).SetDelay(delay);
+    }
+
+    public void ClosingMoveButton()
+    {
+        if (sourcePosition != null)
+            transform.DOMove(sourcePosition.position, duration).SetDelay(delay);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -66,12 +70,11 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
     public void OnPointerEnter()
     {
-         //Hover sesini çal
-         audioSource.clip = hoverSound;
-         audioSource.Play();
+        //Hover sesini çal
+        audioSource.clip = hoverSound;
+        audioSource.Play();
         // Büyüme animasyonunu başlat
         transform.DOScale(selectedScale, animationDuration);
-        
     }
 
     public void OnPointerExit()
@@ -86,6 +89,20 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         audioSource.clip = clickSound;
         audioSource.Play();
         Debug.Log("Button Clicked!");
+    }
+
+    public void OnEnable()
+    {
+        if(sourcePosition != null)
+            transform.position = sourcePosition.position;
+        OpeningMoveButton();
+        MenuManager.Instance.OnPanelClose.AddListener(ClosingMoveButton);
+        Debug.Log(gameObject.name + " enabled");
+    }
+
+    public void OnDisable()
+    {
+        MenuManager.Instance.OnPanelClose.RemoveListener(ClosingMoveButton);
     }
 }
 

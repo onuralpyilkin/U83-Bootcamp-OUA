@@ -53,8 +53,8 @@ public class comboUI : MonoBehaviour
         S_comboFill.fillAmount = 0;
         SS_comboFill.fillAmount = 0;
 
-        comboEffectFill.gameObject.SetActive(false);
-        SupercomboEffectFill.gameObject.SetActive(false);
+        /*comboEffectFill.gameObject.SetActive(false);
+        SupercomboEffectFill.gameObject.SetActive(false);*/
 
         B_comboFill.gameObject.SetActive(false);
         B_comboUnfill.gameObject.SetActive(false);
@@ -134,11 +134,11 @@ public class comboUI : MonoBehaviour
         S_comboFill.fillAmount = (float)S_combos / 15;
         SS_comboFill.fillAmount = (float)SS_combos / 25;        
 
-        if (Input.GetKeyDown(KeyCode.E) && Input.GetKeyDown(KeyCode.Q))
+        /*if (Input.GetKeyDown(KeyCode.E) && Input.GetKeyDown(KeyCode.Q))
         {
             comboSayac();
         }
-        Save();
+        Save();*/
     }
 
 
@@ -179,11 +179,11 @@ public class comboUI : MonoBehaviour
             // comboEffectFill.gameObject.SetActive(true);
             // Invoke("comboEffect", 0.5f);
         // }
-        if(comboCount == 25)
+        /*if(comboCount == 25)
         {
             SupercomboEffectFill.gameObject.SetActive(true);
             Invoke("SupercomboEffect", 1.0f);
-        }
+        }*/
 
         comboText.text = "x" + comboCount.ToString();
         comboText.gameObject.SetActive(true);
@@ -202,10 +202,10 @@ public class comboUI : MonoBehaviour
         SS_comboFill.transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
         SS_comboUnfill.transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
 
-        float comboEffecRotationAngle = Random.Range(0f, -360f);
+        /*float comboEffecRotationAngle = Random.Range(0f, -360f);
         comboEffectFill.transform.rotation = Quaternion.Euler(0f, 0f, comboEffecRotationAngle);
         comboEffectFill.gameObject.SetActive(true);
-        Invoke("comboEffect", 0.25f);
+        Invoke("comboEffect", 0.25f);*/
         
 
         CancelInvoke("ComboReset"); // fonksiyon her çağırıldığında combonun sıfırlanması içiçn 5 saniye baştan başalar

@@ -14,6 +14,7 @@ public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
     public GameObject settingsMenuFirstButton;
 
+    public Transform sourcePosition; // Butonların başlangıç pozisyonları
     public Transform targetPosition; // Butonların target pozisyonları
     public float duration = 1f;
     public float delay = 0.5f; // ,butonların arasındaki süre
@@ -41,9 +42,6 @@ public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitH
 
         UpdateVolumeText(); // Başlangıçta ses miktarını güncelle
 
-        transform.position = new Vector3(transform.position.x, transform.position.y, transform.position.z); // Kayma Animasyonu
-        MoveButton();
-
         button = GetComponent<Button>();
         originalScale = transform.localScale;
 
@@ -59,9 +57,16 @@ public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     }
 
     // Kayma Animasyonu
-    private void MoveButton()
+    private void OpeningMoveButton()
     {
-        transform.DOMove(targetPosition.position, duration).SetDelay(delay);
+        if (targetPosition != null)
+            transform.DOMove(targetPosition.position, duration).SetDelay(delay);
+    }
+
+    public void ClosingMoveButton()
+    {
+        if(sourcePosition != null)
+            transform.DOMove(sourcePosition.position, duration).SetDelay(delay);
     }
 
     public void OnPointerEnter(PointerEventData eventData)
@@ -121,6 +126,19 @@ public class VolumeSettings : MonoBehaviour, IPointerEnterHandler, IPointerExitH
     {
         PlayerPrefs.SetFloat("Volume", audioSource.volume);
         PlayerPrefs.Save();
+    }
+
+    public void OnEnable()
+    {
+        if(sourcePosition != null)
+            transform.position = sourcePosition.position;
+        OpeningMoveButton();
+        MenuManager.Instance.OnPanelClose.AddListener(ClosingMoveButton);
+    }
+
+    public void OnDisable()
+    {
+        MenuManager.Instance.OnPanelClose.RemoveListener(ClosingMoveButton);
     }
 
 }
