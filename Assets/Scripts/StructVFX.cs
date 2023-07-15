@@ -53,4 +53,14 @@ public struct VFX
     {
         gameObject.SetActive(active);
     }
+
+    public void SetVector3(string name, Vector3 value)
+    {
+        Vfx.SetVector3(name, value);
+    }
+
+    public void SetInt(string name, int value)
+    {
+        Vfx.SetInt(name, value);
+    }
 }

@@ -217,4 +217,9 @@ public class StasisScript : MonoBehaviour, IEnemy
         }
         return false;
     }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
+    }
 }

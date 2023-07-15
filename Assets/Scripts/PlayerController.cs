@@ -91,13 +91,19 @@ public class PlayerController : MonoBehaviour
     [ColorUsageAttribute(true, true)]
     public Color[] SwordVFXEmissionColors;
     private int lastSwordVFXEmissiveColorIndex = 0;
+    public GameObject SwordTransform;
+
+    [Header("Damage VFX")]
+    public VFXPoolController DamageVFXPool;
+    public float DamageVFXLifeTime = 3;
+    private int lastDirectionOfDamageVFX = 1;
 
     //Other Components
     private CameraController cameraController;
     private PlayerInputManager inputManager;
     private AudioSource audioSource;
     private SkinnedMeshRenderer skinnedMeshRenderer;
-    public GameObject SwordTransform;
+    
     private int dodgeTriggerHash;
     private int idleTriggerHash;
 
@@ -230,14 +236,14 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger(Combos[currentComboIndex].Attacks[currentAttackIndex].TriggerHash);
         currentAttackIndex++;
         //ComboUI.comboSayac(); //Temporarily here for debugging, we will write it in where that enemies take damage (maybe inside the next for loop)
-        AddPower(-Combos[currentComboIndex].Attacks[currentAttackIndex - 1].PowerCost);
-        powerBar.SetPower(powerAmount);
-        List<IEnemy> enemies = GetEnemiesInAttackRange(Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range);
+        /*List<IEnemy> enemies = GetEnemiesInAttackRange(Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range);
         for (int i = 0; i < enemies.Count; i++)
         {
+            PlayDamageVFX((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1));
             enemies[i].TakeDamage((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1));
             ComboUI.comboSayac();
         }
+        AddPower(-Combos[currentComboIndex].Attacks[currentAttackIndex - 1].PowerCost);*/
     }
 
     public IEnumerator ComboExpireTimerCoroutine()
@@ -362,12 +368,49 @@ public class PlayerController : MonoBehaviour
         }
         vfx.Play();
         StartCoroutine(ReleaseSwordVFX(vfx, SwordVFXLifeTime));
+
+        //Deal damage enemies from here because sword vfx method called from animation and the animation has the correct timing for dealing damage
+        List<IEnemy> enemies = GetEnemiesInAttackRange(Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range);
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            PlayDamageVFX((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1));
+            enemies[i].TakeDamage((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1));
+            ComboUI.comboSayac();
+        }
+        AddPower(-Combos[currentComboIndex].Attacks[currentAttackIndex - 1].PowerCost);
     }
 
     IEnumerator ReleaseSwordVFX(VFX vfx, float delay)
     {
         yield return new WaitForSeconds(delay);
         SwordVFXPool.Release(vfx);
+        yield break;
+    }
+
+    private void PlayDamageVFX(float damage)
+    {
+        VFX vfx = DamageVFXPool.Get();
+        Vector3 spawnPosition = transform.position + Vector3.up * 1f;
+        spawnPosition += transform.right * Random.Range(0.25f, 0.5f) * lastDirectionOfDamageVFX;
+        lastDirectionOfDamageVFX *= -1;
+        //spawnPosition += transform.forward * Random.Range(-0.5f, -0.1f);
+        spawnPosition += transform.up * Random.Range(0.25f, 0.5f);
+        int damageAmount = (int)damage;
+        int digit1 = damageAmount / 10;
+        int digit2 = damageAmount % 10;
+        vfx.SetPosition(transform.position);
+        vfx.SetFloat("Lifetime", DamageVFXLifeTime);
+        vfx.SetInt("Digit1", digit1);
+        vfx.SetInt("Digit2", digit2);
+        vfx.SetVector3("SpawnPosition", spawnPosition);
+        vfx.Play();
+        StartCoroutine(ReleaseDamageVFX(vfx, DamageVFXLifeTime));
+    }
+
+    IEnumerator ReleaseDamageVFX(VFX vfx, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        DamageVFXPool.Release(vfx);
         yield break;
     }
 
