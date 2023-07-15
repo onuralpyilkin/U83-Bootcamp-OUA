@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class EnemyGroupController : MonoBehaviour
 {
@@ -10,6 +11,8 @@ public class EnemyGroupController : MonoBehaviour
     private int ticketOwnerIndex = -1;
     private int lastTicketOwnerIndex = -1;
     List<IEnemy> enemies = new List<IEnemy>();
+    public UnityEvent OnEnemyGroupEnable;
+    public UnityEvent OnEnemyGroupDie;
     void Start()
     {
         enemies = new List<IEnemy>(GetComponentsInChildren<IEnemy>());
@@ -18,6 +21,8 @@ public class EnemyGroupController : MonoBehaviour
             enemies[i].GroupController = this;
         }
         ticketChangeTimer = TicketChangeRate + 1f;
+        if (OnEnemyGroupEnable != null)
+            OnEnemyGroupEnable.Invoke();
     }
 
     // Update is called once per frame
@@ -36,6 +41,8 @@ public class EnemyGroupController : MonoBehaviour
         }
         else
         {
+            if (OnEnemyGroupDie != null)
+                OnEnemyGroupDie.Invoke();
             Destroy(gameObject);
         }
     }

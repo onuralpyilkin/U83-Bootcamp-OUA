@@ -555,7 +555,7 @@ MonoBehaviour:
     m_PreExtrapolationMode: 0
     m_PostExtrapolationTime: 0
     m_PreExtrapolationTime: 0
-    m_DisplayName: Virtual Camera
+    m_DisplayName: OpeningVirtualCamera
   - m_Version: 1
     m_Start: 1.9833333333333334
     m_ClipIn: 0

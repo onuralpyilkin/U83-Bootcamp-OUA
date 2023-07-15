@@ -109,7 +109,8 @@ public class MenuManager : MonoBehaviour
 
     IEnumerator SwitchPanel(GameObject sourcePanel, GameObject targetPanel, float delay)
     {
-        OnPanelClose.Invoke();
+        if(OnPanelClose != null)
+            OnPanelClose.Invoke();
         MenuInputManager.Instance.SetInputActive(false);
         yield return new WaitForSeconds(delay);
         sourcePanel.SetActive(false);

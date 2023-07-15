@@ -42,6 +42,7 @@ public class MenuInputManager : MonoBehaviour
 
     public static MenuInputManager Instance;
     MenuInput input;
+    public bool IsPauseMenu = false;
     public List<MenuPanel> panels;
     private int currentPanelIndex = -1;
     private int currentButtonIndex = -1;
@@ -63,6 +64,8 @@ public class MenuInputManager : MonoBehaviour
         input.Menu.Left.performed += ctx => DirectionCorrector(false, false);
         input.Menu.Submit.performed += ctx => Submit();
         input.Menu.Cancel.performed += ctx => Cancel();
+        if (IsPauseMenu)
+            input.Menu.PauseResume.performed += ctx => PauseResume();
         input.Menu.Enable();
         GetCurrentPanel();
     }
@@ -126,7 +129,18 @@ public class MenuInputManager : MonoBehaviour
 
     void Cancel()
     {
-        if(currentPanelIndex == -1)
+        if (IsPauseMenu && !PauseMenuController.gameIsPaused)
+            return;
+        if (currentPanelIndex == -1)
+            return;
+        ResetCurrentPanelButtonScales();
+        panels[currentPanelIndex].OnPanelBack.Invoke();
+        currentButtonIndex = -1;
+    }
+
+    void PauseResume()
+    {
+        if (currentPanelIndex == -1)
             return;
         ResetCurrentPanelButtonScales();
         panels[currentPanelIndex].OnPanelBack.Invoke();

@@ -96,13 +96,21 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
         if(sourcePosition != null)
             transform.position = sourcePosition.position;
         OpeningMoveButton();
-        MenuManager.Instance.OnPanelClose.AddListener(ClosingMoveButton);
+        if(MenuManager.Instance != null)
+            MenuManager.Instance.OnPanelClose.AddListener(ClosingMoveButton);
+
+        if(PauseMenuController.Instance != null)
+            PauseMenuController.Instance.OnPanelClose.AddListener(ClosingMoveButton);
         Debug.Log(gameObject.name + " enabled");
     }
 
     public void OnDisable()
     {
-        MenuManager.Instance.OnPanelClose.RemoveListener(ClosingMoveButton);
+        if (MenuManager.Instance != null)
+            MenuManager.Instance.OnPanelClose.RemoveListener(ClosingMoveButton);
+
+        if (PauseMenuController.Instance != null)
+            PauseMenuController.Instance.OnPanelClose.RemoveListener(ClosingMoveButton);
     }
 }
 

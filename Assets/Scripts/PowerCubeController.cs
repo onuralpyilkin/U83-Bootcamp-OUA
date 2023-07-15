@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.VFX;
+using UnityEngine.Events;
 
 public class PowerCubeController : MonoBehaviour
 {
@@ -12,6 +13,7 @@ public class PowerCubeController : MonoBehaviour
     private float emissionStartValue;
     private VisualEffect vfx;
     private GameObject vfxGameObject;
+    public UnityEvent OnCubeOutOffCharge;
     void Start()
     {
         material = GetComponent<Renderer>().material;
@@ -45,6 +47,11 @@ public class PowerCubeController : MonoBehaviour
             powerAmount -= PowerChargeSpeed * Time.deltaTime;
             PlayerController.Instance.AddPower(PowerChargeSpeed * Time.deltaTime);
             material.SetFloat("_EmissionIntensity", emissionStartValue * (powerAmount / (float)PowerMaxAmount));
+            if (powerAmount <= 0)
+            {
+                if (OnCubeOutOffCharge != null)
+                    OnCubeOutOffCharge.Invoke();
+            }
         }
     }
 

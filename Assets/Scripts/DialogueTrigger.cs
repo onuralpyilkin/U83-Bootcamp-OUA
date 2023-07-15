@@ -7,27 +7,21 @@ using UnityEngine.Playables;
 public class DialogueTrigger : MonoBehaviour
 {
     public UnityEvent OnDialogueTriggered;
-    public UnityEvent OnDialogueFinished;
-
-    private PlayableDirector timeline;
-
-    private void Start() {
-        timeline = GetComponent<PlayableDirector>();
-        timeline.stopped += OnTimelineFinish;
-    }
-
+    public UnityEvent OnDialogueTriggeredWithDelay;
+    public float Delay = 0f;
+    
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
             OnDialogueTriggered.Invoke();
-            timeline.Play();
+            StartCoroutine(DelayCoroutine(Delay));
         }
     }
 
-    private void OnTimelineFinish(PlayableDirector director)
+    IEnumerator DelayCoroutine(float time)
     {
-        OnDialogueFinished.Invoke();
-        Destroy(gameObject);
+        yield return new WaitForSeconds(time);
+        OnDialogueTriggeredWithDelay.Invoke();
     }
 }

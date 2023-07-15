@@ -37,7 +37,7 @@ public class CameraController : MonoBehaviour
 
     void Update()
     {
-        CameraTarget.position = new Vector3(player.transform.position.x, CameraTarget.position.y, player.transform.position.z);
+        CameraTarget.position = new Vector3(player.transform.position.x, player.transform.position.y + 1.5f, player.transform.position.z);
         if (isCombatCameraActive)
             return;
         CameraTarget.rotation *= Quaternion.AngleAxis(cameraRotationInput.x * CameraRotationSpeed * Time.deltaTime, Vector3.up);

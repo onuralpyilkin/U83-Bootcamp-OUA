@@ -92,6 +92,8 @@ public class PlayerController : MonoBehaviour
     public Color[] SwordVFXEmissionColors;
     private int lastSwordVFXEmissiveColorIndex = 0;
     public GameObject SwordTransform;
+    public float SwordMaxEmission = 5f;
+    private Material swordMaterial;
 
     [Header("Damage VFX")]
     public VFXPoolController DamageVFXPool;
@@ -103,7 +105,7 @@ public class PlayerController : MonoBehaviour
     private PlayerInputManager inputManager;
     private AudioSource audioSource;
     private SkinnedMeshRenderer skinnedMeshRenderer;
-    
+
     private int dodgeTriggerHash;
     private int idleTriggerHash;
 
@@ -162,6 +164,7 @@ public class PlayerController : MonoBehaviour
         dashStartTriggerHash = Animator.StringToHash("DashStart");
         dashEndTriggerHash = Animator.StringToHash("DashEnd");
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        swordMaterial = SwordTransform.GetComponent<MeshRenderer>().material;
     }
 
     void Update()
@@ -236,14 +239,7 @@ public class PlayerController : MonoBehaviour
         animator.SetTrigger(Combos[currentComboIndex].Attacks[currentAttackIndex].TriggerHash);
         currentAttackIndex++;
         //ComboUI.comboSayac(); //Temporarily here for debugging, we will write it in where that enemies take damage (maybe inside the next for loop)
-        /*List<IEnemy> enemies = GetEnemiesInAttackRange(Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range);
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            PlayDamageVFX((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1));
-            enemies[i].TakeDamage((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1));
-            ComboUI.comboSayac();
-        }
-        AddPower(-Combos[currentComboIndex].Attacks[currentAttackIndex - 1].PowerCost);*/
+        DealDamage((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1), Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range, -Combos[currentComboIndex].Attacks[currentAttackIndex - 1].PowerCost);
     }
 
     public IEnumerator ComboExpireTimerCoroutine()
@@ -275,6 +271,18 @@ public class PlayerController : MonoBehaviour
             }
         }
         return iEnemies;
+    }
+
+    void DealDamage(int damage = 0, float range = 0, float powerCost = 0)
+    {
+        List<IEnemy> enemies = GetEnemiesInAttackRange(range);
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            PlayDamageVFX(damage);
+            enemies[i].TakeDamage(damage);
+            ComboUI.comboSayac();
+        }
+        AddPower(powerCost);
     }
 
     public void Dash(Vector2 dir)
@@ -319,6 +327,7 @@ public class PlayerController : MonoBehaviour
         SwordTransform.SetActive(true);
         dashEndStateRunning = true;
         animator.SetTrigger(dashEndTriggerHash);
+        DealDamage(10, 2, -10);
         while (dashEndStateRunning)
         {
             yield return null;
@@ -368,16 +377,6 @@ public class PlayerController : MonoBehaviour
         }
         vfx.Play();
         StartCoroutine(ReleaseSwordVFX(vfx, SwordVFXLifeTime));
-
-        //Deal damage enemies from here because sword vfx method called from animation and the animation has the correct timing for dealing damage
-        List<IEnemy> enemies = GetEnemiesInAttackRange(Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range);
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            PlayDamageVFX((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1));
-            enemies[i].TakeDamage((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1));
-            ComboUI.comboSayac();
-        }
-        AddPower(-Combos[currentComboIndex].Attacks[currentAttackIndex - 1].PowerCost);
     }
 
     IEnumerator ReleaseSwordVFX(VFX vfx, float delay)
@@ -455,5 +454,6 @@ public class PlayerController : MonoBehaviour
         powerAmount += amount;
         powerAmount = Mathf.Clamp(powerAmount, 0, 100); // 0 ile 100 arasında sınırlandır
         powerBar.SetPower(powerAmount);
+        swordMaterial.SetFloat("_EmissionIntensity", (powerAmount / 100f) * SwordMaxEmission);
     }
 }
