@@ -101,9 +101,11 @@ public class PauseMenuController : MonoBehaviour
     public void LoadScene()
     {
         //audioSource.Pause();
-        SwitchPanel(pauseMenuPanel, temporaryPanel);
-        SceneManager.LoadScene(sceneName);
-        menuInputManager.GetCurrentPanel();
+        //SwitchPanel(pauseMenuPanel, temporaryPanel);
+        //SceneManager.LoadScene(sceneName);
+        //menuInputManager.GetCurrentPanel();
+        //SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene(), UnloadSceneOptions.UnloadAllEmbeddedSceneObjects);
+        SceneManager.LoadScene(sceneName, LoadSceneMode.Single);
     }
 
     void SwitchPanel(GameObject sourcePanel, GameObject targetPanel)

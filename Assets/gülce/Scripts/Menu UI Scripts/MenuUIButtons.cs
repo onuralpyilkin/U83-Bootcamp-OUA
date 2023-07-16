@@ -101,7 +101,6 @@ public class MenuUIButtons : MonoBehaviour, IPointerEnterHandler, IPointerExitHa
 
         if(PauseMenuController.Instance != null)
             PauseMenuController.Instance.OnPanelClose.AddListener(ClosingMoveButton);
-        Debug.Log(gameObject.name + " enabled");
     }
 
     public void OnDisable()

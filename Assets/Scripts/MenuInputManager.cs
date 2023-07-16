@@ -53,6 +53,7 @@ public class MenuInputManager : MonoBehaviour
     void Awake()
     {
         Instance = Instance != null ? Instance : this;
+        Time.timeScale = 1f;
     }
 
     void Start()
