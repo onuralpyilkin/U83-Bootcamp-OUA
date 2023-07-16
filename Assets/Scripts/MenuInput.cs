@@ -89,6 +89,15 @@ public partial class @MenuInput: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""SubmitLoading"",
+                    ""type"": ""Button"",
+                    ""id"": ""ee9971e3-af7d-412b-bd5d-c3add5a34cd6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -245,6 +254,28 @@ public partial class @MenuInput: IInputActionCollection2, IDisposable
                     ""action"": ""PauseResume"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""2b7291d6-e090-434d-8f78-b6f4978fc540"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SubmitLoading"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c7cb3e34-e708-4f1b-abc9-67883618faac"",
+                    ""path"": ""<Gamepad>/buttonSouth"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""SubmitLoading"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -260,6 +291,7 @@ public partial class @MenuInput: IInputActionCollection2, IDisposable
         m_Menu_Submit = m_Menu.FindAction("Submit", throwIfNotFound: true);
         m_Menu_Cancel = m_Menu.FindAction("Cancel", throwIfNotFound: true);
         m_Menu_PauseResume = m_Menu.FindAction("PauseResume", throwIfNotFound: true);
+        m_Menu_SubmitLoading = m_Menu.FindAction("SubmitLoading", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -328,6 +360,7 @@ public partial class @MenuInput: IInputActionCollection2, IDisposable
     private readonly InputAction m_Menu_Submit;
     private readonly InputAction m_Menu_Cancel;
     private readonly InputAction m_Menu_PauseResume;
+    private readonly InputAction m_Menu_SubmitLoading;
     public struct MenuActions
     {
         private @MenuInput m_Wrapper;
@@ -339,6 +372,7 @@ public partial class @MenuInput: IInputActionCollection2, IDisposable
         public InputAction @Submit => m_Wrapper.m_Menu_Submit;
         public InputAction @Cancel => m_Wrapper.m_Menu_Cancel;
         public InputAction @PauseResume => m_Wrapper.m_Menu_PauseResume;
+        public InputAction @SubmitLoading => m_Wrapper.m_Menu_SubmitLoading;
         public InputActionMap Get() { return m_Wrapper.m_Menu; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -369,6 +403,9 @@ public partial class @MenuInput: IInputActionCollection2, IDisposable
             @PauseResume.started += instance.OnPauseResume;
             @PauseResume.performed += instance.OnPauseResume;
             @PauseResume.canceled += instance.OnPauseResume;
+            @SubmitLoading.started += instance.OnSubmitLoading;
+            @SubmitLoading.performed += instance.OnSubmitLoading;
+            @SubmitLoading.canceled += instance.OnSubmitLoading;
         }
 
         private void UnregisterCallbacks(IMenuActions instance)
@@ -394,6 +431,9 @@ public partial class @MenuInput: IInputActionCollection2, IDisposable
             @PauseResume.started -= instance.OnPauseResume;
             @PauseResume.performed -= instance.OnPauseResume;
             @PauseResume.canceled -= instance.OnPauseResume;
+            @SubmitLoading.started -= instance.OnSubmitLoading;
+            @SubmitLoading.performed -= instance.OnSubmitLoading;
+            @SubmitLoading.canceled -= instance.OnSubmitLoading;
         }
 
         public void RemoveCallbacks(IMenuActions instance)
@@ -420,5 +460,6 @@ public partial class @MenuInput: IInputActionCollection2, IDisposable
         void OnSubmit(InputAction.CallbackContext context);
         void OnCancel(InputAction.CallbackContext context);
         void OnPauseResume(InputAction.CallbackContext context);
+        void OnSubmitLoading(InputAction.CallbackContext context);
     }
 }

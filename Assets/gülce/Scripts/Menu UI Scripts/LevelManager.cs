@@ -17,8 +17,6 @@ public class LevelManager : MonoBehaviour
     public GameObject LoadingScreenGamepadContinueButton;
     public GameObject LoadingScreenKeyboardContinueButton;
 
-    public Slider slider;
-
 
 
     private void Awake()
@@ -75,6 +73,15 @@ public class LevelManager : MonoBehaviour
 
         float alphaTarget = 1f;
         bool isEventAdded = false;
+        Slider slider;
+        if(gamepadLoadingScreen.activeSelf)
+        {
+            slider = gamepadLoadingScreen.GetComponentInChildren<Slider>();
+        }
+        else
+        {
+            slider = keyboardLoadingScreen.GetComponentInChildren<Slider>();
+        }
 
         while (operation.isDone == false)
         {

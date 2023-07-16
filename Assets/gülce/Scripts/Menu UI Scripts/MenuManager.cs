@@ -28,8 +28,6 @@ public class MenuManager : MonoBehaviour
     public GameObject LoadingScreenGamepadContinueButton;
     public GameObject LoadingScreenKeyboardContinueButton;
 
-    public Slider slider;
-
     public GameObject settingsMenuButton, creditsMenuButton, creditsMenuBackButton;
 
     public UnityEvent OnPanelClose;
@@ -103,6 +101,15 @@ public class MenuManager : MonoBehaviour
 
         float alphaTarget = 1f;
         bool isEventAdded = false;
+        Slider slider;
+        if(gamepadLoadingScreen.activeSelf)
+        {
+            slider = gamepadLoadingScreen.GetComponentInChildren<Slider>();
+        }
+        else
+        {
+            slider = keyboardLoadingScreen.GetComponentInChildren<Slider>();
+        }
 
         while (operation.isDone == false)
         {

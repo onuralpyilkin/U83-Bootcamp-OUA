@@ -94,6 +94,11 @@ public class MenuInputManager : MonoBehaviour
             Cancel();
             SetLatestDeviceType(ctx.control.device is Gamepad);
         };
+        input.Menu.SubmitLoading.performed += ctx =>
+        {
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+            SubmitLoading();
+        };
         if (IsPauseMenu)
             input.Menu.PauseResume.performed += ctx =>
             {
@@ -154,13 +159,17 @@ public class MenuInputManager : MonoBehaviour
 
     void Submit()
     {
-        /*if(OnSubmit != null)
-            OnSubmit.Invoke();*/
         if (currentButtonIndex == -1)
             return;
         ResetCurrentPanelButtonScales();
         currentButton.OnPositiveButtonClick.Invoke();
         currentButtonIndex = -1;
+    }
+
+    void SubmitLoading()
+    {
+        if (OnSubmit != null)
+            OnSubmit.Invoke();
     }
 
     void Cancel()
