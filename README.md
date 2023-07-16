@@ -16,18 +16,21 @@ Takım U-83
 
 ## Ürün İsmi
 
--- Denek U-83 --
+ UNKNOWN-83
 
 ## Ürün Açıklaması
-Saf hack and slash aksiyonunu hissedeceğiniz bu oyunda bir yandan düşmanlarla mücadele ederken bir yandan amacınızı keşfedin. Kimsin, neden buradasın? Sorularına cevap bulabilecek misin? Gel ve gör.
+
+Saf hack and slash aksiyonunu hissedeceğiniz bu oyunda bir yandan düşmanlarla mücadele ederken bir yandan amacınızı keşfedin. Kimsin, neden buradasın? Sorularına cevap bulabilecek misin? Sürükleyici hikayesi, stilistik grafik tarzı ve hızlı mekanikleriyle UNKNOWN 83 karşınızda.
+
 ## Ürün Özellikleri
 
 - 3D
 - Hack and Slash türü
 - Third-Person görüş açılı
 - Single Player 
-- Cell Shading'e sahip grafik sistemi
+- Cel Shading'e sahip grafik sistemi
 - Klavye ve gamepad desteği
+- Çizgi roman tarzı hikaye anlatımı
 
 
 ## Hedef Kitle
@@ -35,7 +38,60 @@ Saf hack and slash aksiyonunu hissedeceğiniz bu oyunda bir yandan düşmanlarla
 - 16 yaş ve üzeri oyun oynamayı seven herkes
 - Hack and Slash tarzı dinamik oyunları oynamaktan keyif alanlar
 - Third Person görüş açılı oyunları sevenler
+
+
+## Jüriye Not
   
+- Oyunda kullanılan shaderlar toon shading ve cel shading tasarımı elde etmek amacıyla ekibimizden biri tarafından oluşturuldu.  Bu amaç doğrultusunda Shader Graph'ler oluşturuldu ve Shader Graph Custom Function Node özelliği ile beraber HLSL kodları yazıldı.
+Outline efektini verebilmek için URP'nin Full Screen Pass Renderer Feature özelliği ile beraber Depth ve Normal Buffer üzerinde sobel filtresi uygulayan bir Shader Graph oluşturuldu.
+- Oyunda kullanılan görsel efektler VFX Graph kullanılarak sıfırdan oluşturuldu. VFX'ler için gereken mesh, texture ve flipbooklar yine ekip tarafından yapıldı.
+- Ana karakterin tüm animasyonları Cascadeur programı üzerinden yapıldı.
+- Ticarileştirme mekaniği olarak oyunun bir oyun satış platformunda(Steam) yayınlanması kararlaştırıldı.
+- Oyuncunun belli bir combo başarısına ulaştığında Firebase ve Telegram üzerinden raporlanabileceği bir sistem oluşturuldu. (Ek görüntüler kısmında görülebilir.)
+- Oyunun günlük kullanıcı sayısını takip etmek için unitynin Game Analitycs sistemi kullanıldı.(Ek görüntüler kısmında görülebilir.)
+  
+ ## Kullanılan Assetler
+
+
+  <details>
+  <summary>Kullanılan Assetler</summary>
+    
+  - [Ana Karakter](https://readyplayer.me/) (CC 4.0 Kullanımı Serbest)
+    
+  - [Ana Karakter Animasyonları](https://cascadeur.com/)
+    
+  - [Flying Enemy](https://poly.pizza/m/TX8r9WBXpe)
+    
+  - [Flying Enemy](https://poly.pizza/m/Iip30bDHmu)
+    
+  - [Kılıç Sesleri](https://opengameart.org/content/swishes-sound-pack)
+    
+  - [Enemy Clown](https://www.mixamo.com/#/?page=1&query=Whiteclown+N+Hallin&type=Character)
+    
+  - [Enemy Metalon ](https://assetstore.unity.com/packages/3d/characters/creatures/meshtint-free-polygonal-metalon-151383)
+    
+  - [Level Müziği](https://www.youtube.com/watch?v=Sd0dqgEYnqk)
+    
+  - [TimeLine Müziği](https://pixabay.com/music/build-up-scenes-neon-eyes-of-utopia-epic-sci-fi-dark-trailer-intro-145899/)
+    
+  - [Menu Müziği](https://pixabay.com/music/ambient-dark-cinematic-ambient-title-sequence-125216/)
+    
+  - [Yürüme-Koşma Sesleri](https://assetstore.unity.com/packages/audio/sound-fx/foley/footsteps-essentials-189879#content)
+    
+  - [Menu Buton Sesleri](https://ellr.itch.io/universal-ui-soundpack)
+    
+  - [Kılıç Modeli](https://www.cgtrader.com/free-3d-models/various/various-models/glow-katana)
+    
+  - [Işıldayan Küp Texture](https://www.texturecan.com/details/106/)
+    
+  - [Meşale Modeli](https://assetstore.unity.com/packages/3d/environments/dungeons/low-poly-dungeons-lite-177937)
+
+  - [DoTween-Free](http://dotween.demigiant.com/getstarted.php)
+    
+</details>
+
+
+  NOT: Yukarıda belirtilen assetler dışındaki her şey ekibimiz tarafından tasarlanmıştır. Level tasarımlarında kullanılan küpler ve textureları, EnemyBall, Oyun içi UI elementleri (Healthbar, Dash göstergesi, Enerji barı, Combo sayacı), Menu UI tasarımı(Butonlar, Loading-Game Over sahneleri), Hikayeleştirme için kullanılan Storyboardlar, Shaderlar, Görsel efektler, Ana karakterin tüm animasyonları ekibimiz tarafından yapılmıştır.
 
 ## Product Backlog URL
 [Miro Backlog Board](https://miro.com/app/board/uXjVMCbtpUA=/)
@@ -51,7 +107,7 @@ Saf hack and slash aksiyonunu hissedeceğiniz bu oyunda bir yandan düşmanlarla
 
 Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözüken kırmızı item'lar yapılacak işleri (task) gösterirken, mavi item'lar story'leri temsil etmektedir.
 
-- **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Discord üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır:
+- **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Discord üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı word dosyaı olarak Readme'de tarafımızdan paylaşılmaktadır:
   
     [Daily Scrum Görselleri.docx](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/files/11780078/Daily.Scrum.Gorselleri.docx)
 
@@ -122,7 +178,7 @@ Onuralp Yılkın - Gülce Çapak - Berkay Köksal -  Mustafa Uğur Yanardağ - V
 
 Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözüken kırmızı item'lar yapılacak işleri (task) gösterirken, mavi item'lar story'leri temsil etmektedir.
 
-- **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Discord üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı örneği jpeg veya word olarak Readme'de tarafımızdan paylaşılmaktadır:
+- **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Discord üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı word dosyası olarak Readme'de tarafımızdan paylaşılmaktadır:
   
   [Daily Scrum Görselleri-Sprint2.docx](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/files/11931152/Daily.Scrum.Gorselleri-Sprint2.docx)
 
@@ -178,6 +234,71 @@ Onuralp Yılkın - Gülce Çapak - Mustafa Uğur Yanardağ
 ---
 
 # Sprint 3
+- **Sprint Notları**: User Story'ler product backlog'ların içine yazılmıştır. Product backlog item'lara tıklandığında hikayelerin detayları okunabilir. Toplantı notlarına MiroBoard üzerinden ulaşılabilir.
+  
+- **Sprint içinde tamamlanması tahmin edilen puan**: 100 Puan
+
+- **Puan tamamlama mantığı**: Toplamda proje boyunca tamamlanması gereken 350 puanlık backlog bulunmaktadır. Üçüncü sprint'in 100 puan olması gerektiğine karar verildi.
+
+- **Backlog düzeni ve Story seçimleri**: Backlog'umuz ilk yapılacak story'lere göre düzenlenmiştir. Sprint başına tahmin edilen puan sayısını geçmeyecek şekilde sıradan seçimler yapılmaktadır. Story başına çıkan tahmin puanı, toplam puanın yarısından az tutulmuştur. 
+
+Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözüken kırmızı item'lar yapılacak işleri (task) gösterirken, mavi item'lar story'leri temsil etmektedir.
+
+- **Daily Scrum**: Daily Scrum toplantılarının zamansal sebeplerden ötürü Discord üzerinden yapılmasına karar verilmiştir. Daily Scrum toplantısı  word dosyası olarak Readme'de tarafımızdan paylaşılmaktadır:
+  
+  [Daily Scrum Görselleri Sprint-3.docx](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/files/12065034/Daily.Scrum.Gorselleri.3.docx)
+
+  - **Sprint board update**: Sprint board screenshotları:
+
+  -Sprint 3-1
+  ![Sprint 3 Backlog 1](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/49e5af71-9872-44f6-a123-2cc23c6d94c9)
+   -Sprint 3-2
+  ![Sprint 3 Backlog 2](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/a0a99501-8f66-4831-a9eb-9e3dfe52d60a)
+  -Sprint 3-3
+  ![Sprint 3 Backlog 3](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/c06fa346-e9d9-4558-a665-1a508457ecaa)
+  
+
+
+- **Ürün Durumu**: Ekran görüntüleri:
+  
+  ![image1](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/f1f1a7f7-9420-43cb-ac3c-a6c727c143cf)
+  ![image2](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/7cee868d-73a7-4592-bba3-1e5611b39310)
+  ![image3](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/7a629442-aa44-4691-b14e-38e5196bc583)
+
+   - Oyun içi görüntüsü için video linki:  [Oyun İçi Video Linki](https://www.youtube.com/watch?v=_dOIJwuMfK8)
+
+- **Ek Görüntüler**:
+  
+  -Oyuncunun belli bir combo başarısına ulaştığında Firebase ve Telegram üzerinden raporlanabileceği sistem 
+  ![image5](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/c64009d4-a683-4025-b48d-09f02a4da2f1)
+  
+  -Oyunun günlük kullanıcı sayısını takip etmek için Game Analitycs sistemi
+  ![image6](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/a57a9547-d547-411c-8698-a80b8f65baff)
+  
+ 
+- **Sprint Review**: 
+
+    Alınan kararlar:
+
+  - Menü sistemleri ve tasarımları son sürümüne ulaştırıldı.
+  - Hikaye anlatımı için görseller oluşturulup gerekli geçiş sistemi oluşturuldu.
+  - Firebase ve Telegram Api' ları kullanılarak kullanıcı verilerini raporlayacak sistem geliştirildi.
+  - Günlük oyuncu sayılarını raporlamak amacı ile Game Analytics sistemi kuruldu.
+  - Oyun içi müzikler ve menü müzikleri kararlaştırılarak projeye eklendi.
+  - Karakterin kılıç modeli güncellendi.
+  - Verilen hasarı gösteren görsel efekt eklendi.
+  - Önceki sprintlerde hazırlanan sistemler birleştirildi.
+  - Level tasarımları ve levelların kurguları tamamlandı.
+  
+Sprint Review katılımcıları:
+Onuralp Yılkın - Gülce Çapak - Berkay Köksal -  Mustafa Uğur Yanardağ - Veysel Enes Yiğitoğlu
+
+- **Sprint Retrospective:**
+  - Ekip içi iletişimde sorun yaşanmadı.
+  - Sonraki projelerde görevlerin tüm sprintler boyunca daha dengeli dağıtılmasına dikkat edilmesi gerektiği konuşuldu.
+
+
+
 
 ---
 
