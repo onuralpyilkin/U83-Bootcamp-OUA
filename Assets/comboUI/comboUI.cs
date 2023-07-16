@@ -74,13 +74,11 @@ public class comboUI : MonoBehaviour
     public void Load()
     {
         totalHitCount = int.Parse(PlayerPrefs.GetString("totalHitCount", "0"));
-        // BestComboCount = int.Parse(PlayerPrefs.GetString("BestComboCount", "0"));
     }
 
      public void Save()
     {
         PlayerPrefs.SetString("totalHitCount", totalHitCount.ToString());
-        // PlayerPrefs.SetString("BestComboCount", BestComboCount.ToString());
     }
 
     private void Update() {
@@ -134,11 +132,7 @@ public class comboUI : MonoBehaviour
         S_comboFill.fillAmount = (float)S_combos / 15;
         SS_comboFill.fillAmount = (float)SS_combos / 25;        
 
-        /*if (Input.GetKeyDown(KeyCode.E) && Input.GetKeyDown(KeyCode.Q))
-        {
-            comboSayac();
-        }
-        Save();*/
+        Save();
     }
 
 
@@ -179,11 +173,11 @@ public class comboUI : MonoBehaviour
             // comboEffectFill.gameObject.SetActive(true);
             // Invoke("comboEffect", 0.5f);
         // }
-        /*if(comboCount == 25)
+        if(comboCount == 25)
         {
             SupercomboEffectFill.gameObject.SetActive(true);
             Invoke("SupercomboEffect", 1.0f);
-        }*/
+        }
 
         comboText.text = "x" + comboCount.ToString();
         comboText.gameObject.SetActive(true);
@@ -230,5 +224,4 @@ public class comboUI : MonoBehaviour
     {
         SupercomboEffectFill.gameObject.SetActive(false);
     }
-
 }
