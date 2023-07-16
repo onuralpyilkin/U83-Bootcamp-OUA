@@ -13,6 +13,9 @@ public class LevelManager : MonoBehaviour
     public GameObject levelMenuFirstButton;
     public GameObject gamepadLoadingScreen;
     public GameObject keyboardLoadingScreen;
+    public CanvasGroup LoadingScreenContinueCanvasGroup;
+    public GameObject LoadingScreenGamepadContinueButton;
+    public GameObject LoadingScreenKeyboardContinueButton;
 
     public Slider slider;
 
@@ -65,8 +68,13 @@ public class LevelManager : MonoBehaviour
     IEnumerator LoadAsync(string levelName)
     {
         AsyncOperation operation = SceneManager.LoadSceneAsync(levelName); //Seviyeyi yükle
+        operation.allowSceneActivation = false;
 
-        gamepadLoadingScreen.SetActive(true); //bunun yerine SetActiveLoadingScreen() gelicek
+        //gamepadLoadingScreen.SetActive(true); //bunun yerine SetActiveLoadingScreen() gelicek
+        SetActiveLoadingScreen();
+
+        float alphaTarget = 1f;
+        bool isEventAdded = false;
 
         while (operation.isDone == false)
         {
@@ -74,25 +82,52 @@ public class LevelManager : MonoBehaviour
 
             slider.value = progress;
 
+            if (operation.progress >= 0.9f)
+            {
+                LoadingScreenContinueCanvasGroup.gameObject.SetActive(true);
+                LoadingScreenContinueCanvasGroup.alpha = Mathf.MoveTowards(LoadingScreenContinueCanvasGroup.alpha, alphaTarget, 2f * Time.deltaTime);
+                if (LoadingScreenContinueCanvasGroup.alpha >= 1f)
+                {
+                    alphaTarget = 0f;
+                }
+                if (LoadingScreenContinueCanvasGroup.alpha <= 0f)
+                {
+                    alphaTarget = 1f;
+                }
+
+                if (!isEventAdded)
+                {
+                    MenuInputManager.Instance.OnSubmit.AddListener(() =>
+                {
+                    operation.allowSceneActivation = true;
+                    MenuInputManager.Instance.OnSubmit.RemoveAllListeners();
+                });
+                    isEventAdded = true;
+                }
+            }
+
             yield return null;
         }
 
     }
 
-    //public void SetActiveLoadingScreen()
-    //{
-    //    if ()  //hangi kıoşul gelicek sor
-    //    {
-    //        //gamepad kullanılıyorsa
-    //        gamepadLoadingScreen.SetActive(true);
-    //        keyboardLoadingScreen.SetActive(false);
-    //    }
-    //    else
-    //    {
-    //        //keyboard kullanılıyorsa
-    //        gamepadLoadingScreen.SetActive(false);
-    //        keyboardLoadingScreen.SetActive(true);
-    //    }
-
-    //}
+    public void SetActiveLoadingScreen()
+    {
+        if (MenuInputManager.Instance.LatestInputIsGamepad)  //hangi koşul gelicek sor
+        {
+            //gamepad kullanılıyorsa
+            gamepadLoadingScreen.SetActive(true);
+            keyboardLoadingScreen.SetActive(false);
+            LoadingScreenGamepadContinueButton.SetActive(true);
+            LoadingScreenKeyboardContinueButton.SetActive(false);
+        }
+        else
+        {
+            //keyboard kullanılıyorsa
+            gamepadLoadingScreen.SetActive(false);
+            keyboardLoadingScreen.SetActive(true);
+            LoadingScreenGamepadContinueButton.SetActive(false);
+            LoadingScreenKeyboardContinueButton.SetActive(true);
+        }
+    }
 }

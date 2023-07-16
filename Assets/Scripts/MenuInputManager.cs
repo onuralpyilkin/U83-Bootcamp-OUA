@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class MenuInputManager : MonoBehaviour
 {
@@ -49,6 +50,10 @@ public class MenuInputManager : MonoBehaviour
     private MenuButton currentButton;
     [HideInInspector]
     public bool IsCurrentPanelVertical = true;
+    [HideInInspector]
+    public bool LatestInputIsGamepad = false;
+    [HideInInspector]
+    public UnityEvent OnSubmit;
 
     void Awake()
     {
@@ -59,14 +64,42 @@ public class MenuInputManager : MonoBehaviour
     void Start()
     {
         input = new MenuInput();
-        input.Menu.Up.performed += ctx => DirectionCorrector();
-        input.Menu.Down.performed += ctx => DirectionCorrector(true, false);
-        input.Menu.Right.performed += ctx => DirectionCorrector(false);
-        input.Menu.Left.performed += ctx => DirectionCorrector(false, false);
-        input.Menu.Submit.performed += ctx => Submit();
-        input.Menu.Cancel.performed += ctx => Cancel();
+        input.Menu.Up.performed += ctx =>
+        {
+            DirectionCorrector();
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Menu.Down.performed += ctx =>
+        {
+            DirectionCorrector(true, false);
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Menu.Right.performed += ctx =>
+        {
+            DirectionCorrector(false);
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Menu.Left.performed += ctx =>
+        {
+            DirectionCorrector(false, false);
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Menu.Submit.performed += ctx =>
+        {
+            Submit();
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
+        input.Menu.Cancel.performed += ctx =>
+        {
+            Cancel();
+            SetLatestDeviceType(ctx.control.device is Gamepad);
+        };
         if (IsPauseMenu)
-            input.Menu.PauseResume.performed += ctx => PauseResume();
+            input.Menu.PauseResume.performed += ctx =>
+            {
+                PauseResume();
+                SetLatestDeviceType(ctx.control.device is Gamepad);
+            };
         input.Menu.Enable();
         GetCurrentPanel();
     }
@@ -121,6 +154,8 @@ public class MenuInputManager : MonoBehaviour
 
     void Submit()
     {
+        /*if(OnSubmit != null)
+            OnSubmit.Invoke();*/
         if (currentButtonIndex == -1)
             return;
         ResetCurrentPanelButtonScales();
@@ -190,5 +225,10 @@ public class MenuInputManager : MonoBehaviour
             input.Menu.Enable();
         else
             input.Menu.Disable();
+    }
+
+    void SetLatestDeviceType(bool isGamepad)
+    {
+        LatestInputIsGamepad = isGamepad;
     }
 }
