@@ -16,12 +16,12 @@ public class comboUI : MonoBehaviour
     [HideInInspector]public int BestComboCount = 0;
     public float comboTimer = 5f;
 
-    [Header("Telegram & Firebase API")]
+    /*[Header("Telegram & Firebase API")]
     public APImanager APImanager;
     [HideInInspector]private string TelegramBotToken = "6303462751:AAESnqjmKbmSrx216v-wsciNqrJMOAITmKU";
     [HideInInspector]private string databaseURL = "https://u83firebase-default-rtdb.europe-west1.firebasedatabase.app/";
     [HideInInspector]private static string PlayerPrefKey = "PlayerID";
-    [HideInInspector]private string ChatID = "-1001941348433";
+    [HideInInspector]private string ChatID = "-1001941348433";*/
 
     private float B_combos;
     private float A_combos;
@@ -66,8 +66,8 @@ public class comboUI : MonoBehaviour
         SS_comboUnfill.gameObject.SetActive(false);
 
         // PlayerPrefKey = PlayerPrefs.GetString(PlayerPrefKey);
-        APImanager = GetComponent<APImanager>();
-        PlayerPrefKey = comboUI.PlayerPrefKey;
+        /*APImanager = GetComponent<APImanager>();
+        PlayerPrefKey = comboUI.PlayerPrefKey;*/
         Load();
     }
 
