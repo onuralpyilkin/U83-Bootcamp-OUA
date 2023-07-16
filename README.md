@@ -252,8 +252,10 @@ Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözük
 
   -Sprint 3-1
   ![Sprint 3 Backlog 1](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/49e5af71-9872-44f6-a123-2cc23c6d94c9)
+  
    -Sprint 3-2
   ![Sprint 3 Backlog 2](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/a0a99501-8f66-4831-a9eb-9e3dfe52d60a)
+  
   -Sprint 3-3
   ![Sprint 3 Backlog 3](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/c06fa346-e9d9-4558-a665-1a508457ecaa)
   
@@ -262,8 +264,11 @@ Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözük
 - **Ürün Durumu**: Ekran görüntüleri:
   
   ![image1](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/f1f1a7f7-9420-43cb-ac3c-a6c727c143cf)
+  
   ![image2](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/7cee868d-73a7-4592-bba3-1e5611b39310)
+  
   ![image3](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/7a629442-aa44-4691-b14e-38e5196bc583)
+
 
    - Oyun içi görüntüsü için video linki:  [Oyun İçi Video Linki](https://www.youtube.com/watch?v=_dOIJwuMfK8)
 
@@ -271,14 +276,14 @@ Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözük
   
   -Oyuncunun belli bir combo başarısına ulaştığında Firebase ve Telegram üzerinden raporlanabileceği sistem
   
-     -Firebase
+     - Firebase
   ![image5](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/c64009d4-a683-4025-b48d-09f02a4da2f1)
 
-     -Telegram
+     - Telegram
   ![image6](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/828b1fa4-4536-4dfe-b9ff-d27b08653f25)
 
 
-  
+
   -Oyunun günlük kullanıcı sayısını takip etmek için Game Analitycs sistemi
   
   ![image7](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/a57a9547-d547-411c-8698-a80b8f65baff)
