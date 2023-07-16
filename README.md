@@ -269,11 +269,19 @@ Story'ler yapılacak işlere (task'lere) bölünmüştür. Miro Board'da gözük
 
 - **Ek Görüntüler**:
   
-  -Oyuncunun belli bir combo başarısına ulaştığında Firebase ve Telegram üzerinden raporlanabileceği sistem 
+  -Oyuncunun belli bir combo başarısına ulaştığında Firebase ve Telegram üzerinden raporlanabileceği sistem
+  
+     -Firebase
   ![image5](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/c64009d4-a683-4025-b48d-09f02a4da2f1)
+
+     -Telegram
+  ![image6](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/828b1fa4-4536-4dfe-b9ff-d27b08653f25)
+
+
   
   -Oyunun günlük kullanıcı sayısını takip etmek için Game Analitycs sistemi
-  ![image6](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/a57a9547-d547-411c-8698-a80b8f65baff)
+  
+  ![image7](https://github.com/onuralpyilkin/U83-Bootcamp-OUA/assets/122224556/a57a9547-d547-411c-8698-a80b8f65baff)
   
  
 - **Sprint Review**: 
