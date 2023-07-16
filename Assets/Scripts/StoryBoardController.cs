@@ -33,13 +33,13 @@ public class StoryBoardController : MonoBehaviour
             return;
         if (parentCanvas.alpha < 1f)
         {
-            parentCanvas.alpha = Mathf.MoveTowards(parentCanvas.alpha, 1f, revealTime * Time.deltaTime);
+            parentCanvas.alpha = Mathf.MoveTowards(parentCanvas.alpha, 1f, 1f / revealTime * Time.deltaTime);
             return;
         }
 
         if (currentStoryBoard > storyBoards.Length - 1)
         {
-            continueText.alpha = Mathf.MoveTowards(continueText.alpha, 1f, revealTime * Time.deltaTime);
+            continueText.alpha = Mathf.MoveTowards(continueText.alpha, 1f, 1f / revealTime * Time.deltaTime);
             if (PlayerInputManager.Instance.LatestInputIsGamepad)
             {
                 continueButtonGamepad.SetActive(true);
@@ -53,7 +53,7 @@ public class StoryBoardController : MonoBehaviour
             return;
         }
 
-        storyBoards[currentStoryBoard].color = Vector4.MoveTowards(storyBoards[currentStoryBoard].color, Color.white, revealTime * Time.deltaTime);
+        storyBoards[currentStoryBoard].color = Vector4.MoveTowards(storyBoards[currentStoryBoard].color, Color.white, 1f / revealTime * Time.deltaTime);
         if (storyBoards[currentStoryBoard].color.a >= Color.white.a)
         {
             currentStoryBoard++;

@@ -164,6 +164,7 @@ public class PlayerController : MonoBehaviour
         dashStartTriggerHash = Animator.StringToHash("DashStart");
         dashEndTriggerHash = Animator.StringToHash("DashEnd");
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        swordMaterial.SetFloat("_EmissionIntensity", 0);
     }
 
     void Update()

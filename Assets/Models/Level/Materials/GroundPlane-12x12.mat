@@ -21,7 +21,7 @@ Material:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_Name: GroundPlane-12x12
-  m_Shader: {fileID: -6465566751694194690, guid: 10c9365d1fb496647ae9623e38c56075,
+  m_Shader: {fileID: -6465566751694194690, guid: cd49cf2a2b914eb449799daa68e2144d,
     type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -153,6 +153,6 @@ Material:
     - _Primary_Color: {r: 1, g: 0.9568626, b: 0.8392157, a: 1}
     - _Secondary_Color: {r: 0.9, g: 0.8611764, b: 0.7552941, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Texture_Color: {r: 1, g: 1, b: 1, a: 0}
+    - _Texture_Color: {r: 0, g: 0, b: 0, a: 0}
     - _Tiling: {r: 12, g: 12, b: 0, a: 0}
   m_BuildTextureStacks: []
