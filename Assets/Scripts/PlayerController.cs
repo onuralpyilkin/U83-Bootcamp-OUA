@@ -93,7 +93,7 @@ public class PlayerController : MonoBehaviour
     private int lastSwordVFXEmissiveColorIndex = 0;
     public GameObject SwordTransform;
     public float SwordMaxEmission = 5f;
-    private Material swordMaterial;
+    public Material swordMaterial;
 
     [Header("Damage VFX")]
     public VFXPoolController DamageVFXPool;
@@ -164,7 +164,6 @@ public class PlayerController : MonoBehaviour
         dashStartTriggerHash = Animator.StringToHash("DashStart");
         dashEndTriggerHash = Animator.StringToHash("DashEnd");
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
-        swordMaterial = SwordTransform.GetComponent<MeshRenderer>().material;
     }
 
     void Update()

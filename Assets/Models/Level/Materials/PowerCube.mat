@@ -42,7 +42,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Base_Texture:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 711d661c801d55a40835a43ab4b263e8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _BumpMap:
@@ -66,7 +66,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _EmissiveTexture:
-        m_Texture: {fileID: 2800000, guid: 6da246fa89cd00d4c859a8c7b951947a, type: 3}
+        m_Texture: {fileID: 2800000, guid: 711d661c801d55a40835a43ab4b263e8, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -117,7 +117,7 @@ Material:
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
     - _DstBlendAlpha: 0
-    - _EmissionIntensity: 10
+    - _EmissionIntensity: 50
     - _EnvironmentReflections: 1
     - _GlossMapScale: 0
     - _Glossiness: 0
@@ -147,6 +147,6 @@ Material:
     - _Primary_Color: {r: 1, g: 0.9568626, b: 0.8392157, a: 1}
     - _Secondary_Color: {r: 0.9, g: 0.8611764, b: 0.7552941, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Texture_Color: {r: 0, g: 0, b: 0, a: 0}
+    - _Texture_Color: {r: 1, g: 1, b: 1, a: 0}
     - _Tiling: {r: 1, g: 1, b: 0, a: 0}
   m_BuildTextureStacks: []
