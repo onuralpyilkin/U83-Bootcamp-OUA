@@ -955,9 +955,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 1014966715}
   targetPosition: {fileID: 1029891690}
-  duration: 0.5
-  delay: 3
-  selectedScale: 1.2
+  duration: 0.2
+  delay: 1.2
+  selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
   clickSound: {fileID: 8300000, guid: 307ad8de4092f43d4a32210cbc24688f, type: 3}
@@ -1187,7 +1187,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b44d8f9f3ae6042fdacba8bf737b959b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 98494b06335154598bf1c4eff5b148c2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -2444,13 +2444,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneName: LEVEL0
   settingsPanel: {fileID: 908383151}
-  settingsPanelCloseDelay: 2
+  settingsPanelCloseDelay: 0.8
   mainMenuPanel: {fileID: 428054923}
-  mainMenuPanelCloseDelay: 3
+  mainMenuPanelCloseDelay: 1.2
   creditsPanel: {fileID: 1330710637}
-  creditsPanelCloseDelay: 4
+  creditsPanelCloseDelay: 2
   levelsPanel: {fileID: 1748410261}
-  levelsPanelCloseDelay: 2
+  levelsPanelCloseDelay: 0.6
   gamepadLoadingScreen: {fileID: 363218271}
   keyboardLoadingScreen: {fileID: 1768603164}
   slider: {fileID: 973390445}
@@ -3785,7 +3785,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &428054924
 RectTransform:
   m_ObjectHideFlags: 0
@@ -3834,7 +3834,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b44d8f9f3ae6042fdacba8bf737b959b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 98494b06335154598bf1c4eff5b148c2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -5315,8 +5315,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 268155418}
   targetPosition: {fileID: 2093724497}
-  duration: 0.5
-  delay: 0.5
+  duration: 0.2
+  delay: 0.2
   selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 0}
@@ -5513,8 +5513,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 443911266}
   targetPosition: {fileID: 1416632360}
-  duration: 0.5
-  delay: 1.5
+  duration: 0.2
+  delay: 0.6
   selectedScale: 1.2
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -5800,8 +5800,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 936570061}
   targetPosition: {fileID: 866143872}
-  duration: 0.3
-  delay: 2.5
+  duration: 0.2
+  delay: 1
   selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 0}
@@ -5955,8 +5955,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 2146769898}
   targetPosition: {fileID: 1584509672}
-  duration: 0.5
-  delay: 0.5
+  duration: 0.2
+  delay: 0.2
   selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 0}
@@ -6192,8 +6192,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 0}
   targetPosition: {fileID: 0}
-  duration: 1
-  delay: 1
+  duration: 0.2
+  delay: 0.4
   selectedScale: 1.2
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -6389,8 +6389,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 457061690}
   targetPosition: {fileID: 43227542}
-  duration: 0.3
-  delay: 3.5
+  duration: 0.2
+  delay: 1.4
   selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 0}
@@ -6952,8 +6952,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 962275588}
   targetPosition: {fileID: 1842121190}
-  duration: 0.5
-  delay: 1
+  duration: 0.2
+  delay: 0.4
   selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 0}
@@ -7089,7 +7089,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b44d8f9f3ae6042fdacba8bf737b959b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 98494b06335154598bf1c4eff5b148c2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -7495,8 +7495,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 0}
   targetPosition: {fileID: 0}
-  duration: 1
-  delay: 1
+  duration: 0.2
+  delay: 0.4
   selectedScale: 1.2
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -7650,8 +7650,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 0}
   targetPosition: {fileID: 0}
-  duration: 1
-  delay: 1
+  duration: 0.2
+  delay: 0.4
   selectedScale: 1.2
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -8148,8 +8148,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 758796303}
   targetPosition: {fileID: 638308976}
-  duration: 0.3
-  delay: 1
+  duration: 0.2
+  delay: 0.4
   selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 0}
@@ -8398,8 +8398,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 38338399}
   targetPosition: {fileID: 352565834}
-  duration: 0.5
-  delay: 2.5
+  duration: 0.2
+  delay: 1
   selectedScale: 1.2
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -8786,8 +8786,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 1602372717}
   targetPosition: {fileID: 1629330404}
-  duration: 0.5
-  delay: 1
+  duration: 0.2
+  delay: 0.4
   selectedScale: 1.2
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -9680,7 +9680,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: b44d8f9f3ae6042fdacba8bf737b959b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 98494b06335154598bf1c4eff5b148c2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -10055,8 +10055,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 1047211157}
   targetPosition: {fileID: 1265002504}
-  duration: 0.5
-  delay: 0.5
+  duration: 0.2
+  delay: 0.2
   selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -10557,8 +10557,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 16657489}
   targetPosition: {fileID: 1827351896}
-  duration: 0.5
-  delay: 1.5
+  duration: 0.2
+  delay: 0.6
   selectedScale: 1.2
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -10633,8 +10633,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 229535210}
   targetPosition: {fileID: 1625821392}
-  duration: 0.3
-  delay: 0.5
+  duration: 0.2
+  delay: 0.2
   selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 0}
@@ -11079,8 +11079,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 786643802}
   targetPosition: {fileID: 352904984}
-  duration: 0.5
-  delay: 2
+  duration: 0.2
+  delay: 0.8
   selectedScale: 1.2
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -11308,8 +11308,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 436458593}
   targetPosition: {fileID: 1261410563}
-  duration: 0.3
-  delay: 1.5
+  duration: 0.2
+  delay: 0.6
   selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 0}
@@ -11588,8 +11588,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 139521952}
   targetPosition: {fileID: 2089643162}
-  duration: 0.3
-  delay: 4
+  duration: 0.2
+  delay: 1.6
   selectedScale: 1.2
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -12509,8 +12509,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 1895735484}
   targetPosition: {fileID: 1895147520}
-  duration: 0.3
-  delay: 2
+  duration: 0.2
+  delay: 0.8
   selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 0}
@@ -13018,8 +13018,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 176660792}
   targetPosition: {fileID: 295523625}
-  duration: 0.3
-  delay: 3
+  duration: 0.2
+  delay: 1.2
   selectedScale: 1
   animationDuration: 0.2
   hoverSound: {fileID: 0}
@@ -13267,8 +13267,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 0}
   targetPosition: {fileID: 0}
-  duration: 1
-  delay: 1
+  duration: 0.2
+  delay: 0.4
   selectedScale: 1.2
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -13712,8 +13712,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 2107445451}
   targetPosition: {fileID: 1120200433}
-  duration: 0.5
-  delay: 2
+  duration: 0.2
+  delay: 0.8
   selectedScale: 1.2
   animationDuration: 0.2
   hoverSound: {fileID: 8300000, guid: eece02e8e415544879692481f94078d5, type: 3}
@@ -13978,8 +13978,8 @@ MonoBehaviour:
   settingsMenuFirstButton: {fileID: 66348830}
   sourcePosition: {fileID: 796245096}
   targetPosition: {fileID: 273906115}
-  duration: 0.5
-  delay: 1
+  duration: 0.2
+  delay: 0.4
   selectedScale: 1.2
   animationDuration: 0.2
   audioSource: {fileID: 755102033}
