@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.0077834087, g: 0.062289514, b: 0.19571511, a: 1}
+  m_IndirectSpecularColor: {r: 0.007728533, g: 0.062291533, b: 0.1956892, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -37035,7 +37035,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 1519018068}
   targetPosition: {fileID: 7042190699345056093}
-  duration: 1
+  duration: 0.5
   delay: 2
   selectedScale: 1.2
   animationDuration: 0.2
@@ -38568,7 +38568,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 950971962}
   targetPosition: {fileID: 4535865982278966484}
-  duration: 1
+  duration: 0.5
   delay: 1
   selectedScale: 1.2
   animationDuration: 0.2
@@ -38620,7 +38620,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 485593423}
   targetPosition: {fileID: 1612989263100691201}
-  duration: 1
+  duration: 0.5
   delay: 0.5
   selectedScale: 1
   animationDuration: 0.2
@@ -39747,7 +39747,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 90891635}
   targetPosition: {fileID: 3785310808822626227}
-  duration: 1
+  duration: 0.5
   delay: 1.5
   selectedScale: 1.2
   animationDuration: 0.2

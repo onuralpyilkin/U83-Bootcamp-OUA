@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.18028378, g: 0.22571412, b: 0.30692285, a: 1}
+  m_IndirectSpecularColor: {r: 0.18028326, g: 0.22571333, b: 0.30692202, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -955,7 +955,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 1014966715}
   targetPosition: {fileID: 1029891690}
-  duration: 1
+  duration: 0.5
   delay: 3
   selectedScale: 1.2
   animationDuration: 0.2
@@ -2444,13 +2444,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sceneName: LEVEL0
   settingsPanel: {fileID: 908383151}
-  settingsPanelCloseDelay: 4
+  settingsPanelCloseDelay: 2
   mainMenuPanel: {fileID: 428054923}
-  mainMenuPanelCloseDelay: 5
+  mainMenuPanelCloseDelay: 3
   creditsPanel: {fileID: 1330710637}
-  creditsPanelCloseDelay: 6
+  creditsPanelCloseDelay: 4
   levelsPanel: {fileID: 1748410261}
-  levelsPanelCloseDelay: 3
+  levelsPanelCloseDelay: 2
   gamepadLoadingScreen: {fileID: 363218271}
   keyboardLoadingScreen: {fileID: 1768603164}
   slider: {fileID: 973390445}
@@ -4404,6 +4404,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4521c0d2e39511e4fa34afcc7fb920e9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  IsPauseMenu: 0
   panels:
   - name: MainMenu
     panel: {fileID: 428054923}
@@ -5314,7 +5315,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 268155418}
   targetPosition: {fileID: 2093724497}
-  duration: 1
+  duration: 0.5
   delay: 0.5
   selectedScale: 1
   animationDuration: 0.2
@@ -5512,7 +5513,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 443911266}
   targetPosition: {fileID: 1416632360}
-  duration: 1
+  duration: 0.5
   delay: 1.5
   selectedScale: 1.2
   animationDuration: 0.2
@@ -5799,7 +5800,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 936570061}
   targetPosition: {fileID: 866143872}
-  duration: 1
+  duration: 0.3
   delay: 2.5
   selectedScale: 1
   animationDuration: 0.2
@@ -5954,7 +5955,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 2146769898}
   targetPosition: {fileID: 1584509672}
-  duration: 1
+  duration: 0.5
   delay: 0.5
   selectedScale: 1
   animationDuration: 0.2
@@ -6388,7 +6389,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 457061690}
   targetPosition: {fileID: 43227542}
-  duration: 1
+  duration: 0.3
   delay: 3.5
   selectedScale: 1
   animationDuration: 0.2
@@ -6951,7 +6952,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 962275588}
   targetPosition: {fileID: 1842121190}
-  duration: 1
+  duration: 0.5
   delay: 1
   selectedScale: 1
   animationDuration: 0.2
@@ -8147,7 +8148,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 758796303}
   targetPosition: {fileID: 638308976}
-  duration: 1
+  duration: 0.3
   delay: 1
   selectedScale: 1
   animationDuration: 0.2
@@ -8397,7 +8398,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 38338399}
   targetPosition: {fileID: 352565834}
-  duration: 1
+  duration: 0.5
   delay: 2.5
   selectedScale: 1.2
   animationDuration: 0.2
@@ -8785,7 +8786,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 1602372717}
   targetPosition: {fileID: 1629330404}
-  duration: 1
+  duration: 0.5
   delay: 1
   selectedScale: 1.2
   animationDuration: 0.2
@@ -10054,7 +10055,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 1047211157}
   targetPosition: {fileID: 1265002504}
-  duration: 1
+  duration: 0.5
   delay: 0.5
   selectedScale: 1
   animationDuration: 0.2
@@ -10556,7 +10557,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 16657489}
   targetPosition: {fileID: 1827351896}
-  duration: 1
+  duration: 0.5
   delay: 1.5
   selectedScale: 1.2
   animationDuration: 0.2
@@ -10632,7 +10633,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 229535210}
   targetPosition: {fileID: 1625821392}
-  duration: 1
+  duration: 0.3
   delay: 0.5
   selectedScale: 1
   animationDuration: 0.2
@@ -11078,7 +11079,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 786643802}
   targetPosition: {fileID: 352904984}
-  duration: 1
+  duration: 0.5
   delay: 2
   selectedScale: 1.2
   animationDuration: 0.2
@@ -11307,7 +11308,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 436458593}
   targetPosition: {fileID: 1261410563}
-  duration: 1
+  duration: 0.3
   delay: 1.5
   selectedScale: 1
   animationDuration: 0.2
@@ -11587,7 +11588,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 139521952}
   targetPosition: {fileID: 2089643162}
-  duration: 1
+  duration: 0.3
   delay: 4
   selectedScale: 1.2
   animationDuration: 0.2
@@ -12508,7 +12509,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 1895735484}
   targetPosition: {fileID: 1895147520}
-  duration: 1
+  duration: 0.3
   delay: 2
   selectedScale: 1
   animationDuration: 0.2
@@ -13017,7 +13018,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 176660792}
   targetPosition: {fileID: 295523625}
-  duration: 1
+  duration: 0.3
   delay: 3
   selectedScale: 1
   animationDuration: 0.2
@@ -13711,7 +13712,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   sourcePosition: {fileID: 2107445451}
   targetPosition: {fileID: 1120200433}
-  duration: 1
+  duration: 0.5
   delay: 2
   selectedScale: 1.2
   animationDuration: 0.2
@@ -13977,7 +13978,7 @@ MonoBehaviour:
   settingsMenuFirstButton: {fileID: 66348830}
   sourcePosition: {fileID: 796245096}
   targetPosition: {fileID: 273906115}
-  duration: 1
+  duration: 0.5
   delay: 1
   selectedScale: 1.2
   animationDuration: 0.2
