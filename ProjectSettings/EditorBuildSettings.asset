@@ -7,7 +7,7 @@ EditorBuildSettings:
   m_Scenes:
   - enabled: 1
     path: "Assets/g\xFClce/Scene_Gulce/Menu UI with Input.unity"
-    guid: 156e7dc3641361944b4df084540ac80a
+    guid: 0df1a6ab0927caa4eb4bde2dfb81410e
   - enabled: 1
     path: Assets/Scenes/GameLevels/LEVEL0.unity
     guid: d709675ca5f7d554dbc07a16ed77f1cd
