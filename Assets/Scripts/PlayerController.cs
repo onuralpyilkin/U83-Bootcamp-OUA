@@ -118,8 +118,8 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        /*QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;*/
         cameraController = CameraController.Instance;
         inputManager = PlayerInputManager.Instance;
         audioSource = GetComponentInChildren<AudioSource>();

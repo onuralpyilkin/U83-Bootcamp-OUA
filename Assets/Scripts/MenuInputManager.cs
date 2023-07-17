@@ -127,7 +127,7 @@ public class MenuInputManager : MonoBehaviour
             }
             else
             {
-                UpDownMove(isPositiveMovement);
+                UpDownMove(!isPositiveMovement);
             }
         }
     }

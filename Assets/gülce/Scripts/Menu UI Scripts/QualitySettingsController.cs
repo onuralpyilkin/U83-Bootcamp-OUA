@@ -43,8 +43,8 @@ public class QualitySettingsController : MonoBehaviour
     {
         menuUIButtons.OnPointerEnter();
         qualityLevel--;
-        if (qualityLevel < 0)
-            qualityLevel = 0;
+        if (qualityLevel < 1)
+            qualityLevel = 1;
 
         SetQualityText();
         SaveQualitySettings();
@@ -56,9 +56,9 @@ public class QualitySettingsController : MonoBehaviour
         string qualityString;
         switch (qualityLevel)
         {
-            case 0:
+            /*case 0:
                 qualityString = "Low";
-                break;
+                break;*/
             case 1:
                 qualityString = "Medium";
                 break;

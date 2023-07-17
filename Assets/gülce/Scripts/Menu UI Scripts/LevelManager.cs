@@ -21,7 +21,7 @@ public class LevelManager : MonoBehaviour
 
     private void Awake()
     {
-        int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1); // Oyunda açılan son seviyenin indeksini al, varsayılan olarak 1 i ayarla
+        /*int unlockedLevel = PlayerPrefs.GetInt("UnlockedLevel", 1); // Oyunda açılan son seviyenin indeksini al, varsayılan olarak 1 i ayarla
         for (int i = 0; i < buttons.Length; i++)
         {
             buttons[i].interactable = false; //Butonları devre dışı bırak
@@ -29,6 +29,12 @@ public class LevelManager : MonoBehaviour
         for (int i = 0; i < unlockedLevel; i++)
         {
             buttons[i].interactable = true; //Açılan seviyelere kadar olan butonları tıklanabilir yap
+        }*/
+
+        //Tüm seviyeler test için açık bırakıldı
+        for (int i = 0; i < buttons.Length; i++)
+        {
+            buttons[i].interactable = true;
         }
     }
     private void Start()
