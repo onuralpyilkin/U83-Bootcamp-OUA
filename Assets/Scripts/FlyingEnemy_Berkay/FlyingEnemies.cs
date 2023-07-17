@@ -39,7 +39,7 @@ public class FlyingEnemies : MonoBehaviour
     [SerializeField]private float attackInterval = 2f; // Saldırı aralığı (her 2 saniyede bir)
     private float nextAttackTime = 0f;
     public int damageCount = 2;
-    public string attackPlayerTag = "PlayerBody";
+    public string attackPlayerTag = "Player";
 
 
     private void Awake() {
@@ -53,7 +53,7 @@ public class FlyingEnemies : MonoBehaviour
         _animator = GetComponentInChildren<Animator>();
         initialPosition = transform.position;
 
-        GameObject playerBodyObject = GameObject.FindGameObjectWithTag(attackPlayerTag);
+        GameObject playerBodyObject = PlayerController.Instance.gameObject;
         if (playerBodyObject != null)
         {
             playerBodyTransform = playerBodyObject.transform;
@@ -136,6 +136,7 @@ public class FlyingEnemies : MonoBehaviour
             Vector3 copyOffsetVector = new Vector3(Random.Range(-copyOffset, copyOffset), 0f, Random.Range(-copyOffset, copyOffset));
             Vector3 spawnPosition = playerBodyTransform.position + copyOffsetVector;
             copyEnemies[i] = Instantiate(enemyPrefab, spawnPosition, Quaternion.identity);
+            copyEnemies[i].GetComponent<FlyingEnemyHealth>().GroupController = GetComponentInParent<EnemyGroupController>();
         }
     }
 

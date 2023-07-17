@@ -9,15 +9,19 @@ public class AttackState : StateMachineBehaviour
     private EnemyMetalonHealth enemyMetalonHealth;
     private int attackDamage = 5;
     private float attackRange = 1.5f;
+    private AudioSource audioSource;
+    public AudioClip attackSound;
 
     // OnStateEnter is called when a transition starts and the state machine starts to evaluate this state
     override public void OnStateEnter(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
         player = PlayerController.Instance.transform;
         enemyMetalonHealth = animator.GetComponent<EnemyMetalonHealth>();
+        audioSource = animator.GetComponent<AudioSource>();
         attackDamage = enemyMetalonHealth.AttackDamage;
         attackRange = enemyMetalonHealth.AttackRange;
         hasDamagedPlayer = false;
+        audioSource.PlayOneShot(attackSound);
     }
 
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks

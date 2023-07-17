@@ -77,11 +77,13 @@ public class EnemyGroupController : MonoBehaviour
 
     public void PlayDieVFX(Transform transform, float DieVFXLifeTime, float offsetY = 1f)
     {
+        DieVFXPool.SelfRelease = true;
+        DieVFXPool.ReleaseDelay = DieVFXLifeTime;
         VFX vfx = DieVFXPool.Get();
         vfx.SetPosition(transform.position + Vector3.up * offsetY);
         vfx.SetRotation(transform.rotation);
         vfx.Play();
-        StartCoroutine(ReleaseDieVFX(vfx, DieVFXLifeTime));
+        //StartCoroutine(ReleaseDieVFX(vfx, DieVFXLifeTime));
     }
 
     IEnumerator ReleaseDieVFX(VFX vfx, float delay)

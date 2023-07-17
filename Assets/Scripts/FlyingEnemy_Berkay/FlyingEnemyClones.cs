@@ -26,7 +26,7 @@ public class FlyingEnemyClones : MonoBehaviour
     [SerializeField]private float attackInterval = 2f; // Saldırı aralığı (her 2 saniyede bir)
     private float nextAttackTime = 0f;
     public int damageCount = 5;
-    public string attackPlayerTag = "PlayerBody";
+    public string attackPlayerTag = "Player";
 
 
     private void Awake() {
@@ -40,7 +40,7 @@ public class FlyingEnemyClones : MonoBehaviour
     {
         initialPosition = transform.position;
 
-        GameObject playerBodyObject = GameObject.FindGameObjectWithTag(attackPlayerTag);
+        GameObject playerBodyObject = PlayerController.Instance.gameObject;
         if (playerBodyObject != null)
         {
             playerBodyTransform = playerBodyObject.transform;

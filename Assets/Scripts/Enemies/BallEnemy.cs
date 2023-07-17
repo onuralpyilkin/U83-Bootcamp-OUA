@@ -34,12 +34,13 @@ public class BallEnemy : MonoBehaviour, IEnemy
     public float AttackStartDelay = 0.5f;
     private float attackStartTimer = 0f;
     private float attackTimer = 0f;
+    private AudioSource audioSource;
+    public AudioClip attackSound;
 
-    // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        //animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponentInChildren<Animator>();
         openTriggerHash = Animator.StringToHash("Open");
         closeTriggerHash = Animator.StringToHash("Close");
@@ -48,7 +49,6 @@ public class BallEnemy : MonoBehaviour, IEnemy
         Health = 100;
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (!HasTicket)
@@ -146,6 +146,7 @@ public class BallEnemy : MonoBehaviour, IEnemy
 
     public void Attack()
     {
+        audioSource.PlayOneShot(attackSound);
         if (CheckPlayerInAttackRange(AttackRange, false))
         {
             PlayerController.Instance.TakeDamage(AttackDamage);
