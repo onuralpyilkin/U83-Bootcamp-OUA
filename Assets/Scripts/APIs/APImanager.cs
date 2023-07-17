@@ -180,7 +180,7 @@ public class APImanager : MonoBehaviour
 
     
     // Admin Komutları
-    [MenuItem("Admin/ChangeADMIN")]
+    /*[MenuItem("Admin/ChangeADMIN")]
     public static void ChangeAdminID()
     {
         if (EditorUtility.DisplayDialog("ID'yi AdminID olarak degistirmek istiyor musun? ",
@@ -201,5 +201,5 @@ public class APImanager : MonoBehaviour
         string playerID = GeneratePlayerID();
         PlayerPrefs.SetString(PlayerPrefKey, playerID);
         PlayerPrefs.Save();
-    }
+    }*/
 }
