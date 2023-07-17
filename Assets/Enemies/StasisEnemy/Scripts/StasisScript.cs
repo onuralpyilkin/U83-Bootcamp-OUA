@@ -3,18 +3,23 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class StasisScript : MonoBehaviour
+public class StasisScript : MonoBehaviour, IEnemy
 {
+    public int Health { get; set; }
+    public bool HasTicket { get; set; }
+    public EnemyGroupController GroupController { get; set; }
+
+    public LayerMask PlayerLayer;
+    public float AttackRange = 1f;
+    public int AttackDamage = 5;
     Animator StasisAnim;
 
     Transform _player;
 
     NavMeshAgent _agent;
 
-    public float _distance;
+    private float _distance;
     public float _visionDistance = 6f;
-
-    public int _health = 50;
 
     bool isTeleporting = false;
     bool isFleeing = false;
@@ -23,16 +28,31 @@ public class StasisScript : MonoBehaviour
     {
         StasisAnim = GetComponent<Animator>();
         _agent = gameObject.GetComponent<NavMeshAgent>();
-        _player = GameObject.FindWithTag("Player").transform;
+        _player = PlayerController.Instance.transform;
+        Health = 100;
     }
 
     void Update()
     {
+        Vector3 lookDirection = _player.position - transform.position;
+        lookDirection.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(lookDirection);
+        transform.rotation = rotation;
+
+        if (!HasTicket)
+        {
+            StopAllCoroutines();
+            StasisAnim.SetBool("isTeleporting", false);
+            StasisAnim.SetBool("fleeing", false);
+            StasisAnim.SetFloat("speed", 0f);
+            _agent.enabled = false;
+            return;
+        }
         StasisAnim.SetFloat("speed", _agent.velocity.magnitude);
 
         _distance = Vector3.Distance(transform.position, _player.position);
 
-        if (_health <= 5)
+        if (/*_health*/ Health <= 5)
         {
             if (!isFleeing)
             {
@@ -62,7 +82,7 @@ public class StasisScript : MonoBehaviour
                 }
                 else
                 {
-                    _agent.destination = transform.position; 
+                    _agent.destination = transform.position;
                 }
             }
         }
@@ -71,11 +91,6 @@ public class StasisScript : MonoBehaviour
         {
             StartCoroutine(PlayIdleAnimation());
         }
-
-        Vector3 lookDirection = _player.position - transform.position;
-        lookDirection.y = 0;
-        Quaternion rotation = Quaternion.LookRotation(lookDirection);
-        transform.rotation = rotation;
     }
 
     IEnumerator Flee()
@@ -84,14 +99,15 @@ public class StasisScript : MonoBehaviour
         StasisAnim.SetBool("isTeleporting", true);
         yield return new WaitForSeconds(2f);
 
-        
+
         Vector3 fleePosition = FindFleePosition();
         transform.position = fleePosition;
 
         // can doldur
-        _health = 50;
+        /*_health = 50;*/
+        Health = 100;
 
-        
+
         _agent.enabled = false;
 
         yield return new WaitForSeconds(2f);
@@ -100,13 +116,13 @@ public class StasisScript : MonoBehaviour
         StasisAnim.SetBool("fleeing", false);
         StasisAnim.SetBool("isTeleporting", false);
 
-        
+
         _agent.enabled = true;
     }
 
     Vector3 FindFleePosition()
     {
-        // en uzak noktayý bul
+        // en uzak noktayï¿½ bul
         Vector3 fleePosition = Vector3.zero;
         float maxDistance = 0f;
 
@@ -115,16 +131,16 @@ public class StasisScript : MonoBehaviour
 
         for (int i = 0; i < 100; i++) // 100 deneme yap
         {
-            Vector3 randomPosition = Random.insideUnitSphere * 20f; // Random konum seçme
+            Vector3 randomPosition = Random.insideUnitSphere * 20f; // Random konum seï¿½me
             randomPosition += transform.position;
             randomPosition.y = transform.position.y;
 
-            if (NavMesh.SamplePosition(randomPosition, out hit, 1f, NavMesh.AllAreas)) // bake var mý kontrol et
+            if (NavMesh.SamplePosition(randomPosition, out hit, 1f, NavMesh.AllAreas)) // bake var mï¿½ kontrol et
             {
-                if (NavMesh.CalculatePath(transform.position, hit.position, NavMesh.AllAreas, path)) 
+                if (NavMesh.CalculatePath(transform.position, hit.position, NavMesh.AllAreas, path))
                 {
                     float distance = GetPathDistance(path);
-                    if (distance > maxDistance) 
+                    if (distance > maxDistance)
                     {
                         maxDistance = distance;
                         fleePosition = hit.position;
@@ -157,5 +173,53 @@ public class StasisScript : MonoBehaviour
 
         isTeleporting = false;
         StasisAnim.SetBool("isTeleporting", false);
+    }
+
+    public void TakeDamage(int damage)
+    {
+        Health -= damage;
+        if (Health <= 0)
+        {
+            Die();
+        }
+    }
+
+    public void Die()
+    {
+        Debug.Log("Enemy died.");
+        //state = State.Dead;
+        GroupController.RemoveEnemy(this);
+        GroupController.PlayDieVFX(transform, 5f);
+        Destroy(gameObject);
+    }
+
+    public void Attack()
+    {
+        if (CheckPlayerInAttackRange(AttackRange, true))
+        {
+            PlayerController.Instance.TakeDamage(AttackDamage);
+        }
+    }
+
+    bool CheckPlayerInAttackRange(float range, bool useDotProduct = true)
+    {
+        Collider[] player = Physics.OverlapSphere(transform.position, range, PlayerLayer);
+        if (player.Length <= 0)
+            return false;
+
+        if (!useDotProduct)
+            return true;
+
+        float dotProduct = Vector3.Dot(transform.forward, (player[0].transform.position - transform.position).normalized);
+        if (dotProduct > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
     }
 }

@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AttackName: C2A3
   AnimatorTriggerName: C2A3
-  Damage: 40
-  Range: 10
+  Damage: 15
+  Range: 5
+  PowerCost: 10
   TriggerHash: -642251165

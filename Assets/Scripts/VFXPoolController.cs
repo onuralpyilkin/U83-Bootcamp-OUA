@@ -8,6 +8,10 @@ public class VFXPoolController : MonoBehaviour
 
     //public List<VisualEffect> vfxList = new List<VisualEffect>();
     private Queue<VFX> vfxQueue = new Queue<VFX>();
+    [HideInInspector]
+    public bool SelfRelease = false;
+    [HideInInspector]
+    public float ReleaseDelay = 3f;
 
     void Awake()
     {
@@ -23,6 +27,10 @@ public class VFXPoolController : MonoBehaviour
     {
         VFX vfx = vfxQueue.Dequeue();
         vfx.SetActive(true);
+        if (SelfRelease)
+        {
+            StartCoroutine(ReleaseCoroutine(vfx, ReleaseDelay));
+        }
         return vfx;
     }
 
@@ -35,5 +43,11 @@ public class VFXPoolController : MonoBehaviour
     public int GetCount()
     {
         return vfxQueue.Count;
+    }
+
+    IEnumerator ReleaseCoroutine(VFX vfx, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Release(vfx);
     }
 }

@@ -5,9 +5,24 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 0
-    path: Assets/Scenes/SampleScene.unity
-    guid: 99c9720ab356a0642a771bea13969a05
+  - enabled: 1
+    path: "Assets/g\xFClce/Scene_Gulce/Menu UI with Input.unity"
+    guid: 0df1a6ab0927caa4eb4bde2dfb81410e
+  - enabled: 1
+    path: Assets/Scenes/GameLevels/LEVEL0.unity
+    guid: d709675ca5f7d554dbc07a16ed77f1cd
+  - enabled: 1
+    path: Assets/Scenes/GameLevels/LEVEL1.unity
+    guid: 99b7d77343295f5428fb12b53f8e5225
+  - enabled: 1
+    path: Assets/Scenes/GameLevels/LEVEL2.unity
+    guid: 2a1b7d6a0a769bf4d9b0444c8a54dd37
+  - enabled: 1
+    path: Assets/Scenes/GameLevels/LEVEL3.unity
+    guid: b65bac71cc3fc2b4eaae99bef8fc1c01
+  - enabled: 1
+    path: Assets/Scenes/GameLevels/GameOver.unity
+    guid: e6fecb3a9b9fc3c4cb474d904816e71f
   m_configObjects:
     com.unity.input.settings: {fileID: 11400000, guid: 9f49ec60144034543b51c12c2a64575b,
       type: 2}

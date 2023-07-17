@@ -14,12 +14,15 @@ public class BallEnemy : MonoBehaviour, IEnemy
     }
     [SerializeField]
     public int Health { get; set; }
+    public bool HasTicket { get; set; }
+    public EnemyGroupController GroupController { get; set; }
 
     public float DetectionRange = 10f;
     public float AttackRange = 2f;
     public float AttackSpeed = 1f; //the time between attacks
 
-    public int Damage = 1;
+    public int AttackDamage = 1;
+    public LayerMask PlayerLayer;
     private NavMeshAgent agent;
     private Animator animator;
     private int openTriggerHash, closeTriggerHash;
@@ -31,23 +34,30 @@ public class BallEnemy : MonoBehaviour, IEnemy
     public float AttackStartDelay = 0.5f;
     private float attackStartTimer = 0f;
     private float attackTimer = 0f;
+    private AudioSource audioSource;
+    public AudioClip attackSound;
+    public int maxHealth = 100;
 
-    // Start is called before the first frame update
     void Start()
     {
         agent = GetComponent<NavMeshAgent>();
-        //animator = GetComponent<Animator>();
+        audioSource = GetComponent<AudioSource>();
         animator = GetComponentInChildren<Animator>();
         openTriggerHash = Animator.StringToHash("Open");
         closeTriggerHash = Animator.StringToHash("Close");
         childBody = transform.GetChild(0);
         bodyCircumference = ChildBodyRadius * Mathf.PI * 2;
-        Health = 100;
+        Health = maxHealth;
     }
 
-    // Update is called once per frame
     void Update()
     {
+        if (!HasTicket)
+        {
+            state = State.Idle;
+            agent.SetDestination(transform.position);
+            return;
+        }
         Vector3 position = transform.position;
         position.y = 0;
         Vector3 playerPosition = PlayerController.Instance.transform.position;
@@ -94,23 +104,23 @@ public class BallEnemy : MonoBehaviour, IEnemy
         else if (state == State.Chasing)
         {
             attackStartTimer = 0f;
-            float currentVelocityForward = agent.velocity.magnitude * (transform.InverseTransformDirection(agent.velocity).z > 0 ? 1 : -1);
+            float currentVelocityForward = agent.velocity.magnitude * (transform.InverseTransformDirection(agent.velocity).z > 0 ? -1 : 1);
             float currentVelocityRight = agent.velocity.magnitude * (transform.InverseTransformDirection(agent.velocity).x > 0 ? 1 : -1);
             childBody.Rotate(360 * (currentVelocityRight / bodyCircumference) * Time.deltaTime, 0, 360 * (currentVelocityForward / bodyCircumference) * Time.deltaTime);
         }
         else if (state == State.Attacking)
         {
-            if(attackStartTimer < AttackStartDelay)
+            if (attackStartTimer < AttackStartDelay)
             {
                 attackStartTimer += Time.deltaTime;
                 attackTimer = 0f;
                 return;
             }
             attackTimer += Time.deltaTime;
-            if(attackTimer >= AttackSpeed)
+            if (attackTimer >= AttackSpeed)
             {
                 attackTimer = 0f;
-                PlayerController.Instance.TakeDamage(Damage);
+                Attack();
             }
             childBody.localEulerAngles = Vector3.Lerp(childBody.eulerAngles, new Vector3(0, childBody.eulerAngles.y + AttackRotationSpeed, 0), Time.deltaTime * AttackRotationSpeed);
         }
@@ -130,6 +140,39 @@ public class BallEnemy : MonoBehaviour, IEnemy
     {
         Debug.Log("Enemy died.");
         state = State.Dead;
+        GroupController.RemoveEnemy(this);
+        GroupController.PlayDieVFX(transform, 5f, 0f);
         Destroy(gameObject);
+    }
+
+    public void Attack()
+    {
+        audioSource.PlayOneShot(attackSound);
+        if (CheckPlayerInAttackRange(AttackRange, false))
+        {
+            PlayerController.Instance.TakeDamage(AttackDamage);
+        }
+    }
+
+    bool CheckPlayerInAttackRange(float range, bool useDotProduct = true)
+    {
+        Collider[] player = Physics.OverlapSphere(transform.position, range, PlayerLayer);
+        if (player.Length <= 0)
+            return false;
+
+        if (!useDotProduct)
+            return true;
+
+        float dotProduct = Vector3.Dot(transform.forward, (player[0].transform.position - transform.position).normalized);
+        if (dotProduct > 0)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    public Vector3 GetPosition()
+    {
+        return transform.position;
     }
 }

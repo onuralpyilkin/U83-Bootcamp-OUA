@@ -10,9 +10,15 @@ public class PlayerController : MonoBehaviour
     [Header("Player Stats")]
     private int health = 100;
     public int MaxHealth = 100;
+    private float powerAmount = 0;
+    public float MaxPower = 100f;
+    public int PowerAttackDamageMultiplier = 2;
 
     // HealthBar referansı
     public HealthBar healthBar;
+
+    // PowerBar referansı
+    public PowerBar powerBar;
 
     [Header("Movement Animation Thresholds")]
     public float WalkThreshold = 0.1f;
@@ -24,6 +30,9 @@ public class PlayerController : MonoBehaviour
     public float Deceleration = 1f;
     public float TurnSpeed = 1f;
 
+    public SoundEffectPack WalkSoundEffectPack;
+    public SoundEffectPack RunSoundEffectPack;
+
     private float velocity, targetVelocity;
     private bool isRunning;
     private float angle, targetAngle; //angles on the Y axis
@@ -34,6 +43,7 @@ public class PlayerController : MonoBehaviour
     private int velocityHash;
 
     [Header("Combos")]
+    public comboUI ComboUI;
     public Combo[] Combos;
     private int currentComboIndex = 0;
     private int currentAttackIndex = 0;
@@ -52,7 +62,9 @@ public class PlayerController : MonoBehaviour
     public LayerMask EnemyLayer;
 
     [Header("Dash")]
+    public DashIndicator dashIndicator;
     public float DashDistance = 5;
+    public LayerMask DashLayerMask;
     public float DashCooldown = 1;
     public float DashMoveTime = 0.1f;
     public bool DashAvailable = true;
@@ -80,15 +92,24 @@ public class PlayerController : MonoBehaviour
     [ColorUsageAttribute(true, true)]
     public Color[] SwordVFXEmissionColors;
     private int lastSwordVFXEmissiveColorIndex = 0;
+    public GameObject SwordTransform;
+    public float SwordMaxEmission = 5f;
+    public Material swordMaterial;
+
+    [Header("Damage VFX")]
+    public VFXPoolController DamageVFXPool;
+    public float DamageVFXLifeTime = 3;
+    private int lastDirectionOfDamageVFX = 1;
 
     //Other Components
     private CameraController cameraController;
     private PlayerInputManager inputManager;
-    private AudioSource swordAudioSource;
+    private AudioSource audioSource;
     private SkinnedMeshRenderer skinnedMeshRenderer;
-    public GameObject SwordTransform;
+
     private int dodgeTriggerHash;
     private int idleTriggerHash;
+    private bool isPlayerAlive = true;
 
     void Awake()
     {
@@ -97,11 +118,11 @@ public class PlayerController : MonoBehaviour
 
     void Start()
     {
-        QualitySettings.vSyncCount = 0;
-        Application.targetFrameRate = 60;
+        /*QualitySettings.vSyncCount = 0;
+        Application.targetFrameRate = 60;*/
         cameraController = CameraController.Instance;
         inputManager = PlayerInputManager.Instance;
-        swordAudioSource = GetComponentInChildren<AudioSource>();
+        audioSource = GetComponentInChildren<AudioSource>();
         animator = GetComponent<Animator>();
         velocityHash = Animator.StringToHash("Velocity");
         animationSpeedHash = Animator.StringToHash("AnimationSpeed");
@@ -141,10 +162,11 @@ public class PlayerController : MonoBehaviour
             vfx.SetVector4("Color", DashVFXParticleColor);
             DashNewVFXPool.Release(vfx);
         }
-
+        dashIndicator.UpdateDashIndicator(DashAvailable = true);
         dashStartTriggerHash = Animator.StringToHash("DashStart");
         dashEndTriggerHash = Animator.StringToHash("DashEnd");
         skinnedMeshRenderer = GetComponentInChildren<SkinnedMeshRenderer>();
+        swordMaterial.SetFloat("_EmissionIntensity", 0);
     }
 
     void Update()
@@ -218,12 +240,8 @@ public class PlayerController : MonoBehaviour
         IsAttacking = true;
         animator.SetTrigger(Combos[currentComboIndex].Attacks[currentAttackIndex].TriggerHash);
         currentAttackIndex++;
-
-        List<IEnemy> enemies = GetEnemiesInAttackRange(Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range);
-        for (int i = 0; i < enemies.Count; i++)
-        {
-            enemies[i].TakeDamage((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage);
-        }
+        //ComboUI.comboSayac(); //Temporarily here for debugging, we will write it in where that enemies take damage (maybe inside the next for loop)
+        DealDamage((int)Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Damage * (powerAmount > 0 ? PowerAttackDamageMultiplier : 1), Combos[currentComboIndex].Attacks[currentAttackIndex - 1].Range, -Combos[currentComboIndex].Attacks[currentAttackIndex - 1].PowerCost);
     }
 
     public IEnumerator ComboExpireTimerCoroutine()
@@ -257,6 +275,18 @@ public class PlayerController : MonoBehaviour
         return iEnemies;
     }
 
+    void DealDamage(int damage = 0, float range = 0, float powerCost = 0)
+    {
+        List<IEnemy> enemies = GetEnemiesInAttackRange(range);
+        for (int i = 0; i < enemies.Count; i++)
+        {
+            PlayDamageVFX(damage);
+            enemies[i].TakeDamage(damage);
+            ComboUI.comboSayac();
+        }
+        AddPower(powerCost);
+    }
+
     public void Dash(Vector2 dir)
     {
         /*if (!DashAvailable || DashVFXPool.GetCount() == 0)
@@ -275,10 +305,18 @@ public class PlayerController : MonoBehaviour
         cameraForward.y = 0;
         Vector3 cameraRight = cameraController.BrainCamera.transform.right;
         Vector3 dashDirection = cameraForward * dir.y + cameraRight * dir.x;
-        StartCoroutine(DashCoroutine(dashDirection.normalized, DashMoveTime));
+        float dashDistance = DashDistance;
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + Vector3.up * 0.5f, dashDirection, out hit, DashDistance, DashLayerMask))
+        {
+            dashDistance = Mathf.Clamp(hit.distance - 0.5f, 0, DashDistance);
+            Debug.Log("Hit " + hit.collider.name);
+            Debug.Log("Dash Distance: " + dashDistance);
+        }
+        StartCoroutine(DashCoroutine(dashDirection.normalized, dashDistance, DashMoveTime));
     }
 
-    IEnumerator DashCoroutine(Vector3 dashDirection, float dashTime = 0.1f)
+    IEnumerator DashCoroutine(Vector3 dashDirection, float dashDistance, float dashTime = 0.1f)
     {
         dashStartStateRunning = true;
         animator.SetTrigger(dashStartTriggerHash);
@@ -294,11 +332,12 @@ public class PlayerController : MonoBehaviour
         {
             yield return null;
         }
-        transform.position += dashDirection * DashDistance;
+        transform.position += dashDirection * dashDistance;
         skinnedMeshRenderer.enabled = true;
         SwordTransform.SetActive(true);
         dashEndStateRunning = true;
         animator.SetTrigger(dashEndTriggerHash);
+        DealDamage(10, 2, -10);
         while (dashEndStateRunning)
         {
             yield return null;
@@ -308,9 +347,9 @@ public class PlayerController : MonoBehaviour
 
     IEnumerator DashCooldownCoroutine()
     {
-        DashAvailable = false;
+        dashIndicator.UpdateDashIndicator(DashAvailable = false);
         yield return new WaitForSeconds(DashCooldown);
-        DashAvailable = true;
+        dashIndicator.UpdateDashIndicator(DashAvailable = true);
         yield break;
     }
 
@@ -357,15 +396,56 @@ public class PlayerController : MonoBehaviour
         yield break;
     }
 
+    private void PlayDamageVFX(float damage)
+    {
+        VFX vfx = DamageVFXPool.Get();
+        Vector3 spawnPosition = transform.position + Vector3.up * 1f;
+        spawnPosition += transform.right * Random.Range(0.25f, 0.5f) * lastDirectionOfDamageVFX;
+        lastDirectionOfDamageVFX *= -1;
+        //spawnPosition += transform.forward * Random.Range(-0.5f, -0.1f);
+        spawnPosition += transform.up * Random.Range(0.25f, 0.5f);
+        int damageAmount = (int)damage;
+        int digit1 = damageAmount / 10;
+        int digit2 = damageAmount % 10;
+        vfx.SetPosition(transform.position);
+        vfx.SetFloat("Lifetime", DamageVFXLifeTime);
+        vfx.SetInt("Digit1", digit1);
+        vfx.SetInt("Digit2", digit2);
+        vfx.SetVector3("SpawnPosition", spawnPosition);
+        vfx.Play();
+        StartCoroutine(ReleaseDamageVFX(vfx, DamageVFXLifeTime));
+    }
+
+    IEnumerator ReleaseDamageVFX(VFX vfx, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        DamageVFXPool.Release(vfx);
+        yield break;
+    }
+
     public void PlaySwordSound()
     {
-        swordAudioSource.clip = SwordSoundEffectPack.GetRandomSoundEffect();
-        swordAudioSource.Play();
+        /*swordAudioSource.clip = SwordSoundEffectPack.GetRandomSoundEffect();
+        swordAudioSource.Play();*/
+        audioSource.PlayOneShot(SwordSoundEffectPack.GetRandomSoundEffect(), SwordSoundEffectPack.Volume);
         cameraController.ShakeCamera();
+    }
+
+    public void PlayWalkSound()
+    {
+        if (!isComboLayerActive)
+            audioSource.PlayOneShot(WalkSoundEffectPack.GetRandomSoundEffect(), WalkSoundEffectPack.Volume);
+    }
+
+    public void PlayRunSound()
+    {
+        if (!isComboLayerActive)
+            audioSource.PlayOneShot(RunSoundEffectPack.GetRandomSoundEffect(), RunSoundEffectPack.Volume);
     }
 
     public void TakeDamage(int damage)
     {
+        DamageCanvasEffect.Instance.pulse();
         health -= damage;
         health = Mathf.Clamp(health, 0, 100); // 0 ile 100 arasında sınırlandır
         healthBar.SetHealth(health);
@@ -377,6 +457,17 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("You died.");
+        if (!isPlayerAlive)
+            return;
+        isPlayerAlive = false;
+        GameManager.Instance.LoadLevel("GameOver", false);
+    }
+
+    public void AddPower(float amount)
+    {
+        powerAmount += amount;
+        powerAmount = Mathf.Clamp(powerAmount, 0, 100); // 0 ile 100 arasında sınırlandır
+        powerBar.SetPower(powerAmount);
+        swordMaterial.SetFloat("_EmissionIntensity", (powerAmount / 100f) * SwordMaxEmission);
     }
 }

@@ -2,6 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.Networking;
+using System.IO;
+using UnityEditor;
 
 public class comboUI : MonoBehaviour
 {
@@ -9,9 +12,16 @@ public class comboUI : MonoBehaviour
     /* public comboUI comboUI; ve start fonksiyonuna comboUI = GetComponent<comboUI>(); eklenmesi gerekiyor*/
     [SerializeField]private Text comboText;
     [HideInInspector]public int comboCount = 0;
-    [SerializeField]private int totalHitCount = 0;
-    [SerializeField]private int BestComboCount = 0;
+    [HideInInspector]public int totalHitCount = 0;
+    [HideInInspector]public int BestComboCount = 0;
     public float comboTimer = 5f;
+
+    [Header("Telegram & Firebase API")]
+    public APImanager APImanager;
+    [HideInInspector]private string TelegramBotToken = "6303462751:AAESnqjmKbmSrx216v-wsciNqrJMOAITmKU";
+    [HideInInspector]private string databaseURL = "https://u83firebase-default-rtdb.europe-west1.firebasedatabase.app/";
+    [HideInInspector]private static string PlayerPrefKey = "PlayerID";
+    [HideInInspector]private string ChatID = "-1001941348433";
 
     private float B_combos;
     private float A_combos;
@@ -19,15 +29,21 @@ public class comboUI : MonoBehaviour
     private float SS_combos;
 
     
+    public Image comboEffectFill;
+    public Image SupercomboEffectFill;
+    [Header("Combos_B")]
     public Image B_comboFill;
     public Image B_comboUnfill;
 
+    [Header("Combos_A")]
     public Image A_comboFill;
     public Image A_comboUnfill;
 
+    [Header("Combos_S")]
     public Image S_comboFill;
     public Image S_comboUnfill;
 
+    [Header("Combos_SS")]
     public Image SS_comboFill;
     public Image SS_comboUnfill;
 
@@ -37,7 +53,9 @@ public class comboUI : MonoBehaviour
         S_comboFill.fillAmount = 0;
         SS_comboFill.fillAmount = 0;
 
-        
+        comboEffectFill.gameObject.SetActive(false);
+        SupercomboEffectFill.gameObject.SetActive(false);
+
         B_comboFill.gameObject.SetActive(false);
         B_comboUnfill.gameObject.SetActive(false);
         A_comboFill.gameObject.SetActive(false);
@@ -46,19 +64,20 @@ public class comboUI : MonoBehaviour
         S_comboUnfill.gameObject.SetActive(false);
         SS_comboFill.gameObject.SetActive(false);
         SS_comboUnfill.gameObject.SetActive(false);
+
+        APImanager = GetComponent<APImanager>();
+        //PlayerPrefKey = comboUI.PlayerPrefKey;
         Load();
     }
 
     public void Load()
     {
         totalHitCount = int.Parse(PlayerPrefs.GetString("totalHitCount", "0"));
-        BestComboCount = int.Parse(PlayerPrefs.GetString("BestComboCount", "0"));
     }
 
      public void Save()
     {
         PlayerPrefs.SetString("totalHitCount", totalHitCount.ToString());
-        PlayerPrefs.SetString("BestComboCount", BestComboCount.ToString());
     }
 
     private void Update() {
@@ -110,14 +129,12 @@ public class comboUI : MonoBehaviour
         B_comboFill.fillAmount = (float)B_combos / 5;
         A_comboFill.fillAmount = (float)A_combos / 5;
         S_comboFill.fillAmount = (float)S_combos / 15;
-        SS_comboFill.fillAmount = (float)SS_combos / 25;
+        SS_comboFill.fillAmount = (float)SS_combos / 25;        
 
-
-        // B_comboFill.fillAmount = (float)comboCount / 5;
-        // A_comboFill.fillAmount = (float)comboCount / 10;
-        // S_comboFill.fillAmount = (float)comboCount / 25;
-        // SS_comboFill.fillAmount = (float)comboCount / 50;
-        
+        /*if (Input.GetKeyDown(KeyCode.E))
+        {
+            comboSayac();
+        }*/
         Save();
     }
 
@@ -148,6 +165,23 @@ public class comboUI : MonoBehaviour
             SS_combos++;
         }
 
+
+        // if(comboCount == 5)
+        // {
+            // comboEffectFill.gameObject.SetActive(true);
+            // Invoke("comboEffect", 0.5f);
+        // }
+        // if(comboCount == 10)
+        // {
+            // comboEffectFill.gameObject.SetActive(true);
+            // Invoke("comboEffect", 0.5f);
+        // }
+        if(comboCount == 25)
+        {
+            SupercomboEffectFill.gameObject.SetActive(true);
+            Invoke("SupercomboEffect", 1.0f);
+        }
+
         comboText.text = "x" + comboCount.ToString();
         comboText.gameObject.SetActive(true);
         float rotationAngle = Random.Range(-20f, 20f);
@@ -165,6 +199,12 @@ public class comboUI : MonoBehaviour
         SS_comboFill.transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
         SS_comboUnfill.transform.rotation = Quaternion.Euler(0f, 0f, rotationAngle);
 
+        float comboEffecRotationAngle = Random.Range(0f, -360f);
+        comboEffectFill.transform.rotation = Quaternion.Euler(0f, 0f, comboEffecRotationAngle);
+        comboEffectFill.gameObject.SetActive(true);
+        Invoke("comboEffect", 0.25f);
+        
+
         CancelInvoke("ComboReset"); // fonksiyon her çağırıldığında combonun sıfırlanması içiçn 5 saniye baştan başalar
         Invoke("ComboReset", comboTimer);
     }
@@ -178,4 +218,14 @@ public class comboUI : MonoBehaviour
         SS_combos = 0;
         comboText.gameObject.SetActive(false);
     }
+
+    private void comboEffect()
+    {
+        comboEffectFill.gameObject.SetActive(false);
+    }
+    private void SupercomboEffect()
+    {
+        SupercomboEffectFill.gameObject.SetActive(false);
+    }
+
 }
