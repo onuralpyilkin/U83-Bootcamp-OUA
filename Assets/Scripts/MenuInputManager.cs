@@ -171,7 +171,7 @@ public class MenuInputManager : MonoBehaviour
 
     void Cancel()
     {
-        if (IsPauseMenu && !PauseMenuController.gameIsPaused)
+        if (IsPauseMenu && PauseMenuController.gameIsPaused)
             return;
         if (currentPanelIndex == -1)
             return;
@@ -182,6 +182,7 @@ public class MenuInputManager : MonoBehaviour
 
     void PauseResume()
     {
+        Debug.Log("PauseResume");
         if (currentPanelIndex == -1)
             return;
         ResetCurrentPanelButtonScales();
