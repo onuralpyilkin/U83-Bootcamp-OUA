@@ -64,6 +64,7 @@ public class PlayerController : MonoBehaviour
     [Header("Dash")]
     public DashIndicator dashIndicator;
     public float DashDistance = 5;
+    public LayerMask DashLayerMask;
     public float DashCooldown = 1;
     public float DashMoveTime = 0.1f;
     public bool DashAvailable = true;
@@ -304,10 +305,18 @@ public class PlayerController : MonoBehaviour
         cameraForward.y = 0;
         Vector3 cameraRight = cameraController.BrainCamera.transform.right;
         Vector3 dashDirection = cameraForward * dir.y + cameraRight * dir.x;
-        StartCoroutine(DashCoroutine(dashDirection.normalized, DashMoveTime));
+        float dashDistance = DashDistance;
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position + Vector3.up * 0.5f, dashDirection, out hit, DashDistance, DashLayerMask))
+        {
+            dashDistance = Mathf.Clamp(hit.distance - 0.5f, 0, DashDistance);
+            Debug.Log("Hit " + hit.collider.name);
+            Debug.Log("Dash Distance: " + dashDistance);
+        }
+        StartCoroutine(DashCoroutine(dashDirection.normalized, dashDistance, DashMoveTime));
     }
 
-    IEnumerator DashCoroutine(Vector3 dashDirection, float dashTime = 0.1f)
+    IEnumerator DashCoroutine(Vector3 dashDirection, float dashDistance, float dashTime = 0.1f)
     {
         dashStartStateRunning = true;
         animator.SetTrigger(dashStartTriggerHash);
@@ -323,7 +332,7 @@ public class PlayerController : MonoBehaviour
         {
             yield return null;
         }
-        transform.position += dashDirection * DashDistance;
+        transform.position += dashDirection * dashDistance;
         skinnedMeshRenderer.enabled = true;
         SwordTransform.SetActive(true);
         dashEndStateRunning = true;
