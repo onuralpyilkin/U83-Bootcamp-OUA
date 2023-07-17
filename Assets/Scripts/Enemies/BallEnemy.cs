@@ -36,6 +36,7 @@ public class BallEnemy : MonoBehaviour, IEnemy
     private float attackTimer = 0f;
     private AudioSource audioSource;
     public AudioClip attackSound;
+    public int maxHealth = 100;
 
     void Start()
     {
@@ -46,7 +47,7 @@ public class BallEnemy : MonoBehaviour, IEnemy
         closeTriggerHash = Animator.StringToHash("Close");
         childBody = transform.GetChild(0);
         bodyCircumference = ChildBodyRadius * Mathf.PI * 2;
-        Health = 100;
+        Health = maxHealth;
     }
 
     void Update()

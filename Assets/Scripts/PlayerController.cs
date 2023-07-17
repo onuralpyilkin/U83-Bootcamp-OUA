@@ -445,6 +445,7 @@ public class PlayerController : MonoBehaviour
 
     public void TakeDamage(int damage)
     {
+        DamageCanvasEffect.Instance.pulse();
         health -= damage;
         health = Mathf.Clamp(health, 0, 100); // 0 ile 100 arasında sınırlandır
         healthBar.SetHealth(health);

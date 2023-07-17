@@ -31,7 +31,7 @@ public class FlyingEnemyClones : MonoBehaviour
 
     private void Awake() {
         _rb = GetComponent<Rigidbody>();
-        _rb.isKinematic = true; // Duvarlardan gecmeyi ac
+        //_rb.isKinematic = true; // Duvarlardan gecmeyi ac
         _animator = GetComponentInChildren<Animator>();
     }
 
@@ -169,7 +169,7 @@ public class FlyingEnemyClones : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag(attackPlayerTag))
         {
-            _rb.isKinematic = false;
+           // _rb.isKinematic = false;
             _animator.SetBool("isAttack", true);
         }
     }
@@ -177,7 +177,7 @@ public class FlyingEnemyClones : MonoBehaviour
     private void OnTriggerExit(Collider other) {
         if(other.CompareTag(attackPlayerTag))
         {
-            _rb.isKinematic = true;
+           // _rb.isKinematic = true;
             _animator.SetBool("isAttack", false);
         }
     }

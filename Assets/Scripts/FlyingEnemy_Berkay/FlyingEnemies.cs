@@ -40,11 +40,12 @@ public class FlyingEnemies : MonoBehaviour
     private float nextAttackTime = 0f;
     public int damageCount = 2;
     public string attackPlayerTag = "Player";
+    //private FlyingEnemyHealth flyingEnemyHealth;
 
 
     private void Awake() {
         _rb = GetComponent<Rigidbody>();
-        _rb.isKinematic = true; // Duvarlardan gecmeyi ac
+        //_rb.isKinematic = true; // Duvarlardan gecmeyi ac
     }
 
 
@@ -52,6 +53,8 @@ public class FlyingEnemies : MonoBehaviour
     {
         _animator = GetComponentInChildren<Animator>();
         initialPosition = transform.position;
+        /*flyingEnemyHealth = GetComponent<FlyingEnemyHealth>();
+        isPlayerDetected = flyingEnemyHealth.HasTicket;*/
 
         GameObject playerBodyObject = PlayerController.Instance.gameObject;
         if (playerBodyObject != null)
@@ -70,6 +73,7 @@ public class FlyingEnemies : MonoBehaviour
 
     private void Update()
     {
+        //isPlayerDetected = flyingEnemyHealth.HasTicket;
         if (isDead)
         {
             return;
@@ -223,7 +227,7 @@ public class FlyingEnemies : MonoBehaviour
     private void OnTriggerEnter(Collider other) {
         if(other.CompareTag(attackPlayerTag))
         {
-            _rb.isKinematic = false;
+            //_rb.isKinematic = false;
             _animator.SetBool("isAttack", true);
         }
     }
@@ -231,7 +235,7 @@ public class FlyingEnemies : MonoBehaviour
     private void OnTriggerExit(Collider other) {
         if(other.CompareTag(attackPlayerTag))
         {
-            _rb.isKinematic = true;
+            //_rb.isKinematic = true;
             _animator.SetBool("isAttack", false);
         }
     }

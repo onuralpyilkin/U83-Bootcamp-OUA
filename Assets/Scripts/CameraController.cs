@@ -70,7 +70,7 @@ public class CameraController : MonoBehaviour
         if (isCombatCameraActive)
         {
             CameraTarget.localEulerAngles = Vector3.zero;
-            AngleOnYAxis = 0;
+            AngleOnYAxis = CombatCamera.transform.localEulerAngles.y;
         }
     }
 

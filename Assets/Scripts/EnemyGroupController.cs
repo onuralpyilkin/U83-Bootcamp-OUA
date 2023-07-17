@@ -13,6 +13,7 @@ public class EnemyGroupController : MonoBehaviour
     List<IEnemy> enemies = new List<IEnemy>();
     public UnityEvent OnEnemyGroupEnable;
     public UnityEvent OnEnemyGroupDie;
+    //public bool isOverwrited = false;
     void Start()
     {
         enemies = new List<IEnemy>(GetComponentsInChildren<IEnemy>());
@@ -28,6 +29,10 @@ public class EnemyGroupController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        /*if(isOverwrited)
+        {
+            return;
+        }*/
         if (enemies.Count > 0)
         {
             if (ticketChangeTimer >= TicketChangeRate)
@@ -59,7 +64,8 @@ public class EnemyGroupController : MonoBehaviour
 
     void PickTicketOwner()
     {
-        if(enemies.Count == 1){
+        if (enemies.Count == 1)
+        {
             enemies[0].HasTicket = true;
             return;
         }
@@ -69,7 +75,7 @@ public class EnemyGroupController : MonoBehaviour
             enemies[ticketOwnerIndex].HasTicket = false;
         }
         ticketOwnerIndex = Random.Range(0, enemies.Count);
-        if(ticketOwnerIndex == lastTicketOwnerIndex)
+        if (ticketOwnerIndex == lastTicketOwnerIndex)
             ticketOwnerIndex = (ticketOwnerIndex + 1) % enemies.Count;
         enemies[ticketOwnerIndex].HasTicket = true;
         lastTicketOwnerIndex = ticketOwnerIndex;
@@ -93,4 +99,13 @@ public class EnemyGroupController : MonoBehaviour
         DieVFXPool.Release(vfx);
         yield break;
     }
+
+    /*public void OverwriteTickets(bool hasTicket)
+    {
+        foreach (IEnemy enemy in enemies)
+        {
+            enemy.HasTicket = hasTicket;
+            isOverwrited = true;
+        }
+    }*/
 }
