@@ -40,7 +40,7 @@ public class StoryBoardController : MonoBehaviour
         if (currentStoryBoard > storyBoards.Length - 1)
         {
             continueText.alpha = Mathf.MoveTowards(continueText.alpha, 1f, 1f / revealTime * Time.deltaTime);
-            if (PlayerInputManager.Instance.LatestInputIsGamepad)
+            if (LastInputType.isGamepad)
             {
                 continueButtonGamepad.SetActive(true);
                 continueButtonKeyboard.SetActive(false);

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.007728533, g: 0.062291533, b: 0.1956892, a: 1}
+  m_IndirectSpecularColor: {r: 0.0077834087, g: 0.062289514, b: 0.19571511, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -993,7 +993,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   AttackRange: 5
-  AttackDamage: 5
+  AttackDamage: 20
   _visionDistance: 4
 --- !u!95 &44136735
 Animator:
@@ -31814,7 +31814,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   AttackRange: 5
-  AttackDamage: 5
+  AttackDamage: 20
   _visionDistance: 4
 --- !u!95 &1644009766
 Animator:
@@ -42081,7 +42081,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 128
   AttackRange: 5
-  AttackDamage: 5
+  AttackDamage: 20
   _visionDistance: 4
 --- !u!4 &3798916612238265907
 Transform:

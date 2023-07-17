@@ -16,20 +16,17 @@ public class EnemyAttackBehaviour : StateMachineBehaviour
     // OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(stateInfo.normalizedTime < 0.99f)
-            isStarted = true;
-        if (stateInfo.normalizedTime >= 0.99f && isStarted)
-        {
-            enemyController.Attack();
-            isStarted = false;
-        }
+        if (!isStarted)
+            return;
+        enemyController.Attack();
+        isStarted = false;
     }
 
     // OnStateExit is called when a transition ends and the state machine finishes evaluating this state
     /*override public void OnStateExit(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        //PlayerInputManager.Instance.attackStarted = false;
-        //PlayerController.Instance.comboExpireTimer = PlayerController.Instance.StartCoroutine(PlayerController.Instance.ComboExpireTimer());
+        isStarted = false;
+        enemyController.Attack();
     }*/
 
     // OnStateMove is called right after Animator.OnAnimatorMove()

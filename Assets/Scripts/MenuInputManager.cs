@@ -44,14 +44,11 @@ public class MenuInputManager : MonoBehaviour
     public static MenuInputManager Instance;
     MenuInput input;
     public bool IsPauseMenu = false;
+    public bool IsCurrentPanelVertical = true;
     public List<MenuPanel> panels;
     private int currentPanelIndex = -1;
     private int currentButtonIndex = -1;
     private MenuButton currentButton;
-    [HideInInspector]
-    public bool IsCurrentPanelVertical = true;
-    [HideInInspector]
-    public bool LatestInputIsGamepad = false;
     [HideInInspector]
     public UnityEvent OnSubmit;
 
@@ -238,6 +235,6 @@ public class MenuInputManager : MonoBehaviour
 
     void SetLatestDeviceType(bool isGamepad)
     {
-        LatestInputIsGamepad = isGamepad;
+        LastInputType.isGamepad = isGamepad;
     }
 }

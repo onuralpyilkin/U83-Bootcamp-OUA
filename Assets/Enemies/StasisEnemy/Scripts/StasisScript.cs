@@ -28,12 +28,17 @@ public class StasisScript : MonoBehaviour, IEnemy
     {
         StasisAnim = GetComponent<Animator>();
         _agent = gameObject.GetComponent<NavMeshAgent>();
-        _player = GameObject.FindWithTag("Player").transform;
+        _player = PlayerController.Instance.transform;
         Health = 100;
     }
 
     void Update()
     {
+        Vector3 lookDirection = _player.position - transform.position;
+        lookDirection.y = 0;
+        Quaternion rotation = Quaternion.LookRotation(lookDirection);
+        transform.rotation = rotation;
+
         if (!HasTicket)
         {
             StopAllCoroutines();
@@ -86,11 +91,6 @@ public class StasisScript : MonoBehaviour, IEnemy
         {
             StartCoroutine(PlayIdleAnimation());
         }
-
-        Vector3 lookDirection = _player.position - transform.position;
-        lookDirection.y = 0;
-        Quaternion rotation = Quaternion.LookRotation(lookDirection);
-        transform.rotation = rotation;
     }
 
     IEnumerator Flee()

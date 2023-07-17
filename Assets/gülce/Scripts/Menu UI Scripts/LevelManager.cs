@@ -120,7 +120,7 @@ public class LevelManager : MonoBehaviour
 
     public void SetActiveLoadingScreen()
     {
-        if (MenuInputManager.Instance.LatestInputIsGamepad)  //hangi koşul gelicek sor
+        if (LastInputType.isGamepad)  //hangi koşul gelicek sor
         {
             //gamepad kullanılıyorsa
             gamepadLoadingScreen.SetActive(true);

@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
     public List<GameObject> ObjectToEnableAtStart = new List<GameObject>();
     public List<GameObject> ObjectToDisableAfterTimeline = new List<GameObject>();
     public List<GameObject> ObjectToDestroyAfterTimeline = new List<GameObject>();
+    public static string LastSceneName;
 
     void Awake()
     {
@@ -71,64 +72,91 @@ public class GameManager : MonoBehaviour
         StartCoroutine(LoadAsync(levelName));
     }
 
-    IEnumerator LoadAsync(string levelName)
+    public void LoadLevel(string levelName, bool isLevel = true)
     {
+        StartCoroutine(LoadAsync(levelName, false));
+    }
+
+    public void LoadScene(string sceneName)
+    {
+        StartCoroutine(LoadAsync(sceneName, false));
+    }
+
+    public void LoadLastScene()
+    {
+        if(LastSceneName != null)
+            StartCoroutine(LoadAsync(LastSceneName, false));
+    }
+
+    IEnumerator LoadAsync(string levelName, bool isLevel = true)
+    {
+        LastSceneName = SceneManager.GetActiveScene().name;
         AsyncOperation operation = SceneManager.LoadSceneAsync(levelName); //Seviyeyi yükle
-        operation.allowSceneActivation = false;
+        operation.allowSceneActivation = !isLevel;
 
         //gamepadLoadingScreen.SetActive(true); //bunun yerine SetActiveLoadingScreen() gelicek
-        SetActiveLoadingScreen();
 
-        float alphaTarget = 1f;
-        bool isEventAdded = false;
-        Slider slider;
-        if(gamepadLoadingScreen.activeSelf)
+        if (isLevel)
         {
-            slider = gamepadLoadingScreen.GetComponentInChildren<Slider>();
+            SetActiveLoadingScreen();
+
+            float alphaTarget = 1f;
+            bool isEventAdded = false;
+            Slider slider;
+            if (gamepadLoadingScreen.activeSelf)
+            {
+                slider = gamepadLoadingScreen.GetComponentInChildren<Slider>();
+            }
+            else
+            {
+                slider = keyboardLoadingScreen.GetComponentInChildren<Slider>();
+            }
+
+            while (operation.isDone == false)
+            {
+                float progress = Mathf.Clamp01(operation.progress / 0.9f);
+
+                slider.value = progress;
+
+                if (operation.progress >= 0.9f)
+                {
+                    LoadingScreenContinueCanvasGroup.gameObject.SetActive(true);
+                    LoadingScreenContinueCanvasGroup.alpha = Mathf.MoveTowards(LoadingScreenContinueCanvasGroup.alpha, alphaTarget, 2f * Time.deltaTime);
+                    if (LoadingScreenContinueCanvasGroup.alpha >= 1f)
+                    {
+                        alphaTarget = 0f;
+                    }
+                    if (LoadingScreenContinueCanvasGroup.alpha <= 0f)
+                    {
+                        alphaTarget = 1f;
+                    }
+
+                    if (!isEventAdded)
+                    {
+                        MenuInputManager.Instance.OnSubmit.AddListener(() =>
+                    {
+                        operation.allowSceneActivation = true;
+                        MenuInputManager.Instance.OnSubmit.RemoveAllListeners();
+                    });
+                        isEventAdded = true;
+                    }
+                }
+                yield return null;
+            }
         }
         else
         {
-            slider = keyboardLoadingScreen.GetComponentInChildren<Slider>();
-        }
-
-        while (operation.isDone == false)
-        {
-            float progress = Mathf.Clamp01(operation.progress / 0.9f);
-
-            slider.value = progress;
-
-            if (operation.progress >= 0.9f)
+            while (operation.isDone == false)
             {
-                LoadingScreenContinueCanvasGroup.gameObject.SetActive(true);
-                LoadingScreenContinueCanvasGroup.alpha = Mathf.MoveTowards(LoadingScreenContinueCanvasGroup.alpha, alphaTarget, 2f * Time.deltaTime);
-                if (LoadingScreenContinueCanvasGroup.alpha >= 1f)
-                {
-                    alphaTarget = 0f;
-                }
-                if (LoadingScreenContinueCanvasGroup.alpha <= 0f)
-                {
-                    alphaTarget = 1f;
-                }
-
-                if (!isEventAdded)
-                {
-                    MenuInputManager.Instance.OnSubmit.AddListener(() =>
-                {
-                    operation.allowSceneActivation = true;
-                    MenuInputManager.Instance.OnSubmit.RemoveAllListeners();
-                });
-                    isEventAdded = true;
-                }
+                yield return null;
             }
-
-            yield return null;
         }
-
+        yield break;
     }
 
     public void SetActiveLoadingScreen()
     {
-        if (MenuInputManager.Instance.LatestInputIsGamepad)  //hangi koşul gelicek sor
+        if (LastInputType.isGamepad)  //hangi koşul gelicek sor
         {
             //gamepad kullanılıyorsa
             gamepadLoadingScreen.SetActive(true);

@@ -108,6 +108,7 @@ public class PlayerController : MonoBehaviour
 
     private int dodgeTriggerHash;
     private int idleTriggerHash;
+    private bool isPlayerAlive = true;
 
     void Awake()
     {
@@ -446,7 +447,10 @@ public class PlayerController : MonoBehaviour
 
     public void Die()
     {
-        Debug.Log("You died.");
+        if (!isPlayerAlive)
+            return;
+        isPlayerAlive = false;
+        GameManager.Instance.LoadLevel("GameOver", false);
     }
 
     public void AddPower(float amount)

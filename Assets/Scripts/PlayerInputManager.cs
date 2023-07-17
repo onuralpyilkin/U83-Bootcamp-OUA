@@ -51,8 +51,6 @@ public class PlayerInputManager : MonoBehaviour
     public bool AttackStarted = false;
     [HideInInspector]
     public UnityEvent OnSubmit;
-    [HideInInspector]
-    public bool LatestInputIsGamepad = false;
 
     void Awake()
     {
@@ -156,7 +154,7 @@ public class PlayerInputManager : MonoBehaviour
 
     void SetLatestDeviceType(bool isGamepad)
     {
-        LatestInputIsGamepad = isGamepad;
+        LastInputType.isGamepad = isGamepad;
     }
 
     void Movement(Vector2 direction)

@@ -14,7 +14,7 @@ public class timelinePause : MonoBehaviour
     {
         Time.timeScale = 0;
         PlayerInputManager.Instance.OnSubmit.AddListener(OnSubmit);
-        if (PlayerInputManager.Instance.LatestInputIsGamepad)
+        if (LastInputType.isGamepad)
         {
             pressX.gameObject.SetActive(true);
             pressE.gameObject.SetActive(false);
