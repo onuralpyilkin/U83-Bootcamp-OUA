@@ -103,7 +103,7 @@ public class BallEnemy : MonoBehaviour, IEnemy
         else if (state == State.Chasing)
         {
             attackStartTimer = 0f;
-            float currentVelocityForward = agent.velocity.magnitude * (transform.InverseTransformDirection(agent.velocity).z > 0 ? 1 : -1);
+            float currentVelocityForward = agent.velocity.magnitude * (transform.InverseTransformDirection(agent.velocity).z > 0 ? -1 : 1);
             float currentVelocityRight = agent.velocity.magnitude * (transform.InverseTransformDirection(agent.velocity).x > 0 ? 1 : -1);
             childBody.Rotate(360 * (currentVelocityRight / bodyCircumference) * Time.deltaTime, 0, 360 * (currentVelocityForward / bodyCircumference) * Time.deltaTime);
         }
@@ -140,6 +140,7 @@ public class BallEnemy : MonoBehaviour, IEnemy
         Debug.Log("Enemy died.");
         state = State.Dead;
         GroupController.RemoveEnemy(this);
+        GroupController.PlayDieVFX(transform, 5f, 0f);
         Destroy(gameObject);
     }
 

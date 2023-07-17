@@ -75,10 +75,10 @@ public class EnemyGroupController : MonoBehaviour
         lastTicketOwnerIndex = ticketOwnerIndex;
     }
 
-    public void PlayDieVFX(Transform transform, float DieVFXLifeTime)
+    public void PlayDieVFX(Transform transform, float DieVFXLifeTime, float offsetY = 1f)
     {
         VFX vfx = DieVFXPool.Get();
-        vfx.SetPosition(transform.position + Vector3.up * 1f);
+        vfx.SetPosition(transform.position + Vector3.up * offsetY);
         vfx.SetRotation(transform.rotation);
         vfx.Play();
         StartCoroutine(ReleaseDieVFX(vfx, DieVFXLifeTime));
