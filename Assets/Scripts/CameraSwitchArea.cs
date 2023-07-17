@@ -24,6 +24,6 @@ public class CameraSwitchArea : MonoBehaviour
     IEnumerator CombatCameraSwitchDelay()
     {
         yield return new WaitForSeconds(0.5f);
-        CameraController.Instance.SetCombatCameraState(false);
+        CameraController.Instance.SetCombatCameraState(true);
     }
 }

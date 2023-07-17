@@ -13,7 +13,6 @@ public class EnemyGroupController : MonoBehaviour
     List<IEnemy> enemies = new List<IEnemy>();
     public UnityEvent OnEnemyGroupEnable;
     public UnityEvent OnEnemyGroupDie;
-    //public bool isOverwrited = false;
     void Start()
     {
         enemies = new List<IEnemy>(GetComponentsInChildren<IEnemy>());
@@ -24,15 +23,15 @@ public class EnemyGroupController : MonoBehaviour
         ticketChangeTimer = TicketChangeRate + 1f;
         if (OnEnemyGroupEnable != null)
             OnEnemyGroupEnable.Invoke();
+
+        if (GetComponent<Collider>() != null)
+        {
+            OnEnemyGroupDie.AddListener(() => CameraController.Instance.SetCombatCameraState(false));
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        /*if(isOverwrited)
-        {
-            return;
-        }*/
         if (enemies.Count > 0)
         {
             if (ticketChangeTimer >= TicketChangeRate)
@@ -89,7 +88,6 @@ public class EnemyGroupController : MonoBehaviour
         vfx.SetPosition(transform.position + Vector3.up * offsetY);
         vfx.SetRotation(transform.rotation);
         vfx.Play();
-        //StartCoroutine(ReleaseDieVFX(vfx, DieVFXLifeTime));
     }
 
     IEnumerator ReleaseDieVFX(VFX vfx, float delay)
@@ -100,12 +98,11 @@ public class EnemyGroupController : MonoBehaviour
         yield break;
     }
 
-    /*public void OverwriteTickets(bool hasTicket)
+    void OnTriggerEnter(Collider other)
     {
-        foreach (IEnemy enemy in enemies)
+        if (other.CompareTag("Player"))
         {
-            enemy.HasTicket = hasTicket;
-            isOverwrited = true;
+            CameraController.Instance.SetCombatCameraState(true);
         }
-    }*/
+    }
 }

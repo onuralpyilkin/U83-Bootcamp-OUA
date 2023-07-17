@@ -1,13 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Numerics;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class PatrolState : StateMachineBehaviour
 {
     float timer;
-    List<Transform> wayPoints = new List<Transform>();
+    List<Vector3> wayPoints = new List<Vector3>();
     NavMeshAgent agent;
 
     Transform player;
@@ -21,17 +20,27 @@ public class PatrolState : StateMachineBehaviour
         agent.speed = 1.5f;
         timer = 0;
         GameObject gameObject = GameObject.FindGameObjectWithTag("WayPoints");
-        foreach (Transform transform in gameObject.transform)
-            wayPoints.Add(transform);
+        if (gameObject != null)
+        {
+            foreach (Transform transform in gameObject.transform)
+                wayPoints.Add(transform.position);
 
-        agent.SetDestination(wayPoints[Random.Range(0, wayPoints.Count)].position);
+            agent.SetDestination(wayPoints[Random.Range(0, wayPoints.Count)]);
+        }
+        else
+        {
+            for (int i = 0; i < 6; i++)
+            {
+                wayPoints.Add(animator.transform.position + new Vector3(Random.Range(-5, 5), 0, Random.Range(-5, 5)));
+            }
+        }
     }
 
     //OnStateUpdate is called on each Update frame between OnStateEnter and OnStateExit callbacks
     override public void OnStateUpdate(Animator animator, AnimatorStateInfo stateInfo, int layerIndex)
     {
-        if(agent.remainingDistance <= agent.stoppingDistance)
-          agent.SetDestination(wayPoints[Random.Range(0, wayPoints.Count)].position);
+        if (agent.remainingDistance <= agent.stoppingDistance)
+            agent.SetDestination(wayPoints[Random.Range(0, wayPoints.Count)]);
 
         timer += Time.deltaTime;
         if (timer > 10)

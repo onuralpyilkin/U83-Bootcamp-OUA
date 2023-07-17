@@ -5112,7 +5112,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: ac6b327249c67164bb6c0ecb2adf77be, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 024add91dbeb3624794e417818ad55a2, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -12951,6 +12951,7 @@ MonoBehaviour:
   AttackRotationSpeed: 1
   AttackStartDelay: 1
   attackSound: {fileID: 0}
+  maxHealth: 100
 --- !u!195 &616065511
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -23321,6 +23322,7 @@ MonoBehaviour:
   AttackRotationSpeed: 1
   AttackStartDelay: 1
   attackSound: {fileID: 0}
+  maxHealth: 100
 --- !u!195 &1159336385
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -35487,7 +35489,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 9b646f12543bc4047a1e547db0b4086b, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 38407b255b7cd34429fb2ae8be19845b, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
